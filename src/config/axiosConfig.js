@@ -4,15 +4,18 @@ import router from '../router/index'
 import store from '../store/index.js'
 
 // 配置项目后端URL基地址（真实请求URL=baseURL + /XXX）
-axios.defaults.baseURL = 'http://localhost:8080'
-// axios.defaults.headers.post["Content-Type"] = "application/json;charset=utf-8"
+axios.defaults.baseURL = 'http://localhost:8080';
 
-// // 前置拦截
+
+
+// 前置拦截
 // axios.interceptors.request.use(config => {
+//   config.withCredentials = true;
+// //   // config.proxy = true;
 //   return config
-// })
-//
-//
+// });
+
+
 // // 后置拦截
 // axios.interceptors.response.use(response => {
 //     let res = response.data

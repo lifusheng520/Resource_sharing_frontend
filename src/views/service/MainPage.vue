@@ -1,9 +1,6 @@
 <template>
   <div>
 
-    <!--    预加载动画-->
-    <Preloader></Preloader>
-
     <!--    header-->
     <Header></Header>
 
@@ -17,7 +14,6 @@
 
 <script>
 
-
   // 导入页面组件
   import Footer from "../../components/sys/Footer";
   import Header from "../../components/sys/Header";
@@ -28,13 +24,12 @@
   export default {
     name: "MainPage",
     data() {
-      return {
-      }
+      return {}
     },
-    components: {Footer, Header, Preloader, PageTitle, MyIndex},
-    methods: {
-    }
+    components: {Footer, Header, PageTitle, MyIndex},
+    methods: {}
   }
+
 </script>
 
 <style scoped>

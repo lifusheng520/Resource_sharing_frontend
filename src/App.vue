@@ -8,14 +8,10 @@
 export default {
   name: 'App',
   mounted() {
-    if(this.$cookies.get('username')){
-      this.getUsername();
-    }
+
   },
   methods: {
-    getUsername() {
 
-    }
   }
 }
 </script>

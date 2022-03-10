@@ -8,6 +8,11 @@ export default new Router({
   mode: 'history',
   routes: [
     {
+      path: '/register',
+      name: 'RegisterPage',
+      component: () => import('../views/service/auth/RegisterPage')
+    },
+    {
       path: '/',
       name: 'MainPage',
       component: () => import('../views/service/MainPage'),
@@ -15,10 +20,6 @@ export default new Router({
         {
           path: '/',
           component: () => import('../components/sys/MyIndex')
-        },
-        {
-          path: '/register',
-          component: () => import('../components/sys/Register')
         }
       ]
     },

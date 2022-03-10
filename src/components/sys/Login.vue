@@ -56,11 +56,10 @@
                 <div class="col-xl-12 col-lg-12">
                   <div class="row d-flex">
                     <div class="col-xl-6 col-lg-6">
-                      <el-button class="login-button" @click="loginSubmit()">立&nbsp;即&nbsp;登&nbsp;录
-                      </el-button>
+                      <el-button class="login-button" @click="loginSubmit()">立&nbsp;即&nbsp;登&nbsp;录</el-button>
                     </div>
                     <div class="col-xl-6 col-lg-6 d-flex align-items-center">
-                      <a v-on:click="goRegister" class="forgetting-password">没有账号？</a>
+                      <a v-on:click="goRegister" class="forgetting-password">没账号？去注册</a>
                       <a v-on:click="forgetPassword" class="forgetting-password">忘记密码？</a>
                     </div>
                   </div>
@@ -121,14 +120,12 @@
           // 保存Vue的this对象，请求中的this为axios的this对象
           const _this = this;
 
-          let formData = {username: this.loginForm.username, password: this.loginForm.password};
-
           // 发起请求{headers:{'Content-Type': 'application/json;charset=UTF-8'}}
           this.$axios.post('/auth/login', this.$qs.stringify(this.loginForm), {headers: {'Content-Type': 'application/x-www-form-urlencoded'}}).then(res => {
             let resdata = res.data;
 
             // 没有对应的用户信息
-            if (resdata.data == null) {
+            if (resdata.data === null) {
               this.$message({
                 message: resdata.code + '~~ 用户名或密码错误 ~~' + resdata.message,
                 type: 'error',
@@ -147,7 +144,6 @@
               let token = res.headers['token'];
               // 获取用户信息
               let userInfo = resdata.data;
-
 
 
               _this.$store.user_id = userInfo.id;
@@ -171,7 +167,7 @@
               // sessionStorage.setItem('enable', JSON.stringify(userInfo.isEnable));
               // sessionStorage.setItem('roles', JSON.stringify(userInfo.roles))
 
-              _this.$cookies.set('username', userInfo.username, {expires: 7})
+              _this.$cookies.set('username', userInfo.username, {expires: 7});
 
 
               // 跳转到首页
@@ -179,6 +175,7 @@
 
             }
           });
+
         }
       },
       goRegister: function () {

@@ -63,8 +63,26 @@
               <el-avatar shape="circle" :size="40" src="static/ico/headIco.png" @error="errorHandler"></el-avatar>
             </div>
             <div id="div_username">
-              <a id="a_username" v-on:click="goLogin" v-show="getLogin">登录</a>
-              <a id="a_username" v-on:click="" v-show="!getLogin">{{user.username}}</a>
+
+              <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+                <el-submenu index="1">
+                  <template slot="title">
+                    <span v-model="this.user.username">{{this.user.username}}</span>
+                  </template>
+                  <el-menu-item index="2-1" v-on:click="setUserInfo('')">选项1</el-menu-item>
+                  <el-menu-item index="2-2">选项2</el-menu-item>
+                  <el-menu-item index="2-3" v-on:click="goLogin" v-if="!this.user.isLogin">登录</el-menu-item>
+                  <el-menu-item index="2-3" v-on:click="goLogout" v-else>退出</el-menu-item>
+                  <el-submenu index="2-4">
+                    <template slot="title">选项4</template>
+                    <el-menu-item index="2-4-1">选项1</el-menu-item>
+                    <el-menu-item index="2-4-2">选项2</el-menu-item>
+                    <el-menu-item index="2-4-3">选项3</el-menu-item>
+                  </el-submenu>
+                </el-submenu>
+              </el-menu>
+
+
             </div>
           </div>
 
@@ -85,18 +103,26 @@
     data() {
       return {
         user: {
+          isLogin: false,
           username: '登录'
-        }
+        },
+        activeIndex: '1',
+        activeIndex2: '1'
       }
     },
-    created() {
-      this.getUserInfo();
+    created: function () {
+      this.setUserInfo();
     },
     methods: {
-      getUserInfo() {
+      handleSelect(key, keyPath) {
+        console.log(key, keyPath);
+      },
+      setUserInfo() {
         let name = this.$cookies.get('username');
-        if (name !== null || ''.match(name))
+        if (name !== null || ''.match(name)) {
           this.user.username = name;
+          this.user.isLogin = true;
+        }
       },
       goLogin: function () {
         // 如果当前路由是登录，不在进行路由跳转
@@ -106,15 +132,38 @@
         this.$store.pageTitle = "Login";
         this.$router.push("/login");
       },
+      goLogout: function () {
+        // 保存Vue中this对象
+        let _this = this;
+
+        // 退出登录
+        this.$axios.post('/auth/logout').then(res => {
+          //  获取结果数据
+          let resData = res.data;
+          console.log(resData)
+
+          if(resData === null){
+            this.$message.error('退出登录失败~~');
+          } else {
+            this.$message({
+              message: resData.code + '~~~~' + resData.message,
+              type: 'success',
+              center: true,
+              duration: 2000
+            });
+
+            // 清除用户cookies
+            _this.$cookies.remove('username');
+            _this.user.username = '登录';
+            _this.user.isLogin = false;
+          }
+        });
+      },
       errorHandler() {
         return true;
       }
     },
-    computed: {
-      getLogin: function () {
-        return this.$cookies.get('username') === null;
-      }
-    }
+    computed: {}
   }
 </script>
 
@@ -130,6 +179,18 @@
 
   #div_username > a {
     margin-left: 10px;
+  }
+
+  .el-menu-demo {
+    background: none;
+  }
+
+  .el-menu-demo span {
+    color: white;
+  }
+
+  .el-menu-demo span:hover {
+    color: black;
   }
 
 </style>

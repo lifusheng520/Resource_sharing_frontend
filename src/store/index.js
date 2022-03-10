@@ -13,7 +13,7 @@ export default new Vuex.Store({
     token: localStorage.getItem('token'),
     isLogin: false,
     user_id: null,
-    username: '登录',
+    username: ' ',
     isEnable: '',
     roles: []
   },
@@ -32,20 +32,23 @@ export default new Vuex.Store({
       state.username = name;
 
     },
-    SET_IsLogin: (state, login, name) => {
+    SET_IsLogin: (state, login) => {
       if (login) {
         state.isLogin = login;
-        state.username = name;
       }
     }
+
   },
   // get  获取参数
   getters: {
+    getIsLogin: state => state.isLogin,
+    getUser: state => state.username,
     getToken: state => {
       return state.token;
     }
   },
   actions: {
+
   },
   modules: {}
 })

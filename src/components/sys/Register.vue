@@ -22,13 +22,12 @@
             <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px"
                      class="demo-ruleForm">
 
-
               <el-form-item label="账号" prop="username">
                 <el-input v-model.number="ruleForm.username"></el-input>
               </el-form-item>
 
-              <el-form-item label="密码" prop="pass">
-                <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+              <el-form-item label="密码" prop="password">
+                <el-input type="password" v-model="ruleForm.password" autocomplete="off"></el-input>
               </el-form-item>
 
               <el-form-item label="确认密码" prop="checkPass">
@@ -72,7 +71,7 @@
       var validatePass2 = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请再次输入密码'));
-        } else if (value !== this.ruleForm.pass) {
+        } else if (value !== this.ruleForm.password) {
           callback(new Error('两次输入密码不一致!'));
         } else {
           callback();
@@ -81,15 +80,15 @@
       return {
         ruleForm: {
           username: '',
-          pass: '',
+          password: '',
           checkPass: ''
         },
         rules: {
           username: [
             {required: true, message: '账号不能为空', trigger: 'blur'},
-            {min: 6, max: 10, message: '长度在 6 到 10 个字符', trigger: 'blur'}
+            {min: 5, max: 10, message: '长度在 5 到 10 个字符', trigger: 'blur'}
           ],
-          pass: [
+          password: [
             {validator: validatePass, trigger: 'blur'},
             {min: 6, max: 10, message: '长度在 6 到 10 个字符', trigger: 'blur'}
           ],
@@ -103,19 +102,33 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
-            // 发起请求
-            this.$axios.post('http://localhost:8080/register', this.ruleForm).then(res => {
-              console.log(res);
+            let _this = this;
+            // 发起注册请求
+            this.$axios.post('/auth/register', this.ruleForm).then(res => {
+              let resData = res.data;
+              console.log(resData)
+              console.log(resData.data)
+              if (resData) {
+                // 判断状态码
+                if (resData.code === 1003){ // 注册成功
+                  this.$message({
+                    message: resData.code + '~~~~' + resData.message,
+                    type: 'success'
+                  });
+
+                  // 注册成功，跳转登录页面
+                  _this.$store.pageTitle = "Login";
+                  _this.$router.push("/login");
+                } else {
+                  this.$message.error('注册失败~~');
+                }
+              } else {
+                // 注册失败，不做跳转
+                this.$message.error('注册错误，请重新注册~~');
+              }
             });
-
-
-
           } else {
-            this.$message({
-              message: '错误的提交！',
-              type: 'error'
-            });
+            this.$message.error('错误的提交~~');
             return false;
           }
         });
@@ -123,16 +136,6 @@
       resetForm(formName) {
         this.$refs[formName].resetFields();
       }
-    },
-    register: function () {
-      // 获取用户名和密码
-
-
-      // 向后端服务器发起注册请求 post
-
-
-      this.$store.pageTitle = "Login";
-      this.$router.push("/login");
     }
   }
 </script>
