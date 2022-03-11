@@ -986,7 +986,8 @@ ul {
 .page-title {
   background: url(../img/info-feature-bg.png) center bottom no-repeat;
   background-size: cover;
-  padding: 208px 0 118px;
+  padding: 100px 30px;
+  padding-bottom: 30px;
   width: 100%;
   position: relative;
   background-color: #fefefe; }

@@ -60,7 +60,7 @@
                     </div>
                     <div class="col-xl-6 col-lg-6 d-flex align-items-center">
                       <a v-on:click="goRegister" class="forgetting-password">没账号？去注册</a>
-                      <a v-on:click="forgetPassword" class="forgetting-password">忘记密码？</a>
+                      <a v-on:click="goForgetPassword" class="forgetting-password">忘记密码？</a>
                     </div>
                   </div>
                 </div>
@@ -106,6 +106,22 @@
       loginSubmit() {
         let ulen = this.loginForm.username.length;
         let plen = this.loginForm.password.length;
+        if (!ulen) {
+          this.$message({
+            message: '用户名不能为空~',
+            type: 'error'
+          });
+          return;
+        }
+
+        if (!plen) {
+          this.$message({
+            message: '密码不能为空~',
+            type: 'error'
+          });
+          return;
+        }
+
         if (!(ulen >= 5 && ulen <= 10)) {
           this.$message({
             message: '用户名长度在 5 到 10 个字符~',
@@ -145,7 +161,6 @@
               // 获取用户信息
               let userInfo = resdata.data;
 
-
               _this.$store.user_id = userInfo.id;
               _this.$store.username = userInfo.username;
               _this.$store.isEnable = userInfo.isEnable;
@@ -156,23 +171,18 @@
               console.log(_this.$store.isEnable);
               console.log(_this.$store.roles);
 
-
               //共享数据
               //将结果放入本地localStorage中（浏览器关闭下次可以继续访问）
               // localStorage.setItem('token', token);
 
               //将结果放入sessionStorage中，并将其序列化
               // sessionStorage.setItem('userId', JSON.stringify(userInfo.id));
-              // sessionStorage.setItem('username', JSON.stringify(userInfo.username));
-              // sessionStorage.setItem('enable', JSON.stringify(userInfo.isEnable));
-              // sessionStorage.setItem('roles', JSON.stringify(userInfo.roles))
 
               _this.$cookies.set('username', userInfo.username, {expires: 7});
-
+              _this.$cookies.set('user_id', userInfo.id, {expires: 7});
 
               // 跳转到首页
               _this.$router.push('/');
-
             }
           });
 
@@ -182,8 +192,9 @@
         this.$store.pageTitle = 'Register';
         this.$router.push('/register');
       },
-      forgetPassword: function () {
-
+      goForgetPassword: function () {
+        this.$store.pageTitle = 'Forget Password';
+        this.$router.push('/forgetpass');
       }
     }
   }

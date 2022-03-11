@@ -23,7 +23,7 @@
                      class="demo-ruleForm">
 
               <el-form-item label="账号" prop="username">
-                <el-input v-model.number="ruleForm.username"></el-input>
+                <el-input type="text" v-model="ruleForm.username"></el-input>
               </el-form-item>
 
               <el-form-item label="密码" prop="password">
@@ -35,7 +35,7 @@
               </el-form-item>
 
               <el-form-item>
-                <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+                <el-button type="primary" @click="submitForm('ruleForm')">立 即 注 册</el-button>
                 <el-button @click="resetForm('ruleForm')">重置</el-button>
               </el-form-item>
 
@@ -106,11 +106,10 @@
             // 发起注册请求
             this.$axios.post('/auth/register', this.ruleForm).then(res => {
               let resData = res.data;
-              console.log(resData)
-              console.log(resData.data)
+              // 请求成功
               if (resData) {
                 // 判断状态码
-                if (resData.code === 1003){ // 注册成功
+                if (resData.code === 1003) { // 注册成功
                   this.$message({
                     message: resData.code + '~~~~' + resData.message,
                     type: 'success'
@@ -119,8 +118,14 @@
                   // 注册成功，跳转登录页面
                   _this.$store.pageTitle = "Login";
                   _this.$router.push("/login");
-                } else {
-                  this.$message.error('注册失败~~');
+
+                } else if (resData.code === 1004) {
+                  this.$message.error(resData.code + '~~注册失败~~');
+                } else if (resData.code === 1005) {
+                  this.$message({
+                    message: resData.code + '~~~~' + resData.message,
+                    type: 'error'
+                  });
                 }
               } else {
                 // 注册失败，不做跳转

@@ -1,25 +1,24 @@
 <template>
   <div>
     <Header></Header>
-    <Register></Register>
+    <ForgetPassword></ForgetPassword>
     <Footer></Footer>
   </div>
-
 </template>
 
 <script>
-
   import Header from '../../../components/sys/Header'
   import Footer from '../../../components/sys/Footer'
-  import Register from '../../../components/sys/Register'
+  import ForgetPassword from '../../../components/sys/ForgetPassword'
 
   export default {
-    name: "RegisterPage",
-    components: {Header, Register, Footer}
+    name: "ForgetPasswordPage",
+    components: {
+      Header, ForgetPassword, Footer
+    }
   }
 </script>
 
 <style scoped>
-
 
 </style>
