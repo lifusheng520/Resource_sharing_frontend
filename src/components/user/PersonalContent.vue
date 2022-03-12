@@ -2,7 +2,7 @@
   <div id="div_personal_content">
 
     <!--    页面内容    开始    -->
-    <el-container style="height: 800px; border: 1px solid #eee">
+    <el-container style="height: auto; border: 1px solid #eee; min-height: 600px">
 
       <!--      左侧菜单栏    开始-->
       <el-aside width="200px" style="background-color: rgb(238, 241, 246);">
