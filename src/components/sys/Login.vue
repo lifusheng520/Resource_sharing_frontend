@@ -141,7 +141,7 @@
             let resdata = res.data;
 
             // 没有对应的用户信息
-            if (resdata.data === null) {
+            if (!resdata.data) {
               this.$message({
                 message: resdata.code + '~~ 用户名或密码错误 ~~' + resdata.message,
                 type: 'error',
@@ -165,11 +165,6 @@
               _this.$store.username = userInfo.username;
               _this.$store.isEnable = userInfo.isEnable;
               _this.$store.roles = userInfo.roles;
-
-              console.log(_this.$store.user_id);
-              console.log(_this.$store.username);
-              console.log(_this.$store.isEnable);
-              console.log(_this.$store.roles);
 
               //共享数据
               //将结果放入本地localStorage中（浏览器关闭下次可以继续访问）

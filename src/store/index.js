@@ -13,17 +13,9 @@ export default new Vuex.Store({
     token: localStorage.getItem('token'),
     isLogin: false,
     user_id: null,
-    username: ' ',
+    username: '',
     isEnable: '',
-    roles: [],
-    userInfo: {
-      name: '',
-      sex: '',
-      userState: '',
-      role: '',
-      address: '',
-      email: ''
-    }
+    roles: []
   },
   // set  修改参数
   mutations: {
