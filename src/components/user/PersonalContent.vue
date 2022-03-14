@@ -6,12 +6,12 @@
 
       <!--      左侧菜单栏    开始-->
       <el-aside width="200px" style="background-color: rgb(238, 241, 246);">
-        <el-menu style="margin-top: 100px">
+        <el-menu style="margin-top: 100px" default-active="1-1">
 
           <el-submenu index="1">
             <template slot="title"><i class="el-icon-s-custom"></i>个人信息</template>
             <el-menu-item-group>
-              <el-menu-item index="1-1">选项1</el-menu-item>
+              <el-menu-item index="1-1">账号信息</el-menu-item>
               <el-menu-item index="1-2">选项2</el-menu-item>
             </el-menu-item-group>
             <el-menu-item-group>

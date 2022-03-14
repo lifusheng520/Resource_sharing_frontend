@@ -23,15 +23,24 @@ axios.defaults.withCredentials = true;
 //     console.log(resData);
 //
 //     //用户登录已经过期，或者用户未登录
-//   if(resData.code === 1008 || resData.code === 1006){
-//     cookies.set('username', '', {expires: 7});
-//     store.pageTitle = 'Login';
-//     router.push('/login');
+//     if (resData.code === 1008 || resData.code === 1006) {
+//       cookies.set('username', '', {expires: 7});
+//       cookies.set('user_id', '', {expires: 7});
+//       cookies.set('user_icon', '', {expires: 7});
+//       store.pageTitle = 'Login';
+//       Element.Message.error(resData.code + '~~~~' + resData.message, {duration: 2000});
+//       return Promise.reject(response);
+//     }
+//   }, error => {
+//     if (error.code === 1008 || error.code === 1006) {
+//       router.push('/login')
+//     }
 //   }
-//
-//
-//
-//
+// );
+
+
+
+
 //     //   console.log('===========================')
 //     //   console.log(res)
 //     //   console.log('===================')
@@ -69,5 +78,5 @@ axios.defaults.withCredentials = true;
 //     //
 //     //   // 停止请求，阻止返回
 //     //   return Promise.reject(error)
-//   }
+//
 // );

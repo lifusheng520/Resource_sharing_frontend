@@ -175,6 +175,7 @@
 
               _this.$cookies.set('username', userInfo.username, {expires: 7});
               _this.$cookies.set('user_id', userInfo.id, {expires: 7});
+              _this.$cookies.set('user_icon', userInfo.headIcon, {expires: 7});
 
               // 跳转到首页
               _this.$router.push('/');
