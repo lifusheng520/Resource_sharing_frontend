@@ -1,5 +1,5 @@
 <template>
-  <el-empty v-if="this.isEmpty" description="网络开小差了~~~"></el-empty>
+  <el-empty v-if="this.isEmpty" description="网络开小差了，请重新登录~~~"></el-empty>
   <div v-else id="div_personal_info">
 
     <!--    头像-->

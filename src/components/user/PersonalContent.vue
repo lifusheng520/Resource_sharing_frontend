@@ -9,35 +9,71 @@
         <el-menu style="margin-top: 100px" default-active="1-1">
 
           <el-submenu index="1">
-            <template slot="title"><i class="el-icon-s-custom"></i>个人信息</template>
+            <template slot="title"><i class="el-icon-s-custom"></i>个人中心</template>
             <el-menu-item-group>
-              <el-menu-item index="1-1">账号信息</el-menu-item>
-              <el-menu-item index="1-2">选项2</el-menu-item>
+              <el-menu-item index="1-1" v-on:click="goPersonalInfo"><i class="el-icon-info"></i>账号信息</el-menu-item>
+              <el-menu-item index="1-2"><i class="el-icon-edit"></i>修改密码</el-menu-item>
             </el-menu-item-group>
-            <el-menu-item-group>
-              <el-menu-item index="1-3">选项3</el-menu-item>
-            </el-menu-item-group>
-            <el-submenu index="1-4">
-              <template slot="title">选项4</template>
-              <el-menu-item index="1-4-1">选项4-1</el-menu-item>
-            </el-submenu>
           </el-submenu>
 
           <el-submenu index="2">
-            <template slot="title"><i class="el-icon-menu"></i>导航二</template>
+            <template slot="title"><i class="el-icon-folder-opened"></i>资源管理</template>
             <el-menu-item-group>
-              <template slot="title">分组一</template>
+              <el-menu-item index="2-1" v-on:click="goUpload"><i class="el-icon-upload"></i>添加上传</el-menu-item>
+              <el-menu-item index="2-2"><i class="el-icon-delete-solid"></i>删除上传</el-menu-item>
+              <el-menu-item index="2-3"><i class="el-icon-document"></i>我的资料</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+
+          <el-submenu index="3">
+            <template slot="title"><i class="el-icon-reading"></i>历史记录</template>
+            <el-menu-item-group>
+              <el-menu-item index="3-1"><i class="el-icon-download"></i>下载记录</el-menu-item>
+              <el-menu-item index="3-2"><i class="el-icon-upload2"></i>上传记录</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+
+          <el-submenu index="4">
+            <template slot="title"><i class="el-icon-view"></i>我的关注</template>
+            <el-menu-item-group>
               <el-menu-item index="2-1">选项1</el-menu-item>
               <el-menu-item index="2-2">选项2</el-menu-item>
             </el-menu-item-group>
-            <el-menu-item-group title="分组2">
-              <el-menu-item index="2-3">选项3</el-menu-item>
-            </el-menu-item-group>
-            <el-submenu index="2-4">
-              <template slot="title">选项4</template>
-              <el-menu-item index="2-4-1">选项4-1</el-menu-item>
-            </el-submenu>
           </el-submenu>
+
+          <el-submenu index="5">
+            <template slot="title"><i class="el-icon-star-on"></i>我的收藏</template>
+            <el-menu-item-group>
+              <el-menu-item index="2-1">选项1</el-menu-item>
+              <el-menu-item index="2-2">选项2</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+
+          <el-submenu index="6">
+            <template slot="title"><i class="el-icon-s-comment"></i>我的评论</template>
+            <el-menu-item-group>
+              <el-menu-item index="2-1">选项1</el-menu-item>
+              <el-menu-item index="2-2">选项2</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+
+          <el-submenu index="7">
+            <template slot="title"><i class="el-icon-s-tools"></i>用户管理</template>
+            <el-menu-item-group>
+              <el-menu-item index="2-1">选项1</el-menu-item>
+              <el-menu-item index="2-2">选项2</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+
+          <el-submenu index="8">
+            <template slot="title"><i class="el-icon-s-data"></i>数据中心</template>
+            <el-menu-item-group>
+              <el-menu-item index="2-1">选项1</el-menu-item>
+              <el-menu-item index="2-2">选项2</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+
+
         </el-menu>
       </el-aside>
       <!--      左侧菜单栏    结束-->
@@ -45,25 +81,7 @@
       <!--      右侧内容部分   开始-->
       <el-container>
 
-        <!--        容器头部  开始-->
-        <el-header style="text-align: right; font-size: 12px">
-          <el-dropdown>
-            <i class="el-icon-setting" style="margin-right: 15px"></i>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>查看</el-dropdown-item>
-              <el-dropdown-item>新增</el-dropdown-item>
-              <el-dropdown-item>删除</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-          <span id="span_username" v-model="this.user.username">
-            {{this.user.username}}
-            <i class="el-icon-user-solid"></i>
-          </span>
-        </el-header>
-        <!--        容器头部  结束-->
-
         <router-view></router-view>
-
 
       </el-container>
       <!--      右侧内容部分   结束-->
@@ -78,22 +96,20 @@
   export default {
     name: "PersonalContent",
     data() {
-      const item = {
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      };
-      return {
-        user: {
-          id: '',
-          username: ''
-        },
-        tableData: Array(10).fill(item)
-      }
+      return {}
     },
     created() {
-      if (this.$cookies.get('user_id')) {
-        this.user.username = this.$cookies.get('username');
+    },
+    methods: {
+      goPersonalInfo() {
+        if (this.$route.path !== '/personal') {
+          this.$router.push('/personal');
+        }
+      },
+      goUpload() {
+        if (this.$route.path !== '/upload') {
+          this.$router.push('/upload');
+        }
       }
     }
   }

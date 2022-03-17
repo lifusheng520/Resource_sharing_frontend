@@ -91,14 +91,13 @@
     methods: {
       submitForm(formName) {
         // 验证表单
-        if (this.validateForm()) {
-          this.$axios.post('/user/updatePass', this.ruleForm).then(res => {
-            let resData = res.data;
-            console.log(resData);
-          });
-        } else {
-          this.$message.error('表单内容不符合规则~~~');
-        }
+        if (!this.validateForm()) return;
+
+        this.$axios.post('/user/updatePass', this.ruleForm).then(res => {
+          let resData = res.data;
+          console.log(resData);
+        });
+
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();

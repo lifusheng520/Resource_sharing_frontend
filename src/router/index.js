@@ -36,6 +36,11 @@ export default new Router({
           path: '/',
           name: 'PersonalInfo',
           component: () => import('../components/user/PersonalInfo')
+        },
+        {
+          path: '/upload',
+          name: 'AddUpload',
+          component: () => import('../components/user/AddUpload')
         }
       ]
     }
