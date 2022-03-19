@@ -73,11 +73,11 @@
           ],
           password: [
             {required: true, message: '请输入新的密码', trigger: 'blur'},
-            {min: 6, max: 10, message: '长度在 6 到 10 个字符', trigger: 'blur'}
+            {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
           ],
           checkPass: [
             {required: true, message: '请确认新的密码', trigger: 'blur'},
-            {min: 6, max: 10, message: '长度在 6 到 10 个字符', trigger: 'blur'}
+            {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
           ],
           verifyCode: [
             {required: true, message: '请输入验证码', trigger: 'blur'},
@@ -112,7 +112,7 @@
         }
         if (!(ulen >= 5 && ulen <= 10))
           return false;
-        if (!(plen >= 6 && plen <= 10))
+        if (!(plen >= 6 && plen <= 20))
           return false;
         if (this.ruleForm.password !== this.ruleForm.checkPass) {
           this.$message({
@@ -131,6 +131,18 @@
         }
         const out_this = this;
         this.needWaitting = true;
+        // 验证码发送计时器
+        let seconds = 60;
+        const timerHandle = window.setInterval(function () {
+          out_this.sendEmailButtionMessage = seconds + '秒后重新发送';
+          if (seconds <= 0) {
+            out_this.needWaitting = false;
+            out_this.sendEmailButtionMessage = '发送验证码';
+            window.clearInterval(timerHandle);
+          }
+          seconds--;
+        }, 1000);
+
         this.$axios.get(`/user/authEmail/${this.ruleForm.username}`).then(res => {
           let resData = res.data;
           console.log(resData);
@@ -138,24 +150,12 @@
             this.$message({
               message: resData.code + '~~~~' + resData.message + '~~注意查收',
               type: 'success',
-              duration: 1500
+              duration: 3000
             });
           } else {
             this.$message.error(resData.code + '~~~' + resData.message);
-            out_this.needWaitting = false;
+            this.needWaitting = false;
           }
-          // 验证码发送成功后的计时器
-          this.needWaitting = true;
-          let seconds = 60;
-          const timerHandle = window.setInterval(function () {
-            out_this.sendEmailButtionMessage = seconds + '秒后重新发送';
-            if (seconds <= 0) {
-              out_this.needWaitting = false;
-              out_this.sendEmailButtionMessage = '发送验证码';
-              window.clearInterval(timerHandle);
-            }
-            seconds--;
-          }, 1000);
         });
       }
     }

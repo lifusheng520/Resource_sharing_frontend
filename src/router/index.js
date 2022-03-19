@@ -35,12 +35,22 @@ export default new Router({
         {
           path: '/',
           name: 'PersonalInfo',
-          component: () => import('../components/user/PersonalInfo')
+          component: () => import('../components/user/info/PersonalInfo')
         },
         {
           path: '/upload',
           name: 'AddUpload',
-          component: () => import('../components/user/AddUpload')
+          component: () => import('../components/user/resource/AddUpload')
+        },
+        {
+          path: '/resourceManagement',
+          name: 'ResourceManagement',
+          component: () => import('../components/user/resource/ResourceManagement')
+        },
+        {
+          path: '/updatePass',
+          name: 'UpdatePassword',
+          component: () => import('../components/user/info/UpdatePassword')
         }
       ]
     }

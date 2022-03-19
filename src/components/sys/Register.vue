@@ -90,7 +90,7 @@
           ],
           password: [
             {validator: validatePass, trigger: 'blur'},
-            {min: 6, max: 10, message: '长度在 6 到 10 个字符', trigger: 'blur'}
+            {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
           ],
           checkPass: [
             {validator: validatePass2, trigger: 'blur'}

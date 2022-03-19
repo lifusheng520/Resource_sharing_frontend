@@ -45,7 +45,7 @@
                 <div class="col-xl-12 col-lg-12">
                   <div class="form-group mb-0 checkbox">
                     <div class="form-check pl-0">
-                      <input class="form-check-input" type="checkbox" id="gridCheck1">
+                      <input class="form-check-input" type="checkbox" id="gridCheck1" v-model="loginForm.remember">
                       <label class="form-check-label" for="gridCheck1">
                         记住密码
                       </label>
@@ -88,7 +88,8 @@
       return {
         loginForm: {
           username: '',
-          password: ''
+          password: '',
+          remember: false
         },
         rules: {
           username: [
@@ -97,9 +98,22 @@
           ],
           password: [
             {required: true, message: '请输入密码', trigger: 'blur'},
-            {min: 6, max: 10, message: '长度在 6 到 10 个字符', trigger: 'blur'}
+            {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
           ]
         }
+      }
+    },
+    created() {
+      // 获取本地存储中的登录数据
+      let uname = localStorage.getItem('username');
+      let pass = localStorage.getItem('password');
+      let remember = localStorage.getItem('remember');
+
+      // 结果都存在
+      if (uname && pass && remember) {
+        this.loginForm.username = uname;
+        this.loginForm.password = pass;
+        this.loginForm.remember = remember;
       }
     },
     methods: {
@@ -127,9 +141,9 @@
             message: '用户名长度在 5 到 10 个字符~',
             type: 'error'
           });
-        } else if (!(plen >= 6 && plen <= 10)) {
+        } else if (!(plen >= 6 && plen <= 20)) {
           this.$message({
-            message: '密码长度在 6 到 10 个字符~',
+            message: '密码长度在 6 到 20 个字符~',
             type: 'error'
           });
         } else {
@@ -166,16 +180,25 @@
               _this.$store.isEnable = userInfo.isEnable;
               _this.$store.roles = userInfo.roles;
 
-              //共享数据
-              //将结果放入本地localStorage中（浏览器关闭下次可以继续访问）
-              // localStorage.setItem('token', token);
+              //  记住密码
+              if (_this.loginForm.remember) {
+                //  登录成功，将结果放入本地localStorage中（浏览器关闭下次可以继续访问）
+                localStorage.setItem('username', userInfo.username);
+                localStorage.setItem('password', _this.loginForm.password);
+                localStorage.setItem('remember', _this.loginForm.remember);
+              } else {
+                //  登录成功，将本地结果删除
+                localStorage.removeItem('username');
+                localStorage.removeItem('password');
+                localStorage.removeItem('remember');
+              }
 
               //将结果放入sessionStorage中，并将其序列化
               // sessionStorage.setItem('userId', JSON.stringify(userInfo.id));
 
-              _this.$cookies.set('username', userInfo.username, {expires: 7});
-              _this.$cookies.set('user_id', userInfo.id, {expires: 7});
-              _this.$cookies.set('user_icon', userInfo.headIcon, {expires: 7});
+              _this.$cookies.set('username', userInfo.username, 60 * 30);
+              _this.$cookies.set('user_id', userInfo.id, 60 * 30);
+              _this.$cookies.set('user_icon', userInfo.headIcon, 60 * 30);
 
               // 跳转到首页
               _this.$router.push('/');
