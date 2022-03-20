@@ -441,9 +441,6 @@
 </script>
 
 <style scoped>
-  * {
-    color: black;
-  }
 
   p {
     text-align: center;

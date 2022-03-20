@@ -7,6 +7,7 @@
 
       <el-form :model="fileForm" :rules="rules" ref="fileForm" label-width="200px" class="demo-ruleForm">
 
+        <!--                   :action="`http://localhost:8080/resource/upload/${fileForm.user_id}/${fileForm.discipline}/${fileForm.textarea}`"-->
         <el-upload class="upload-demo" ref="upload" with-credentials
                    :action="`http://localhost:8080/resource/upload/${fileForm.user_id}/${fileForm.discipline}/${fileForm.textarea}`"
                    :on-preview="handlePreview" :on-remove="handleRemove" :file-list="this.fileForm.fileList"
@@ -17,6 +18,7 @@
           <div slot="tip" class="el-upload__tip" style="font-size: 20px">一次可以选择多个文件，且不超过1GB <p></p>
             <p style="text-align: left">已选择文件：</p>
           </div>
+
         </el-upload>
         <br>
 
@@ -93,10 +95,14 @@
     methods: {
       submitUpload(formName) {
         console.log(this.fileForm);
-          if (!this.fileForm.discipline) {
-            alert('请选择资源所属类别');
-            return false;
-          }
+        if (!this.fileForm.discipline) {
+          alert('请选择资源所属类别');
+          return false;
+        }
+        if(this.fileForm.textarea.length >= 500){
+          alert('简介内容过长~~');
+          return;
+        }
         this.$refs.upload.submit();
       },
       handleRemove(file, fileList) {

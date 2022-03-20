@@ -10,7 +10,7 @@ export default new Router({
     {
       path: '/',
       name: 'MainPage',
-      component: () => import('../views/service/MainPage')
+      component: () => import('../views/headerMenu/MainPage')
     },
     {
       path: '/login',
@@ -26,6 +26,16 @@ export default new Router({
       path: '/forgetpass',
       name: 'ForgetPasswordPage',
       component: () => import('../views/service/auth/ForgetPasswordPage')
+    },
+    {
+      path: '/recommend',
+      name: 'RecommendationPage',
+      component: () => import('../views/headerMenu/RecommendationPage')
+    },
+    {
+      path: '/rank',
+      name: 'UploadRankPage',
+      component: () => import('../views/headerMenu/UploadRankPage')
     },
     {
       path: '/personal',

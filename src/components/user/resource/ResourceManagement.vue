@@ -40,12 +40,24 @@
           </template>
         </el-table-column>
         <el-table-column prop="discipline" label="学科" min-width="150px"></el-table-column>
-        <el-table-column prop="description" label="资源简介" min-width="150px"></el-table-column>
+        <el-table-column label="资源简介" min-width="100px">
+          <template slot-scope="scope">
+            <el-popover
+              placement="bottom"
+              title="资源介绍"
+              width="500"
+              trigger="click"
+              :content="scope.row.description">
+              <el-button slot="reference">查看</el-button>
+            </el-popover>
+          </template>
+        </el-table-column>
         <el-table-column label="操作" min-width="150px" fixed="right">
           <template slot-scope="scope">
             <el-button @click="deleteRow(scope.row)" type="text">删除</el-button>
             <el-button @click="showUpdateForm(scope.row)" type="text">编辑</el-button>
-            <a :href="`http://localhost:8080/resource/download/${scope.row.disk_name}/${scope.row.id}/${scope.row.discipline}`">
+            <a
+              :href="`http://localhost:8080/resource/download/${scope.row.disk_name}/${scope.row.id}/${scope.row.discipline}`">
               <el-button type="text">下载</el-button>
             </a>
           </template>

@@ -32,25 +32,22 @@
                       class="sr-only">(current)</span></a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="about.html">About</a>
+                    <a class="nav-link" v-on:click="goRecommendation">推荐</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="investment-plan.html">Investment Plan</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="faq.html">FAQ</a>
+                    <a class="nav-link" v-on:click="goRank">贡献狂人</a>
                   </li>
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
                        role="button"
-                       aria-haspopup="true" aria-expanded="false">Blog</a>
+                       aria-haspopup="true" aria-expanded="false">数据图表</a>
                     <div class="dropdown-menu">
-                      <a class="dropdown-item" href="blog.html">Blog</a>
-                      <a class="dropdown-item" href="blog-details.html">Single Blog</a>
+                      <a class="dropdown-item" href="#">上传情况</a>
+                      <a class="dropdown-item" href="#">下载情况</a>
                     </div>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="contact.html">Contact</a>
+                    <a class="nav-link" href="#">关注</a>
                   </li>
 
                 </ul>
@@ -140,6 +137,14 @@
       goIndex() {
         if (this.$route.path === '/') return;
         this.$router.push('/');
+      },
+      goRecommendation() {
+        if (this.$route.path === '/recommend') return;
+        this.$router.push('/recommend');
+      },
+      goRank() {
+        if (this.$route.path === '/rank') return;
+        this.$router.push('/rank');
       },
       goLogin: function () {
         // 如果当前路由是登录，不在进行路由跳转
