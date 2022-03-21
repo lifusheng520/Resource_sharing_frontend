@@ -51,6 +51,7 @@
       </el-form>
 
       <el-button style="margin-top: 5%;" type="success" @click="submitUpload('fileForm')">上传到平台服务器</el-button>
+      <el-button style="margin-top: 5%;" type="primary" @click="clearUploadFiles">清除已经上传文件</el-button>
     </div>
 
   </div>
@@ -96,14 +97,17 @@
       submitUpload(formName) {
         console.log(this.fileForm);
         if (!this.fileForm.discipline) {
-          alert('请选择资源所属类别');
+          this.$message.warning('请选择资源所属类别');
           return false;
         }
         if(this.fileForm.textarea.length >= 500){
-          alert('简介内容过长~~');
+          this.$message.warning('简介内容过长~~');
           return;
         }
         this.$refs.upload.submit();
+      },
+      clearUploadFiles() {
+        this.$refs.upload.clearFiles();
       },
       handleRemove(file, fileList) {
         console.log(file, fileList);

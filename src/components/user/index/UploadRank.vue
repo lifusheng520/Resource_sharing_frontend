@@ -6,9 +6,10 @@
       <div class="row justify-content-center">
         <div class="col-xl-8 col-lg-8">
           <div class="section-title text-center">
-            <h2>Latest<span> Transaction</span></h2>
-            <p>Put your investing ideas into action with full range of investments.
-              Enjoy real benefits and rewards on your accrue investing.</p>
+            <h2>全场资源贡献最佳 <span> MVP</span> 排行</h2>
+            <p>优秀不值一提，你必须达到完美！这是属于你的show time，
+              你的表现惊艳全场。旁人说你的表现真的show啊，
+              你永远不知道你是真的show，还是真的二，哈哈哈哈~~~~</p>
           </div>
         </div>
       </div>
@@ -16,14 +17,7 @@
       <div class="row">
         <div class="col-xl-12 col-lg-12">
           <div class="transaction-area">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-              <li class="nav-item">
-                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#deposit" role="tab" aria-selected="true">Deposit</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#withdraw" role="tab" aria-selected="false">Withdraw</a>
-              </li>
-            </ul>
+
             <div class="tab-content" id="myTabContent">
               <div class="tab-pane fade show active" id="deposit" role="tabpanel" aria-labelledby="home-tab">
 

@@ -1,8 +1,8 @@
 import axios from 'axios'
 import Element from 'element-ui'
 import router from '../router/index'
-import store from '../store/index.js'
-import cookies from 'vue-cookies'
+// import store from '../store/index.js'
+// import cookies from 'vue-cookies'
 
 // 配置项目后端URL基地址（真实请求URL=baseURL + /XXX）
 axios.defaults.baseURL = 'http://localhost:8080';
