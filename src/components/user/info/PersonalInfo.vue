@@ -2,7 +2,7 @@
 
   <div v-else id="div_personal_info">
 
-    <el-empty v-if="this.isEmpty" style="margin: 20%" description="网络开小差了，请重新登录~~~"></el-empty>
+    <el-empty v-if="this.isEmpty" style="margin: 20%" :description="emptyDescriptionContent"></el-empty>
     <div v-else>
 
       <!--    头像-->
@@ -206,6 +206,7 @@
       return {
         size: '',
         isEmpty: true,
+        emptyDescriptionContent: '',
         userInfo: {
           id: '',
           name: '',
@@ -268,9 +269,10 @@
         if (!resData.data) {  // 未查询到用户数据
           this.$message({
             message: resData.code + '~~~~' + resData.message,
-            type: 'success',
-            duration: 5000
+            type: 'warning',
+            duration: 2000
           });
+          _this.emptyDescriptionContent = resData.code + '~~~~' + resData.message;
           return;
         }
         let userInfo = resData.data;
@@ -351,17 +353,21 @@
             duration: 1500
           });
         }
-        this.userInfo.headIcon = URL.createObjectURL(file.raw);
-        console.log('------------->' + this.userInfo.headIcon)
+
+        console.log(file.response)
+        this.userInfo.headIcon = file.response.data;
+        // this.userInfo.headIcon = URL.createObjectURL(file.raw);
+        this.$cookies.set('headIcon', file.response.data);
       },
       handleAvatarFail(res, file) {
         this.$message.error(res.code + '~~~~' + res.message);
       },
       beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
+        console.log(file.type);
+        const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
         const isLt2M = file.size / 1024 / 1024 < 2;
         if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!');
+          this.$message.error('上传头像图片只能是 JPG 或 png 格式!');
         }
         if (!isLt2M) {
           this.$message.error('上传头像图片大小不能超过 2MB!');

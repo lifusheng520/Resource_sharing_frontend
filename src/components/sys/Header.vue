@@ -32,7 +32,7 @@
                       class="sr-only">(current)</span></a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" v-on:click="goRecommendation">推荐</a>
+                    <a class="nav-link" v-on:click="goRecommendation">资源推荐</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" v-on:click="goRank">贡献狂人</a>
@@ -179,6 +179,7 @@
           _this.$cookies.remove('user_id');
           _this.$cookies.remove('username');
           _this.$cookies.remove('user_icon');
+          _this.$cookies.remove('userInfo_id');
           _this.user.username = '登录';
           _this.user.isLogin = false;
           _this.user.headIcon = '';

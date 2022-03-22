@@ -174,7 +174,7 @@
               let token = res.headers['token'];
               // 获取用户信息
               let userInfo = resdata.data;
-
+              console.log(userInfo);
               _this.$store.user_id = userInfo.id;
               _this.$store.username = userInfo.username;
               _this.$store.isEnable = userInfo.isEnable;
@@ -199,6 +199,7 @@
               _this.$cookies.set('username', userInfo.username, 60 * 30);
               _this.$cookies.set('user_id', userInfo.id, 60 * 30);
               _this.$cookies.set('user_icon', userInfo.headIcon, 60 * 30);
+              _this.$cookies.set('userInfo_id', userInfo.userInfo_id, 60 * 30);
 
               // 跳转到首页
               _this.$router.push('/');

@@ -61,7 +61,7 @@ export default new Router({
           path: '/updatePass',
           name: 'UpdatePassword',
           component: () => import('../components/user/info/UpdatePassword')
-        }
+        },
       ]
     }
   ]

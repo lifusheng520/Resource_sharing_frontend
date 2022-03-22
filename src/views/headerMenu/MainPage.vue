@@ -17,7 +17,7 @@
   // 导入页面组件
   import Footer from "../../components/sys/Footer";
   import Header from "../../components/sys/Header";
-  import MyIndex from "../../components/sys/MyIndex";
+  import MyIndex from "../../components/user/index/MyIndex";
 
   export default {
     name: "MainPage",

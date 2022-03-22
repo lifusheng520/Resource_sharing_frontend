@@ -15,7 +15,7 @@ export default new Vuex.Store({
     user_id: null,
     username: '',
     isEnable: '',
-    roles: []
+    roles: [],
   },
   // set  修改参数
   mutations: {
