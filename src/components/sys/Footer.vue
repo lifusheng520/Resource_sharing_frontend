@@ -7,7 +7,7 @@
         <div class="row">
           <div class="col-xl-5 col-lg-5 col-md-6">
             <div class="about-area">
-              <a href="index.html">
+              <a v-on:click="goIndexPage">
                 <img src="static/img/logo.png" alt="">
               </a>
               <p>我们是提供资源共享的网上分享平台，您需要的学习资源都可以在本站查找。有了本站提供的服务，您就不需要为查找资源发愁了！</p>
@@ -92,7 +92,14 @@
 <script>
 
   export default {
-    name: "Footer"
+    name: "Footer",
+    methods: {
+      goIndexPage(){
+        if (this.$route.path != '/'){
+          this.$router.push('/');
+        }
+      }
+    }
   }
 </script>
 

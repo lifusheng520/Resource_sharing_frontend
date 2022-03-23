@@ -109,15 +109,18 @@
                 <h4>
                   <span>上传于：{{item.resource.upload_time}}</span>
                 </h4>
-                <div class="">
-                  {{item.resource.description.length > 35 ? item.resource.description.slice(0, 35) + '...' :
-                  item.resource.description}}
+                <div class="div_resource_description">
+                  <!--                  {{item.resource.description.length > 35 ? item.resource.description.slice(0, 35) + '...' :-->
+                  <!--                  item.resource.description}}sdfasfd sdf asdf s-->
+                  {{item.resource.description}}
                 </div>
               </div>
               <div class="part-social">
                 <a href="#"><span><i class="fas fa-comment"></i></span> 25</a>
                 <a href="#"><span><i class="fas fa-star"></i></span>{{item.resource.favorite_number}}</a>
-                <a :href="`http://localhost:8080/resource/download/${item.resource.disk_name}/${item.resource.id}/${item.resource.discipline}`"><span><i class="fas fa-cloud-download-alt"></i></span>下载</a>
+                <a
+                  :href="`http://localhost:8080/resource/download/${item.resource.disk_name}/${item.resource.id}/${item.resource.discipline}`"><span><i
+                  class="fas fa-cloud-download-alt"></i></span>下载</a>
                 <a href="#"><span></span> More</a>
               </div>
             </div>
@@ -143,7 +146,7 @@
           resourceNumber: '',
           downloadTimes: '',
         },
-        recommendInfo:[],
+        recommendInfo: [],
 
       }
     },
@@ -178,8 +181,8 @@
 
   .div_resource_description {
     font-size: 14px;
-    border: 1px solid #ddd;
-    width: 200px;
+    /*border: 1px solid #ddd;*/
+    width: 100%;
     word-break: break-all;
     text-overflow: ellipsis;
     display: -webkit-box; /** 将对象作为伸缩盒子模型显示 **/
