@@ -1,8 +1,8 @@
 <template>
   <div style="position: relative">
-<!--    <div id="background_div">-->
-<!--      <img src="static/img/personal_background.png" height="100%" width="100%">-->
-<!--    </div>-->
+    <!--    <div id="background_div">-->
+    <!--      <img src="static/img/personal_background.png" height="100%" width="100%">-->
+    <!--    </div>-->
 
     <div id="div_personal_content">
 
@@ -22,7 +22,7 @@
             </el-submenu>
 
             <el-submenu index="2">
-              <template slot="title"><i class="el-icon-folder"></i>我的资源</template>
+              <template slot="title"><i class="el-icon-folder"></i>资源中心</template>
               <el-menu-item-group>
                 <el-menu-item index="2-1" v-on:click="goUpload"><i class="el-icon-upload"></i>添加资源</el-menu-item>
                 <el-menu-item index="2-2" v-on:click="goResourceManagement"><i class="el-icon-setting"></i>资源管理
@@ -36,46 +36,36 @@
               <el-menu-item-group>
                 <el-menu-item index="3-1"><i class="el-icon-download"></i>下载记录</el-menu-item>
                 <el-menu-item index="3-2"><i class="el-icon-upload2"></i>上传记录</el-menu-item>
+                <el-menu-item index="3-3"><i class="el-icon-upload2"></i>浏览记录</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
 
-            <el-submenu index="4">
-              <template slot="title"><i class="el-icon-view"></i>我的关注</template>
-              <el-menu-item-group>
-                <el-menu-item index="2-1">选项1</el-menu-item>
-                <el-menu-item index="2-2">选项2</el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
+            <el-menu-item index="4">
+              <i class="el-icon-view"></i>我的关注
+            </el-menu-item>
 
-            <el-submenu index="5">
-              <template slot="title"><i class="el-icon-star-on"></i>我的收藏</template>
-              <el-menu-item-group>
-                <el-menu-item index="2-1">选项1</el-menu-item>
-                <el-menu-item index="2-2">选项2</el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
+            <el-menu-item index="5">
+              <i class="el-icon-star-on"></i>我的收藏
+            </el-menu-item>
 
-            <el-submenu index="6">
-              <template slot="title"><i class="el-icon-s-comment"></i>我的评论</template>
-              <el-menu-item-group>
-                <el-menu-item index="2-1">选项1</el-menu-item>
-                <el-menu-item index="2-2">选项2</el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
+            <el-menu-item index="6">
+              <i class="el-icon-s-comment"></i>我的评论
+            </el-menu-item>
 
             <el-submenu index="7">
-              <template slot="title"><i class="el-icon-s-tools"></i>用户管理</template>
+              <template slot="title"><i class="el-icon-s-tools"></i>管理员中心</template>
               <el-menu-item-group>
-                <el-menu-item index="2-1">选项1</el-menu-item>
-                <el-menu-item index="2-2">选项2</el-menu-item>
+                <el-menu-item index="7-1"><i class="el-icon-document-checked"></i>资源审批</el-menu-item>
+                <el-menu-item index="7-2"><i class="el-icon-document-checked"></i>用户管理</el-menu-item>
+                <el-menu-item index="7-3"><i class="el-icon-document-checked"></i>平台资源管理</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
 
             <el-submenu index="8">
               <template slot="title"><i class="el-icon-s-data"></i>数据中心</template>
               <el-menu-item-group>
-                <el-menu-item index="2-1">选项1</el-menu-item>
-                <el-menu-item index="2-2">选项2</el-menu-item>
+                <el-menu-item index="8-1">上传数据管理</el-menu-item>
+                <el-menu-item index="8-2">下载数据管理</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
 

@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <!-- page-title 页面标题开始-->
     <div class="page-title">
       <div class="container" style="margin-top: -50px; margin-bottom: -90px;">
@@ -14,12 +13,13 @@
                     <div class="col-xl-16 col-lg-16">
 
                       <form class="newsletter-form">
-                        <input type="text" v-model="recommendForm.searchContent" placeholder="资料名">
-                        <button><i class="el-icon-search"></i>&nbsp;&nbsp;&nbsp;&nbsp;搜索</button>
+                        <input type="text" v-model="page.searchContent" placeholder="资料名">
+                        <button type="button" @click="getResourceBySelectDiscipline"><i class="el-icon-search"></i>&nbsp;&nbsp;&nbsp;&nbsp;搜索
+                        </button>
 
                         <div id="div_title_radio">
                           分类：
-                          <el-radio-group id="discipline_radio" v-model="recommendForm.disciplineContent"
+                          <el-radio-group id="discipline_radio" v-model="page.disciplineContent"
                                           @change="getResourceBySelectDiscipline"
                                           v-for="(item, index) in disciplineList" :key="index">
                             <el-radio-button style="margin: 0px 5px;" :label="item"></el-radio-button>
@@ -42,79 +42,100 @@
 
     <el-empty v-if="this.isEmpty" style="margin: 0;background: white;height: 700px" description="网络开小差了呢~~~"></el-empty>
 
-    <!-- testimonial begin-->
-    <div v-else class="testimonial" id="div_resource_list_box">
+    <div v-else>
+      <el-menu :default-active="'1'" class="el-menu-demo" mode="horizontal"
+               @select="handleSelect" background-color="#545c64" text-color="#fff"
+               active-text-color="#ffd04b" style="width: 75%;margin: -30px auto;">
+        <el-menu-item index="1">下载量</el-menu-item>
+        <el-menu-item index="2">最新</el-menu-item>
+        <el-menu-item index="3">最热门</el-menu-item>
+        <el-menu-item index="4">收藏最多</el-menu-item>
+      </el-menu>
 
-      <div class="row justify-content-center">
-        <div class="col-xl-12 col-lg-12">
-          <div class="section-title text-left">
-            <h2>资源推荐：<span>{{recommendTitle}}</span></h2>
+      <el-backtop>TOP</el-backtop>
+
+      <!-- 资源列表 begin-->
+      <div class="testimonial" id="div_resource_list_box">
+
+        <div class="row justify-content-center">
+          <div class="col-xl-12 col-lg-12">
+            <div class="section-title text-left">
+              <h2>
+                资源来源：
+                <span>{{page.disciplineContent}}</span>
+              </h2>
+              <h2>
+                搜索：
+                <span>{{page.searchContent}}</span>
+              </h2>
+
+            </div>
           </div>
         </div>
-      </div>
 
-      <div style="width: 100%">
+        <div style="width: 100%">
 
-        <div class="row">
-          <div class="col-xl-12 col-lg-12">
+          <div class="row">
+            <div class="col-xl-12 col-lg-12">
 
-            <div v-for="(item, index) in resourceList" :key="index" id="div_resource_item">
-              <div style="margin: 15px auto;">
-                <div class="single-testimonial">
+              <div v-for="(item, index) in resourceList" :key="index" id="div_resource_item">
+                <div style="margin: 15px auto;">
+                  <div class="single-testimonial">
 
-                  <div class="part-info" id="div_resource_item_title">
-                    <span id="span_resource_subject"><i class="el-icon-office-building"></i>{{item.discipline}}</span>
-                  </div>
-                  <div class="part-info" id="div_resource_name">
-                    <i class="el-icon-document"></i> {{item.origin_name}}
-                  </div>
-                  <div class="part-info" id="div_resource_time">
-                    上传于： {{item.upload_time}}
-                  </div>
-                  <div class="part-info" id="div_resource_downloads">
-                    <i class="el-icon-download"></i> {{item.downloads}} 次
-                  </div>
-                  <div class="part-info" id="div_resource_favorite">
-                    <i class="fas fa-star"></i> {{item.favorite_number}}
-                  </div>
-                  <div class="part-info" id="div_resource_size">
+                    <div class="part-info" id="div_resource_item_title">
+                      <span id="span_resource_subject"><i class="el-icon-office-building"></i>{{item.discipline}}</span>
+                    </div>
+                    <div class="part-info" id="div_resource_name">
+                      <i class="el-icon-document"></i> {{item.origin_name}}
+                    </div>
+                    <div class="part-info" id="div_resource_time">
+                      上传于： {{item.upload_time}}
+                    </div>
+                    <div class="part-info" id="div_resource_downloads">
+                      <i class="el-icon-download"></i> {{item.downloads}} 次
+                    </div>
+                    <div class="part-info" id="div_resource_favorite">
+                      <i class="fas fa-star"></i> {{item.favorite_number}}
+                    </div>
+                    <div class="part-info" id="div_resource_size">
                     <span v-if="item.size < 1024">
                       <i class="fas el-icon-s-cooperation"></i> {{item.size}}kb
                     </span>
-                    <span v-else-if="item.size < 1024 * 1024">
+                      <span v-else-if="item.size < 1024 * 1024">
                       <i class="fas el-icon-s-cooperation"></i> {{(item.size / 1024).toFixed(1)}}MB
                     </span>
-                    <span v-else>
+                      <span v-else>
                       <i class="fas el-icon-s-cooperation"></i> {{(item.size / 1024 / 1024).toFixed(1)}}Gb
                     </span>
-                  </div>
-                  <div class="part-text">
-                    <div id="div_resource_description_title">
-                      简介：
                     </div>
-                    <div class="part-text" id="div_resource_description">
-                      {{item.description}}
+                    <div class="part-text">
+                      <div id="div_resource_description_title">
+                        简介：
+                      </div>
+                      <div class="part-text" id="div_resource_description">
+                        {{item.description}}
+                      </div>
+
                     </div>
 
                   </div>
-
                 </div>
               </div>
+
             </div>
-
           </div>
-        </div>
 
-        <div align="center">
-          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                         :current-page="page.currentPage" :page-size="page.pageSize"
-                         layout="total, sizes, prev, pager, next, jumper" :total="page.totalPages">
-          </el-pagination>
-        </div>
+          <div align="center">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                           :current-page="page.currentPage" :page-size="page.pageSize"
+                           layout="total, sizes, prev, pager, next, jumper" :total="page.totalPages">
+            </el-pagination>
+          </div>
 
+        </div>
       </div>
     </div>
-    <!-- testimonial end -->
+    <!-- 资源列表 end -->
 
   </div>
 </template>
@@ -125,39 +146,63 @@
     data() {
       return {
         isEmpty: false,
-        recommendTitle: '',
-        recommendForm: {
-          disciplineContent: '',
-          searchContent: '',
-        },
+        firstTime: true,
         page: {
+          disciplineContent: '全部',
+          searchContent: '',
           currentPage: -1,
           totalPages: -1,
-          pageSize: 10,
+          pageSize: 10
         },
-        disciplineList: [],
         resourceList: [],
+        disciplineList: [],
+        hostURL: '',
       }
     },
     created() {
       let out_this = this;
       this.$axios.get('/resource/server/discipline').then(res => {
         let resData = res.data;
-        console.log(resData);
         out_this.disciplineList = resData.data;
       });
-
+      this.setHostURL();
       this.getResourceOfPage();
     },
     methods: {
       getResourceBySelectDiscipline() {
-        let out_this = this;
-        this.$axios.post('/resource/recommend/select', this.recommendForm).then(res => {
-          let resData = res.data;
-          console.log(res.data);
-          out_this.resourceList = resData.data;
-        });
-        console.log(this.resourceList)
+        // 第一次查询，初始化分页数据
+        this.page.currentPage = -1;
+        this.page.totalPages = -1;
+        this.setHostURL();
+        this.getResourceOfPage();
+      },
+      setHostURL() {
+        // 选择全部，获取默认资源
+        if (this.page.disciplineContent == '全部' && !this.page.searchContent) {
+          // 单独获取全部默认资源
+          this.hostURL = '/resource/recommend/default';
+
+        } else if (this.page.disciplineContent == '全部' && this.page.searchContent) {
+          // 单独搜索全部资源
+          this.hostURL = '/resource/recommend/search';
+
+        } else if (!this.page.disciplineContent && this.page.searchContent) {  // 选择项为空，但是需要搜索内容
+          // 单独搜索资源
+          this.hostURL = '/resource/recommend/search';
+
+        } else if (this.page.disciplineContent && !this.page.searchContent) {  // 选择了科目，但是搜索值为空
+          // 单独获取科目资源
+          this.hostURL = '/resource/recommend/select';
+
+        } else if (this.page.disciplineContent && this.page.searchContent) {
+          // 按科目搜索资源
+          this.hostURL = '/resource/recommend/condition';
+
+        } else if (!this.page.searchContent || !this.page.disciplineContent) {
+          // 默认的资源
+          this.hostURL = '/resource/recommend/default';
+        }
+
       },
       handleSizeChange(val) {
         this.page.pageSize = val;
@@ -169,7 +214,7 @@
       },
       getResourceOfPage() {
         let out_this = this;
-        this.$axios.post('/resource/recommend/default', this.page).then(res => {
+        this.$axios.post(this.hostURL, this.page).then(res => {
           let resData = res.data;
           console.log(resData);
           out_this.page.currentPage = resData.data.currentPage;
@@ -177,6 +222,9 @@
           out_this.page.pageSize = resData.data.pageSize;
           out_this.resourceList = resData.data.pageList;
         });
+      },
+      handleSelect(key, keyPath) {
+        console.log(key, keyPath);
       }
     }
 
@@ -191,9 +239,9 @@
     margin: 0px auto;
   }
 
-  /*#div_resource_item {*/
-  /*  height: 200px;*/
-  /*}*/
+  #div_resource_item {
+
+  }
 
 
   #div_title_content {
