@@ -29,7 +29,11 @@
         <el-table-column prop="origin_name" label="文件名" min-width="200"></el-table-column>
         <el-table-column prop="downloads" label="下载量" sortable min-width="100px"></el-table-column>
         <el-table-column prop="favorite_number" label="收藏人数" sortable min-width="100px"></el-table-column>
-        <el-table-column prop="size" label="大小(kb)" sortable min-width="100px"></el-table-column>
+        <el-table-column prop="size" label="大小" sortable min-width="100px">
+          <template slot-scope="scope">
+            {{formatFileSize(scope.row.size)}}
+          </template>
+        </el-table-column>
         <el-table-column prop="enabled" label="禁用/启用" min-width="100px">
           <template slot-scope="scope">
             <el-switch disabled
@@ -132,11 +136,12 @@
         multipleSelection: [],
         pageData: {
           user_id: '',
-          currentPage: 1,
-          total: 0,
+          currentPage: -1,
+          total: -1,
           pageSize: 10,
           searcher: ''
         },
+        hostURL: '',
         hadSelected: false,
         isIndeterminate: true,
         checkAll: false,
@@ -163,6 +168,7 @@
       }
     },
     created: function () {
+      this.hostURL = '/resource/getInfoList';
       this.getUserResourceList();
     },
     methods: {
@@ -171,9 +177,7 @@
         this.getUserResourceList();
       },
       handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
         this.pageData.currentPage = val;
-        console.log('当前页' + this.pageData.currentPage);
         this.getUserResourceList();
       },
       getUserResourceList() {
@@ -188,16 +192,17 @@
         }
         this.pageData.user_id = userId;
         const out_this = this;
-        this.$axios.post('/resource/getInfoList', this.pageData).then(res => {
+        this.$axios.post(this.hostURL, this.pageData).then(res => {
           let resData = res.data;
           // 如果请求成功
-          if (resData.code === 4015) {
+          if (resData.code === 4015 || resData.code === 4018) {
             this.$message({
               message: resData.code + '~~~~  ' + resData.message,
               type: 'success',
               center: true,
               duration: 2000
             });
+
             out_this.tableData = resData.data.pageList;
             out_this.pageData.currentPage = resData.data.currentPage;
             out_this.pageData.total = resData.data.total;
@@ -210,30 +215,21 @@
       },
       submitForm() {
         if (this.pageData.searcher) {
-          let out_this = this;
-          this.$axios.post('/resource/search', this.pageData).then(res => {
-            let resData = res.data;
-            //  搜索到了内容
-            if (resData.code === 4018) {
-              this.$message({
-                message: resData.code + '~~~~  ' + resData.message,
-                type: 'success',
-                center: true,
-                duration: 2000
-              });
-              out_this.tableData = resData.data.pageList;
-              out_this.pageData.currentPage = resData.data.currentPage;
-              out_this.pageData.total = resData.data.total;
-              out_this.pageData.pageSize = resData.data.pageSize;
-              this.isEmpty = false;
-            } else {
-              this.$message.info(resData.code + '~~~~' + resData.message);
-            }
-          });
+          this.pageData.currentPage = -1;
+          this.pageData.total = -1;
+          this.hostURL = '/resource/search';
+
+          this.getUserResourceList();
+
         }
       },
       resetForm() {
         this.pageData.searcher = '';
+        this.hostURL = '/resource/getInfoList';
+
+        this.pageData.total = -1;
+        this.pageData.currentPage = -1;
+
         this.getUserResourceList();
       },
       deleteRow(row) {
@@ -256,6 +252,7 @@
               center: true,
               duration: 2000
             });
+
             //刷新页面
             out_this.$router.go(0);
           } else {
@@ -303,7 +300,17 @@
             this.$message.error('请正确填写内容~~~');
           }
         });
-      }
+      },
+      formatFileSize(val) {
+        if (val < 1024)
+          val = val + 'kb';
+        else if (val < 1024 * 1024)
+          val = (val / 1024).toFixed(2) + 'Mb';
+        else
+          val = (val / 1024 / 1024).toFixed(2) + 'GB';
+
+        return val;
+      },
     }
   }
 </script>

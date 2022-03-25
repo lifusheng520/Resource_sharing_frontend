@@ -99,7 +99,7 @@
                 <div class="user-img">
                   <img :src="item.userInfo.headIcon" alt="">
                 </div>
-                <h3><a href="blog-details.html">{{item.resource.origin_name}} + 下载URL</a></h3>
+                <h3><a v-on:click="goResourceDetail(item.resource.id)">{{item.resource.origin_name}}</a></h3>
                 <h4>
                   <span><i class="el-icon-s-custom"></i>&nbsp;&nbsp;&nbsp;{{item.userInfo.name}} </span>
                 </h4>
@@ -121,7 +121,7 @@
                 <a
                   :href="`http://localhost:8080/resource/download/${item.resource.disk_name}/${item.resource.id}/${item.resource.discipline}`"><span><i
                   class="fas fa-cloud-download-alt"></i></span>下载</a>
-                <a href="#"><span></span> More</a>
+                <a v-on:click="goResourceDetail(item.resource.id)"> More</a>
               </div>
             </div>
           </div>
@@ -154,7 +154,6 @@
       let out_this = this;
       this.$axios.get('/index/systemInfo').then(res => {
         let resData = res.data;
-        console.log(resData);
         if (resData.code === 4023) {
           out_this.systemInfo.userNumber = resData.data.userNumber;
           out_this.systemInfo.resourceNumber = resData.data.resourceNumber;
@@ -167,11 +166,14 @@
       // 获取首页推荐资源内容
       this.$axios.get('/index/disciplineRecommend').then(res => {
         let resData = res.data;
-        console.log(resData);
         out_this.recommendInfo = resData.data;
       });
-
-
+    },
+    methods: {
+      goResourceDetail(id) {
+        this.$cookies.set('resource_id', id);
+        this.$router.push('/detail');
+      }
     }
   }
 

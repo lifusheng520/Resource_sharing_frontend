@@ -33,6 +33,11 @@ export default new Router({
       component: () => import('../views/headerMenu/RecommendationPage')
     },
     {
+      path: '/detail',
+      name: 'ResourceDetailPage',
+      component: () => import('../views/headerMenu/ResourceDetailPage')
+    },
+    {
       path: '/rank',
       name: 'UploadRankPage',
       component: () => import('../views/headerMenu/UploadRankPage')

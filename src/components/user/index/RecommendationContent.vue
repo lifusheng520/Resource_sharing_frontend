@@ -86,7 +86,8 @@
                       <span id="span_resource_subject"><i class="el-icon-office-building"></i>{{item.discipline}}</span>
                     </div>
                     <div class="part-info" id="div_resource_name">
-                      <i class="el-icon-document"></i> {{item.origin_name}}
+                      <a v-on:click="goResourceDetail(item.id)"><i class="el-icon-document"></i>
+                        {{item.origin_name}}</a>
                     </div>
                     <div class="part-info" id="div_resource_time">
                       上传于： {{item.upload_time}}
@@ -108,6 +109,7 @@
                       <i class="fas el-icon-s-cooperation"></i> {{(item.size / 1024 / 1024).toFixed(1)}}Gb
                     </span>
                     </div>
+
                     <div class="part-text">
                       <div id="div_resource_description_title">
                         简介：
@@ -115,7 +117,14 @@
                       <div class="part-text" id="div_resource_description">
                         {{item.description}}
                       </div>
+                    </div>
 
+                    <div id="div_resource_download_button">
+                      <div>
+                        <a
+                          :href="`http://localhost:8080/resource/download/${item.disk_name}/${item.id}/${item.discipline}`">
+                          <el-button size="small" round><i class="fas fa-cloud-download-alt"></i> 下载</el-button></a>
+                      </div>
                     </div>
 
                   </div>
@@ -225,6 +234,10 @@
       },
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
+      },
+      goResourceDetail(id) {
+        this.$cookies.set('resource_id', id);
+        this.$router.push('/detail');
       }
     }
 
@@ -326,6 +339,10 @@
     text-align: left;
     margin-left: -15px;
     margin-bottom: 20px;
+  }
+
+  #div_resource_download_button {
+    text-align: right;
   }
 
 </style>
