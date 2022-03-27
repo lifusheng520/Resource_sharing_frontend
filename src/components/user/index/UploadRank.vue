@@ -42,7 +42,7 @@
                           <img v-if="item.headIcon" :src="item.headIcon" alt="">
                           <img v-else src="static/ico/none.png" alt="">
                         </div>
-                        <span>{{item.name}}</span>
+                        <span>{{item.username}}</span>
                       </th>
                       <td>{{item.resourceNumbers}}</td>
                       <td>

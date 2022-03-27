@@ -40,7 +40,7 @@
                   </div>
                   <h3><a href="#">{{UserAndResource.resource.origin_name}}</a></h3>
                   <h4>
-                    <span class="admin"><i class="el-icon-s-custom"></i>用户：{{UserAndResource.userInfo.name}}</span>
+                    <span class="admin"><i class="el-icon-s-custom"></i>用户：{{UserAndResource.userInfo.username}}</span>
                   </h4>
                   <h4>
                     <span class="category">隶属：{{UserAndResource.resource.discipline}}</span>
@@ -84,15 +84,23 @@
                   <img v-else src="static/ico/headIcon.png" alt="">
                 </div>
 
-                <div class="div-comment-input-content">
-                  <el-input type="textarea" rows="5"
+                <div class="div-comment-input-content" v-if="commentInfo.user_id">
+                  <el-input type="textarea"
+                            :autosize="{ minRows: 5, maxRows: 5}"
                             placeholder="蹭蹭热度也要注意你的言辞喔"
                             v-model="commentInfo.content">
                   </el-input>
                 </div>
 
+                <div v-else class="div-comment-input-login">
+                  <p>请先
+                    <el-button v-on:click="goLogin" size="mini" type="primary" plain>登录</el-button>
+                    再发表评论
+                  </p>
+                </div>
+
                 <div class="div-comment-input-button">
-                  <el-button type="info" plain>发布评论</el-button>
+                  <el-button v-on:click="sendComment()" type="info" plain>发布评论</el-button>
                 </div>
 
               </div>
@@ -146,13 +154,13 @@
           userInfo: ''
         },
         visible: false,
-        userId: '',
         commentInfo: {
           resource_id: '',
           user_id: '',
           to_id: '',
           content: '',
-        }
+        },
+
 
       }
     },
@@ -162,7 +170,9 @@
         this.isEmpty = true;
         return;
       }
-      console.log(resourceId);
+      this.commentInfo.resource_id = resourceId;
+      this.getLoginInfo();
+
       let out_this = this;
       this.$axios.get(`/resource/server/detail/${resourceId}`).then(res => {
         let resData = res.data;
@@ -171,11 +181,8 @@
         if (resData.code === 4028) {
           out_this.UserAndResource.resource = resData.data.resource;
           out_this.UserAndResource.userInfo = resData.data.userInfo;
-          // out_this.$cookies.remove('resource_id');
         }
       });
-
-      this.userId = this.$cookies.get('user_id');
 
     },
     computed: {
@@ -207,6 +214,27 @@
           duration: 1500
         });
       },
+      getLoginInfo() {
+        let userId = this.$cookies.get('user_id');
+
+        this.commentInfo.user_id = userId;
+
+      },
+      sendComment(to) {
+        if (!this.commentInfo.content) {
+          this.$message.info('请先输入你的评论再发布哟~~~')
+        }
+
+        this.commentInfo.to_id = to;
+        console.log(this.commentInfo);
+        this.$axios.post('/comment/add', this.commentInfo).then(response => {
+
+        });
+      },
+      goLogin() {
+        this.$store.origin_url = this.$route.path;
+        this.$router.push('/login');
+      }
     }
   }
 </script>
@@ -259,18 +287,31 @@
 
   .div-comment-input-content {
     /*border: 1px yellow solid;*/
-    width: 550px;
+    width: 60%;
     height: 150px;
     vertical-align: top;
-    padding: 15px 0px
+    padding: 15px 0px;
+    margin: auto 2%;
+  }
+
+  .div-comment-input-login {
+    /*border: 1px red solid;*/
+    background: white;
+    border-radius: 20px;
+    width: 60%;
+    height: 100px;
+    vertical-align: top;
+    padding: 30px 0px;
+    margin: 25px 2%;
+    text-align: center;
   }
 
   .div-comment-input-button {
     /*border: 1px yellow solid;*/
-    width: 150px;
+    width: 12%;
     height: 150px;
     vertical-align: top;
-    padding: 50px 30px;
+    padding: 50px 0px;
   }
 
 </style>

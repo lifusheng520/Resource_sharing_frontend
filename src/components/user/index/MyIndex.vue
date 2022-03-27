@@ -101,7 +101,7 @@
                 </div>
                 <h3><a v-on:click="goResourceDetail(item.resource.id)">{{item.resource.origin_name}}</a></h3>
                 <h4>
-                  <span><i class="el-icon-s-custom"></i>&nbsp;&nbsp;&nbsp;{{item.userInfo.name}} </span>
+                  <span><i class="el-icon-s-custom"></i>&nbsp;&nbsp;&nbsp;{{item.userInfo.username}} </span>
                 </h4>
                 <h4>
                   <span>隶属：{{item.resource.discipline}}</span>
