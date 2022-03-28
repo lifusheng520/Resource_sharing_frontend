@@ -43,6 +43,7 @@
 
         <el-form-item label="资源介绍">
           <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 10}"
+                    maxlength="500" show-word-limit
                     placeholder="填写资料简介、概况，有助提升资料曝光率"
                     v-model="fileForm.textarea">
           </el-input>

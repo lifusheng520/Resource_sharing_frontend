@@ -8,7 +8,7 @@
     <div class="contact login">
       <div class="container">
         <div class="row justify-content-center">
-          <div class="col-xl-6 col-lg-6">
+          <div class="col-xl-12 col-lg-12">
             <div class="section-title text-center">
               <h2>登&nbsp;录&nbsp;<span>你的账号</span></h2>
               <p>把你的分享想法付诸行动，进行全方位的投资。享受实在的便利和服务，您的资料管家~</p>
@@ -17,7 +17,7 @@
         </div>
 
         <div class="row justify-content-center">
-          <div class="col-xl-6 col-lg-6">
+          <div class="col-xl-8 col-lg-8">
             <el-form class="contact-form" :model="loginForm" :rules="rules">
               <div class="row">
                 <div class="col-xl-12 col-lg-12">

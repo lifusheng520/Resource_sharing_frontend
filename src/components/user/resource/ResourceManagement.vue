@@ -278,8 +278,11 @@
       },
       updateResource(formName) {
         this.dialogFormVisible = false;
+        let tempName = this.updateResourceForm.origin_name;
+        this.updateResourceForm.origin_name = this.updateResourceForm.origin_name.replace(/\s*/g, '');
         this.$refs[formName].validate((valid) => {
           if (valid) {
+            this.updateResourceForm.origin_name = tempName;
             const _this = this;
             this.$axios.post('/resource/updateInfo', this.updateResourceForm).then(res => {
               let resData = res.data;

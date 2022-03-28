@@ -328,9 +328,9 @@
         }
       },
       validForm(form) {
-        let name = form.name;
+        let name = form.name.replace(/\s*/g, '');;
         let sex = form.sex;
-        let address = form.address;
+        let address = form.address.replace(/\s*/g, '');;
         if (!name) {
           this.$message.error('姓名不能为空~~');
           return false;
@@ -377,9 +377,9 @@
       sendEmail() {
         this.emailForm.id = this.userInfo.id;
         const out_this = this;
-        this.needWaitting = true;
         if (this.validEmail(this.emailForm.email)) {
           // 验证码发送计时器
+          this.needWaitting = true;
           let seconds = 60;
           const timerHandle = window.setInterval(function () {
             out_this.sendEmailButtionMessage = seconds + '秒后重新发送';

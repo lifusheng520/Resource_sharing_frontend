@@ -123,7 +123,8 @@
                       <div>
                         <a
                           :href="`http://localhost:8080/resource/download/${item.disk_name}/${item.id}/${item.discipline}`">
-                          <el-button size="small" round><i class="fas fa-cloud-download-alt"></i> 下载</el-button></a>
+                          <el-button size="small" round><i class="fas fa-cloud-download-alt"></i> 下载</el-button>
+                        </a>
                       </div>
                     </div>
 
@@ -186,6 +187,8 @@
         this.getResourceOfPage();
       },
       setHostURL() {
+        this.page.searchContent = this.page.searchContent.replace(/\s*/g, '');
+
         // 选择全部，获取默认资源
         if (this.page.disciplineContent == '全部' && !this.page.searchContent) {
           // 单独获取全部默认资源
@@ -222,6 +225,7 @@
         this.getResourceOfPage();
       },
       getResourceOfPage() {
+
         let out_this = this;
         this.$axios.post(this.hostURL, this.page).then(res => {
           let resData = res.data;

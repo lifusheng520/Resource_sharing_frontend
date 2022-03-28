@@ -20,7 +20,8 @@
 
           <el-form-item label="验证码" prop="verifyCode">
             <el-input v-model="user.verifyCode" style="width: 30%"></el-input>
-            <el-button style="margin-left: 10%" type="primary" :loading="this.needWaitting" v-on:click="sendEmail" round>
+            <el-button style="margin-left: 10%" type="primary" :loading="this.needWaitting" v-on:click="sendEmail"
+                       round>
               {{this.sendEmailButtionMessage}}
             </el-button>
           </el-form-item>
@@ -88,6 +89,8 @@
     },
     methods: {
       submitForm(formName) {
+        this.user.password = this.user.password.replace(/\s*/g, '');
+        this.user.checkPass = this.user.checkPass.replace(/\s*/g, '');
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.$axios.post('/user/updatePass', this.user).then(res => {
@@ -111,10 +114,10 @@
       },
       sendEmail() {
         const out_this = this;
-        this.needWaitting = true;
         // 如果用户名有效
         if (this.user.username) {
           // 验证码发送成功后的计时器
+          this.needWaitting = true;
           let seconds = 60;
           const timerHandle = window.setInterval(function () {
             out_this.sendEmailButtionMessage = seconds + '秒后重新发送';
@@ -128,7 +131,7 @@
 
           this.$axios.get(`/user/authEmail/${this.user.username}`).then(res => {
             let resData = res.data;
-            console.log(res.data)
+            console.log(res.data);
             if (resData.code === 4006) {
               this.$message({
                 message: resData.code + '~~~~' + resData.message + '~~注意查收',

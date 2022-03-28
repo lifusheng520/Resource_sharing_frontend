@@ -100,7 +100,7 @@
                 </div>
 
                 <div class="div-comment-input-button">
-                  <el-button v-on:click="sendComment()" type="info" plain>发布评论</el-button>
+                  <el-button v-on:click="addComment" type="info" plain>发布评论</el-button>
                 </div>
 
               </div>
@@ -112,23 +112,78 @@
                   <div>评论列表</div>
                 </div>
 
-                <div class="infinite-list-wrapper" style="overflow:auto">
+                <div class="div-comment-item">
 
-                  <ul class="list" v-infinite-scroll="load" infinite-scroll-disabled="disabled">
-                    <li v-for="i in count" class="list-item">{{ i }}</li>
-                    <span>头上一片晴天，心中一个想念</span>
-                    <el-divider content-position="left">少年包青天</el-divider>
-                    <span>饿了别叫妈, 叫饿了么</span>
-                    <el-divider><i class="el-icon-mobile-phone"></i></el-divider>
-                    <span>为了无法计算的价值</span>
-                    <el-divider content-position="right">阿里云</el-divider>
-                  </ul>
-                  <p v-if="loading">加载中...</p>
-                  <p v-if="noMore">没有更多了</p>
+                  <div class="infinite-list-wrapper div-comment-content-box" style="overflow:auto">
+
+                    <ul class="list" v-infinite-scroll="loadComment" infinite-scroll-disabled="disabled">
+                      <li v-for="(item, index) in commentContentList">
+
+                        <div class="div-comment-content-inline">
+
+                          <div class="div-comment-content-icon">
+                            <img v-if="item.headIcon" :src="item.headIcon" alt="">
+                            <img v-else src="static/ico/ico.png">
+                          </div>
+
+                          <div style="width: 90%">
+                            <div class="div-comment-content-head">
+
+                              <div>
+                                <div class="div-comment-content-name">{{item.name}}</div>
+                                <div class="div-comment-content-time">{{item.time}}</div>
+                              </div>
+                              <div class="div-comment-content-support">
+                                <p>
+                                  <i class="fas fa-thumbs-up"></i>{{item.support_number}}
+                                </p>
+                              </div>
+
+                            </div>
+
+                            <div class="div-comment-content">
+                              <span v-if="item.to_name">回复</span>
+                              <span id="comment-to-name-span" v-if="item.to_name">{{'@' + item.to_name}}</span>
+                              <span v-if="item.to_name">:</span>
+                              {{item.content}}
+                            </div>
+
+                            <div align="right">
+                              <el-popover @hide="replyHideEvent" placement="left" :title="'回复：' + item.name" width="400"
+                                          trigger="click">
+                                <el-input type="textarea" placeholder="请输入内容" autosize
+                                          v-model="replyContent" maxlength="200"
+                                          show-word-limit>
+                                </el-input>
+                                <p align="right">
+                                  <el-button v-on:click="replyComment(item.user_id)" icon="el-icon-s-promotion"
+                                             size="medium"
+                                             type="primary" plain>发送
+                                  </el-button>
+                                </p>
+
+                                <el-button size="mini" type="primary" slot="reference"
+                                           plain>回复
+                                </el-button>
+                              </el-popover>
+                            </div>
+
+                          </div>
+
+                        </div>
+
+                        <el-divider content-position="left">少年包青天</el-divider>
+
+                      </li>
+                    </ul>
+                    <br>
+                    <p v-if="loading">加载中...</p>
+                    <p v-if="noMore">没有更多了</p>
+                    <el-empty v-if="commentContentList.length == 0" description="还没人发现这个地方，快来占个楼吧~~~"></el-empty>
+                  </div>
+
                 </div>
-
               </div>
-
             </div>
 
           </div>
@@ -147,8 +202,6 @@
     data() {
       return {
         isEmpty: false,
-        count: 10,
-        loading: false,
         UserAndResource: {
           resource: '',
           userInfo: ''
@@ -160,6 +213,10 @@
           to_id: '',
           content: '',
         },
+        replyContent: '',
+        commentContentList: [],
+        count: 0,
+        loading: false,
 
 
       }
@@ -170,36 +227,30 @@
         this.isEmpty = true;
         return;
       }
+
       this.commentInfo.resource_id = resourceId;
       this.getLoginInfo();
-
-      let out_this = this;
-      this.$axios.get(`/resource/server/detail/${resourceId}`).then(res => {
-        let resData = res.data;
-        console.log(resData);
-
-        if (resData.code === 4028) {
-          out_this.UserAndResource.resource = resData.data.resource;
-          out_this.UserAndResource.userInfo = resData.data.userInfo;
-        }
-      });
+      this.getResourceDetailInfo();
+      this.getCommentContentList();
 
     },
     computed: {
       noMore() {
-        return this.count >= 20
+        return this.count <= this.commentContentList.length;
       },
       disabled() {
         return this.loading || this.noMore
       }
     },
     methods: {
-      load() {
+      loadComment() {
         this.loading = true;
         setTimeout(() => {
           this.count += 2;
           this.loading = false
         }, 2000)
+
+
       },
       copyURL(content) {
         let aux = document.createElement("input");
@@ -220,20 +271,107 @@
         this.commentInfo.user_id = userId;
 
       },
-      sendComment(to) {
-        if (!this.commentInfo.content) {
-          this.$message.info('请先输入你的评论再发布哟~~~')
-        }
+      getResourceDetailInfo() {
+        let out_this = this;
+        this.$axios.get(`/resource/server/detail/${this.commentInfo.resource_id}`).then(res => {
+          let resData = res.data;
+          console.log(resData);
 
-        this.commentInfo.to_id = to;
-        console.log(this.commentInfo);
-        this.$axios.post('/comment/add', this.commentInfo).then(response => {
+          if (resData.code === 4028) {
+            out_this.UserAndResource.resource = resData.data.resource;
+            out_this.UserAndResource.userInfo = resData.data.userInfo;
+          }
+        });
+
+      },
+      getCommentContentList() {
+        let out_this = this;
+        this.$axios.get(`/comment/load/${this.commentInfo.resource_id}`).then(response => {
+          let resData = response.data;
+          console.log(resData);
+
+          if (resData.code === 5004) {
+            out_this.commentContentList = resData.data;
+          } else {
+            this.$message.error(resData.code + '~~~~' + resData.message);
+          }
 
         });
+
+      },
+      addComment() {
+        let temp = this.commentInfo.content.replace(/\s*/g, '');
+        if (!temp) {
+          this.$message.info('请先输入你的评论再发布哟~~~');
+          return;
+        }
+        this.commentInfo.content = temp;
+
+        this.sendComment();
+
+      },
+      replyComment(to) {
+        if (to) {
+          let tempReply = this.replyContent.replace(/\s*/g, '');
+          if (!tempReply) {
+            this.$message.info('请先输入回复内容再发布哟~~~');
+            return;
+          }
+          this.replyContent = tempReply;
+          this.commentInfo.content = this.replyContent;
+        }
+
+        this.sendComment(to);
+
+      },
+      sendComment(to) {
+        this.getLoginInfo();
+        if (!this.commentInfo.user_id) {
+          this.$message.info('请先登录再发布你的评论哟~~~');
+          return;
+        }
+        this.commentInfo.to_id = to;
+
+        let out_this = this;
+        console.log(this.commentInfo);
+        this.$axios.post('/comment/add', this.commentInfo).then(response => {
+          let resData = response.data;
+          console.log(resData);
+
+          if (resData.code === 5003) {
+            this.$message({
+              message: resData.code + '~~~~' + resData.message,
+              type: 'warning',
+              duration: 2000
+            });
+
+            out_this.$router.go(0);
+
+          } else if (resData.code === 5001) {
+            this.$message({
+              message: resData.code + '~~~~' + resData.message,
+              type: 'success',
+              duration: 2000
+            });
+
+            out_this.$router.go(0);
+
+          } else {
+            this.$message.error(resData.code + '~~~~' + resData.message);
+          }
+
+        });
+
+        this.replyHideEvent();
+
       },
       goLogin() {
         this.$store.origin_url = this.$route.path;
         this.$router.push('/login');
+      },
+      replyHideEvent() {
+        this.replyContent = '';
+        this.commentInfo.content = '';
       }
     }
   }
@@ -241,9 +379,9 @@
 
 <style scoped>
   .div-comment-outer {
-    height: 700px;
+    height: 800px;
     overflow-y: auto;
-    border: 2px solid #b9bbbe;
+    border: 2px solid #575f84;
     border-radius: 20px;
     background: white;
   }
@@ -258,6 +396,15 @@
   }
 
   .div-comment-header > div {
+    margin-left: -10px;
+  }
+
+  .div-comment-item {
+    width: 90%;
+    margin: 0px auto;
+  }
+
+  .div-comment-header > div {
     position: absolute;
     bottom: 10px;
     left: 3%;
@@ -266,11 +413,11 @@
   }
 
   .div-comment-input {
-    /*border: 1px red solid;*/
     height: 150px;
     margin: 15px auto;
     background: #e9e9ee;
     border-radius: 25px;
+    overflow: hidden;
   }
 
   .div-comment-input div {
@@ -286,7 +433,6 @@
   }
 
   .div-comment-input-content {
-    /*border: 1px yellow solid;*/
     width: 60%;
     height: 150px;
     vertical-align: top;
@@ -295,7 +441,6 @@
   }
 
   .div-comment-input-login {
-    /*border: 1px red solid;*/
     background: white;
     border-radius: 20px;
     width: 60%;
@@ -307,11 +452,84 @@
   }
 
   .div-comment-input-button {
-    /*border: 1px yellow solid;*/
     width: 12%;
     height: 150px;
     vertical-align: top;
     padding: 50px 0px;
+  }
+
+  .div-comment-content-box {
+    height: 660px;
+    margin: 15px auto;
+    border-radius: 25px;
+
+  }
+
+  .div-comment-content-inline {
+    width: 95%;
+    margin-left: 20px;
+  }
+
+  .div-comment-content-inline > div {
+    display: inline-block;
+  }
+
+  .div-comment-content-icon {
+    width: 8%;
+    height: 8%;
+    margin: 0px;
+    vertical-align: top;
+  }
+
+  .div-comment-content-head {
+    width: 100%;
+  }
+
+  .div-comment-content-head > div {
+    display: inline-block;
+    width: 49%;
+  }
+
+  .div-comment-content-name {
+    padding-left: 20px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #0b0b0b;
+  }
+
+  .div-comment-content-time {
+    padding-left: 20px;
+    margin-top: 0px;
+    font-size: 14px;
+    color: #5a6268;
+  }
+
+  .div-comment-content-support {
+    vertical-align: top;
+    margin-top: 20px;
+    text-align: right;
+    color: #5a6268;
+
+  }
+
+  .div-comment-content {
+    width: 100%;
+    padding-left: 20px;
+    padding-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  #comment-to-name-span {
+    padding-left: 5px;
+    padding-right: 5px;
+    color: #00afe9;
+    font-weight: bolder;
+    font-size: 16px;
+  }
+
+  .div-comment-reply {
+    border: 1px solid red;
+    text-align: right;
   }
 
 </style>
