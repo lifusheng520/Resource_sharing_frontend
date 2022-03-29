@@ -67,6 +67,11 @@ export default new Router({
           name: 'UpdatePassword',
           component: () => import('../components/user/info/UpdatePassword')
         },
+        {
+          path: '/commentManager',
+          name: 'CommentManager',
+          component: () => import('../components/user/comment/CommentManager')
+        },
       ]
     }
   ]

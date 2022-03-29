@@ -41,7 +41,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="资源介绍">
+        <el-form-item label="资源介绍" prop="textarea">
           <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 10}"
                     maxlength="500" show-word-limit
                     placeholder="填写资料简介、概况，有助提升资料曝光率"
@@ -71,9 +71,13 @@
           fileList: [],
           textarea: ''
         },
+        uploadSuccessList: [],
         rules: {
           discipline: [
             {required: true, message: '请选择资源所属类别', trigger: 'blur'}
+          ],
+          textarea: [
+            {required: true, message: '请输入资源介绍', trigger: 'blur'}
           ]
         },
         dialogImageUrl: '',
@@ -96,12 +100,15 @@
     },
     methods: {
       submitUpload(formName) {
-        console.log(this.fileForm);
         if (!this.fileForm.discipline) {
           this.$message.warning('请选择资源所属类别');
           return false;
         }
-        if(this.fileForm.textarea.length >= 500){
+        if (!this.fileForm.textarea) {
+          this.$message.warning('请输入资源介绍~~');
+          return;
+        }
+        if (this.fileForm.textarea.length >= 500) {
           this.$message.warning('简介内容过长~~');
           return;
         }
@@ -117,14 +124,17 @@
         console.log(file);
       },
       successHandle(response, file, fileList) {
-        if (response.code === 4013)
+
+        if (response.code === 4013) {
           this.$message({
             message: response.code + '~~~~  ' + response.message,
             type: 'success',
             center: true,
             duration: 2000
           });
-        else {
+
+          this.uploadSuccessList.push(file);
+        } else {
           this.$message.error(response.code + '~~~~  ' + response.message);
         }
       },

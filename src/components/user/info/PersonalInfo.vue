@@ -328,9 +328,9 @@
         }
       },
       validForm(form) {
-        let name = form.name.replace(/\s*/g, '');;
+        let name = form.name.replace(/\s*/g, '');
         let sex = form.sex;
-        let address = form.address.replace(/\s*/g, '');;
+        let address = form.address.replace(/\s*/g, '');
         if (!name) {
           this.$message.error('姓名不能为空~~');
           return false;

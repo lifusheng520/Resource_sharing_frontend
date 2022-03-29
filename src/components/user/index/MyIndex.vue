@@ -92,7 +92,7 @@
 
         <div class="row">
 
-          <div style="margin-top: 20px" class="col-xl-4 col-lg-4 col-md-6"
+          <div style="margin-top: 20px" class="col-xl-6 col-lg-6 col-md-6"
                v-for="(item, index) in recommendInfo">
             <div class="single-blog">
               <div class="part-text">
@@ -118,9 +118,10 @@
               <div class="part-social">
                 <a href="#"><span><i class="fas fa-comment"></i></span> 25</a>
                 <a href="#"><span><i class="fas fa-star"></i></span>{{item.resource.favorite_number}}</a>
+                <a href="#"><span><i class="fas fa-cloud-download-alt"></i></span>{{item.resource.downloads}}次</a>
                 <a
                   :href="`http://localhost:8080/resource/download/${item.resource.disk_name}/${item.resource.id}/${item.resource.discipline}`"><span><i
-                  class="fas fa-cloud-download-alt"></i></span>下载</a>
+                  class="fas fa-download"></i></span>下载</a>
                 <a v-on:click="goResourceDetail(item.resource.id)"> More</a>
               </div>
             </div>
@@ -166,6 +167,7 @@
       // 获取首页推荐资源内容
       this.$axios.get('/index/disciplineRecommend').then(res => {
         let resData = res.data;
+        console.log(resData)
         out_this.recommendInfo = resData.data;
       });
     },

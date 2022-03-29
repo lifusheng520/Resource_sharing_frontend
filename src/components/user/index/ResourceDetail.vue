@@ -122,7 +122,8 @@
                         <div class="div-comment-content-inline">
 
                           <div class="div-comment-content-icon">
-                            <img v-if="item.headIcon" :src="item.headIcon" alt="">
+                            <img v-if="commentContentList[index].headIcon" :src="commentContentList[index].headIcon"
+                                 alt="">
                             <img v-else src="static/ico/ico.png">
                           </div>
 
@@ -130,33 +131,35 @@
                             <div class="div-comment-content-head">
 
                               <div>
-                                <div class="div-comment-content-name">{{item.name}}</div>
-                                <div class="div-comment-content-time">{{item.time}}</div>
+                                <div class="div-comment-content-name">{{commentContentList[index].name}}</div>
+                                <div class="div-comment-content-time">{{commentContentList[index].time}}</div>
                               </div>
                               <div class="div-comment-content-support">
                                 <p>
-                                  <i class="fas fa-thumbs-up"></i>{{item.support_number}}
+                                  <i class="fas fa-thumbs-up"></i>{{commentContentList[index].support_number}}
                                 </p>
                               </div>
 
                             </div>
 
                             <div class="div-comment-content">
-                              <span v-if="item.to_name">回复</span>
-                              <span id="comment-to-name-span" v-if="item.to_name">{{'@' + item.to_name}}</span>
-                              <span v-if="item.to_name">:</span>
-                              {{item.content}}
+                              <span v-if="commentContentList[index].to_name">回复</span>
+                              <span id="comment-to-name-span" v-if="commentContentList[index].to_name">{{'@' + commentContentList[index].to_name}}</span>
+                              <span v-if="commentContentList[index].to_name">:</span>
+                              {{commentContentList[index].content}}
                             </div>
 
                             <div align="right">
-                              <el-popover @hide="replyHideEvent" placement="left" :title="'回复：' + item.name" width="400"
+                              <el-popover @hide="replyHideEvent" placement="left"
+                                          :title="'回复：' + commentContentList[index].name" width="400"
                                           trigger="click">
                                 <el-input type="textarea" placeholder="请输入内容" autosize
                                           v-model="replyContent" maxlength="200"
                                           show-word-limit>
                                 </el-input>
                                 <p align="right">
-                                  <el-button v-on:click="replyComment(item.user_id)" icon="el-icon-s-promotion"
+                                  <el-button v-on:click="replyComment(commentContentList[index].user_id)"
+                                             icon="el-icon-s-promotion"
                                              size="medium"
                                              type="primary" plain>发送
                                   </el-button>
@@ -246,9 +249,9 @@
       loadComment() {
         this.loading = true;
         setTimeout(() => {
-          this.count += 2;
-          this.loading = false
-        }, 2000)
+          this.count++;
+          this.loading = false;
+        }, 1000)
 
 
       },
@@ -338,14 +341,14 @@
           let resData = response.data;
           console.log(resData);
 
+          let success = false;
           if (resData.code === 5003) {
             this.$message({
               message: resData.code + '~~~~' + resData.message,
               type: 'warning',
               duration: 2000
             });
-
-            out_this.$router.go(0);
+            success = true;
 
           } else if (resData.code === 5001) {
             this.$message({
@@ -354,11 +357,14 @@
               duration: 2000
             });
 
-            out_this.$router.go(0);
+            success = true;
 
           } else {
             this.$message.error(resData.code + '~~~~' + resData.message);
           }
+
+          if (success)
+            out_this.$router.go(0);
 
         });
 

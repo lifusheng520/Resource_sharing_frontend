@@ -22,7 +22,7 @@ axios.interceptors.response.use(response => {
   let resData = response.data;
 
   //用户登录已经过期，或者用户未登录
-  if (resData.code === 1008 || resData.code === 1006) {
+  if (resData.code == 1008 || resData.code == 1006) {
     cookies.remove('username');
     cookies.remove('user_id');
     cookies.remove('user_icon');

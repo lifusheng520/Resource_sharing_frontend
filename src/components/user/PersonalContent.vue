@@ -48,7 +48,7 @@
               <i class="el-icon-star-on"></i>我的收藏
             </el-menu-item>
 
-            <el-menu-item index="6">
+            <el-menu-item index="6" v-on:click="goCommentManager">
               <i class="el-icon-s-comment"></i>我的评论
             </el-menu-item>
 
@@ -117,7 +117,12 @@
         if (this.$route.path !== '/updatePass') {
           this.$router.push('/updatePass');
         }
-      }
+      },
+      goCommentManager() {
+        if (this.$route.path !== '/commentManager') {
+          this.$router.push('/commentManager');
+        }
+      },
     }
   }
 </script>
