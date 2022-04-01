@@ -35,7 +35,7 @@
                     <a class="nav-link" v-on:click="goRecommendation">资源推荐</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" v-on:click="goRank">贡献狂人</a>
+                    <a class="nav-link" v-on:click="goRank">贡献达人</a>
                   </li>
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
@@ -47,7 +47,7 @@
                     </div>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">关注</a>
+                    <a class="nav-link" v-on:click="goFocusDetail">关注</a>
                   </li>
 
                 </ul>
@@ -73,16 +73,9 @@
                     <span v-model="this.user.username">{{this.user.username}}</span>
                   </template>
                   <el-menu-item index="1-1" v-on:click="goPersonalCenter">个人空间</el-menu-item>
-                  <el-menu-item index="1-2">选项2</el-menu-item>
                   <el-menu-item index="1-3" v-on:click="goLogin" v-if="!this.user.isLogin">登录
                   </el-menu-item>
                   <el-menu-item index="2-3" v-on:click="goLogout" v-else>退出</el-menu-item>
-                  <el-submenu index="2-4">
-                    <template slot="title">选项4</template>
-                    <el-menu-item index="2-4-1">选项1</el-menu-item>
-                    <el-menu-item index="2-4-2">选项2</el-menu-item>
-                    <el-menu-item index="2-4-3">选项3</el-menu-item>
-                  </el-submenu>
                 </el-submenu>
               </el-menu>
 
@@ -144,6 +137,7 @@
       },
       goRank() {
         if (this.$route.path === '/rank') return;
+        this.$store.pageTitle = '资源排行';
         this.$router.push('/rank');
       },
       goLogin: function () {
@@ -153,6 +147,13 @@
 
         this.$store.pageTitle = "Login";
         this.$router.push("/login");
+      },
+      goFocusDetail(){
+        if (this.$route.path == '/focus')
+          return;
+
+        this.$store.pageTitle = "我的关注";
+        this.$router.push("/focus");
       },
       goLogout: function () {
         // 保存Vue中this对象

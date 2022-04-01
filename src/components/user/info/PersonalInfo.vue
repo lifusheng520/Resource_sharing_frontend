@@ -287,7 +287,7 @@
         _this.userInfo.sex = userInfo.sex;
         _this.userInfo.username = userInfo.username;
 
-        this.$message({
+        _this.$message({
           message: resData.code + '~~~~' + resData.message,
           type: 'success',
           duration: 1500
@@ -310,7 +310,7 @@
             console.log(res);
             let resData = res.data;
             if (resData.code === 4001) {
-              this.$message({
+              _this.$message({
                 message: resData.code + '~~~~' + resData.message,
                 type: 'success',
                 duration: 1500
@@ -318,7 +318,7 @@
 
               _this.$router.go(0);
             } else {
-              this.$message({
+              _this.$message({
                 message: resData.code + '~~~~' + resData.message,
                 type: 'error',
                 duration: 1500

@@ -41,7 +41,8 @@
 
                   <div id="div-focus-button">
                     <el-button v-on:click="focusHandler(UserAndResource.resource.user_id)" icon="el-icon-plus"
-                               :type="isFocus(UserAndResource.resource.user_id) ? 'danger' : 'info'" round> 关 注
+                               :type="isFocus(UserAndResource.resource.user_id) ? 'danger' : 'info'" round>
+                      {{isFocus(UserAndResource.resource.user_id) ? '取消' : '关 注'}}
                     </el-button>
                   </div>
 
@@ -85,6 +86,7 @@
 
               </div>
 
+              <!--              发布评论-->
               <div class="div-comment-input">
 
                 <div class="div-comment-input-icon">
@@ -247,11 +249,12 @@
       }
 
       this.commentInfo.resource_id = resourceId;
-      this.getLoginInfo();
+      this.getCommentUserId();
       this.getResourceDetailInfo();
       this.getCommentContentList();
 
-      this.getUserFocusInfoList(this.focusForm.user_id);
+      if (this.focusForm.user_id)
+        this.getUserFocusInfoList(this.focusForm.user_id);
 
     },
     computed: {
@@ -408,14 +411,12 @@
           duration: 1500
         });
       },
-      getLoginInfo() {
+      getCommentUserId() {
         let userId = this.$cookies.get('user_id');
         if (userId) {
           this.commentInfo.user_id = userId;
-          this.focusForm.user_id = userId;
         } else {
           this.$message.info('你还没有登录喔~~~');
-          this.goLogin();
         }
 
       },
@@ -473,7 +474,7 @@
 
       },
       sendComment(to) {
-        this.getLoginInfo();
+        this.getCommentUserId();
         if (!this.commentInfo.user_id) {
           this.$message.info('请先登录再发布你的评论哟~~~');
           return;

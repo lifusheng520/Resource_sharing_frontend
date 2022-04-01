@@ -27,7 +27,7 @@
                 <el-menu-item index="2-1" v-on:click="goUpload"><i class="el-icon-upload"></i>添加资源</el-menu-item>
                 <el-menu-item index="2-2" v-on:click="goResourceManagement"><i class="el-icon-setting"></i>资源管理
                 </el-menu-item>
-                <el-menu-item index="2-3"><i class="el-icon-delete-solid"></i>已删除资源</el-menu-item>
+                <el-menu-item index="2-3"><i class="el-icon-delete-solid"></i>垃圾箱</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
 
@@ -40,7 +40,7 @@
               </el-menu-item-group>
             </el-submenu>
 
-            <el-menu-item index="4">
+            <el-menu-item index="4" v-on:click="goFocusManager">
               <i class="el-icon-view"></i>我的关注
             </el-menu-item>
 
@@ -121,6 +121,11 @@
       goCommentManager() {
         if (this.$route.path !== '/commentManager') {
           this.$router.push('/commentManager');
+        }
+      },
+      goFocusManager() {
+        if (this.$route.path !== '/focusManager') {
+          this.$router.push('/focusManager');
         }
       },
     }

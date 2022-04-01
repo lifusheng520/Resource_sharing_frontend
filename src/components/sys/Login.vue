@@ -202,14 +202,6 @@
               _this.$cookies.set('userInfo_id', userInfo.userInfo_id, 60 * 30);
 
               _this.$router.go(-1);
-              // 跳转到首页
-              // if (!_this.$store.origin_url) {
-              //   _this.$router.push('/');
-              // } else {
-              //   let url = _this.$store.origin_url;
-              //   // _this.$store.origin_url = '';
-              //   _this.$router.push(url);
-              // }
 
             }
           });

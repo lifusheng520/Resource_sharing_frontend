@@ -62,9 +62,10 @@
 
       <div class="block" align="center">
         <br>
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                       :current-page="commentPageData.currentPage" :page-size="commentPageData.pageSize"
-                       layout="total, sizes, prev, pager, next, jumper" :total="commentPageData.total">
+        <el-pagination
+          background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+          :current-page="commentPageData.currentPage" :page-size="commentPageData.pageSize"
+          layout="total, sizes, prev, pager, next, jumper" :total="commentPageData.total">
         </el-pagination>
       </div>
 
@@ -201,7 +202,6 @@
         } else {
           return 'success-row';
         }
-        return '';
       }
     }
   }

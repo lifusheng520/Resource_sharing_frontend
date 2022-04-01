@@ -49,7 +49,8 @@
                         <el-button v-on:click="focusEvent(item.user_id)"
                                    :type="isFocus(item.user_id) ? 'danger' : 'info'"
                                    round>
-                          <i class="el-icon-plus"></i> 关注
+                          <i class="el-icon-plus"></i>
+                          {{isFocus(item.user_id) ? '取消' : '关注'}}
                         </el-button>
                       </td>
                     </tr>

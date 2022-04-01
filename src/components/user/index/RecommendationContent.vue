@@ -136,7 +136,8 @@
           </div>
 
           <div align="center">
-            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+            <el-pagination background
+                           @size-change="handleSizeChange" @current-change="handleCurrentChange"
                            :current-page="page.currentPage" :page-size="page.pageSize"
                            layout="total, sizes, prev, pager, next, jumper" :total="page.totalPages">
             </el-pagination>

@@ -74,7 +74,7 @@
     </div>
     <!-- 网站使用数据内容-->
 
-    <!-- blog post begin-->
+    <!-- 资源推荐 begin-->
     <div class="blog-post">
       <div class="bg-img">
         <img src="static/img/blog-post-bg.png" alt="">
@@ -97,7 +97,8 @@
             <div class="single-blog">
               <div class="part-text">
                 <div class="user-img">
-                  <img :src="item.userInfo.headIcon" alt="">
+                  <img v-if="item.userInfo.headIcon" :src="item.userInfo.headIcon" alt="">
+                  <img v-else src="static/ico/none.png" alt="">
                 </div>
                 <h3><a v-on:click="goResourceDetail(item.resource.id)">{{item.resource.origin_name}}</a></h3>
                 <h4>
@@ -116,7 +117,6 @@
                 </div>
               </div>
               <div class="part-social">
-                <a href="#"><span><i class="fas fa-comment"></i></span> 25</a>
                 <a href="#"><span><i class="fas fa-star"></i></span>{{item.resource.favorite_number}}</a>
                 <a href="#"><span><i class="fas fa-cloud-download-alt"></i></span>{{item.resource.downloads}}次</a>
                 <a
@@ -131,7 +131,7 @@
 
       </div>
     </div>
-    <!-- blog post end -->
+    <!-- 资源推荐 end -->
 
 
   </div>

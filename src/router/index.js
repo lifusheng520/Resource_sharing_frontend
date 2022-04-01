@@ -43,6 +43,11 @@ export default new Router({
       component: () => import('../views/headerMenu/UploadRankPage')
     },
     {
+      path: '/focus',
+      name: 'FocusPage',
+      component: () => import('../views/headerMenu/FocusPage')
+    },
+    {
       path: '/personal',
       name: 'PersonalCenterPage',
       component: () => import('../views/service/personal/PersonalCenterPage'),
@@ -71,6 +76,11 @@ export default new Router({
           path: '/commentManager',
           name: 'CommentManager',
           component: () => import('../components/user/comment/CommentManager')
+        },
+        {
+          path: '/focusManager',
+          name: 'FocusManager',
+          component: () => import('../components/user/focus/FocusManager')
         },
       ]
     }
