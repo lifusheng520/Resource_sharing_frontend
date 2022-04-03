@@ -16,7 +16,7 @@
   // 导入页面组件
   import Footer from "../../components/sys/Footer";
   import Header from "../../components/sys/Header";
-  import ResourceDetail from "../../components/user/index/ResourceDetail";
+  import ResourceDetail from "../../components/user/resource/ResourceDetail";
 
   export default {
     name: "ResourceDetailPage",

@@ -51,10 +51,10 @@
                     <span class="admin"><i class="el-icon-s-custom"></i>用户：{{UserAndResource.userInfo.username}}</span>
                   </h4>
                   <h4>
-                    <span class="category">隶属：{{UserAndResource.resource.discipline}}</span>
+                    <span class="date">上传于：{{UserAndResource.resource.upload_time}}</span>
                   </h4>
                   <h4>
-                    <span class="date">上传于：{{UserAndResource.resource.upload_time}}</span>
+                    <span class="category">隶属：{{UserAndResource.resource.discipline}}</span>
                   </h4>
                   <p>资料介绍: <br>
                     {{UserAndResource.resource.description}}
@@ -62,8 +62,13 @@
                 </div>
 
                 <div class="part-social">
-                  <a href="#"><span><i class="fas fa-download"></i></span> {{UserAndResource.resource.downloads}}次</a>
-                  <a href="#"><span><i class="fas fa-heart"></i></span> {{UserAndResource.resource.favorite_number}}</a>
+                  <a v-on:click="resourceSupportHandler(UserAndResource.resource.id)">
+                    <span><i class="fas fa-thumbs-up"></i></span> {{UserAndResource.resource.supportNumber}}
+                  </a>
+                  <a><span><i class="fas fa-download"></i></span> {{UserAndResource.resource.downloads}}次</a>
+                  <a v-on:click="resourceFavouriteHandler(UserAndResource.userInfo.id, UserAndResource.resource.id)">
+                    <span><i class="fas fa-heart"></i> {{UserAndResource.resource.favorite_number}}</span>
+                  </a>
                   <a
                     :href="`http://localhost:8080/resource/download/${UserAndResource.resource.disk_name}/${UserAndResource.resource.id}/${UserAndResource.resource.discipline}`"><span><i
                     class="fas fa-cloud-download-alt"></i> 下载</span></a>
@@ -291,7 +296,6 @@
       },
       // 判断是否已经关注
       isFocus(id) {
-        console.log(this.focusList);
         for (let i = 0; i < this.focusList.length; ++i) {
           if (this.focusList[i] == id) {
             return true;
@@ -305,7 +309,6 @@
         let out_this = this;
         this.$axios.post('/focus/cancel', this.focusForm).then(response => {
           let resData = response.data;
-          console.log(resData);
 
           if (resData.code == 6004) {
             out_this.$message({
@@ -330,7 +333,6 @@
         let out_this = this;
         this.$axios.post('/focus/add', this.focusForm).then(response => {
           let resData = response.data;
-          console.log(resData);
 
           if (resData.code == 6001) {
             out_this.$message({
@@ -360,7 +362,6 @@
         let out_this = this;
         this.$axios.get(`/focus/getList/${user_id}`).then(response => {
           let resData = response.data;
-          console.log(resData);
 
           if (resData.code === 6003) {
             out_this.setFocusIdList(resData.data);
@@ -381,15 +382,14 @@
         let userId = this.$cookies.get('user_id');
         if (userId) {
           this.focusForm.userId = userId;
-          return true;
+          return userId;
         } else {
           this.$message.info('您还没有登录~~~');
           this.$router.push('/login');
           return false;
         }
       },
-
-
+      // 加载评论
       loadComment() {
         this.loading = true;
         setTimeout(() => {
@@ -415,10 +415,7 @@
         let userId = this.$cookies.get('user_id');
         if (userId) {
           this.commentInfo.user_id = userId;
-        } else {
-          this.$message.info('你还没有登录喔~~~');
         }
-
       },
       getResourceDetailInfo() {
         let out_this = this;
@@ -429,6 +426,8 @@
           if (resData.code === 4028) {
             out_this.UserAndResource.resource = resData.data.resource;
             out_this.UserAndResource.userInfo = resData.data.userInfo;
+          } else {
+            out_this.$message.error(resData.code + '~~~~' + resData.message);
           }
         });
 
@@ -437,7 +436,6 @@
         let out_this = this;
         this.$axios.get(`/comment/load/${this.commentInfo.resource_id}`).then(response => {
           let resData = response.data;
-          console.log(resData);
 
           if (resData.code === 5004) {
             out_this.commentContentList = resData.data;
@@ -485,7 +483,6 @@
         console.log(this.commentInfo);
         this.$axios.post('/comment/add', this.commentInfo).then(response => {
           let resData = response.data;
-          console.log(resData);
 
           let success = false;
           if (resData.code === 5003) {
@@ -523,6 +520,48 @@
       replyHideEvent() {
         this.replyContent = '';
         this.commentInfo.content = '';
+      },
+      // 资源点赞处理函数
+      resourceSupportHandler(resourceId) {
+        // 获取登录信息
+        let userId = this.getUserLoginInfo();
+        if (!userId)
+          return;
+
+        let out_this = this;
+        this.$axios.get(`/support/resource/${userId}/${resourceId}`).then(response => {
+          let resData = response.data;
+          console.log(resData);
+
+          if (resData.code == 6051) {
+            out_this.$message({
+              message: resData.code + '~~~~' + resData.message,
+              type: 'success',
+              duration: 2000
+            });
+            // 点赞成功，将资源的点赞数+1
+            out_this.setResourceSupportNumber(resourceId, 1);
+          } else if (resData.code == 6052) {
+            out_this.$message({
+              message: resData.code + '~~~~' + resData.message,
+              type: 'success',
+              duration: 2000
+            });
+            // 取消成功，将资源的点赞数-1
+            out_this.setResourceSupportNumber(resourceId, -1);
+          } else {
+            out_this.$message.error(resData.code + '~~~~' + resData.message);
+          }
+
+        });
+      },
+      // 给资源的点赞数量加上一个增量
+      setResourceSupportNumber(resource_id, dx) {
+        this.UserAndResource.resource.supportNumber += dx;
+      },
+      // 资源收藏处理函数
+      resourceFavouriteHandler(userId, resourceId) {
+
       }
     }
   }

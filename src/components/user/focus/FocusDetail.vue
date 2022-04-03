@@ -80,6 +80,9 @@
                   </div>
                 </div>
                 <div class="part-social">
+                  <a v-on:click="resourceSupportHandler(item.resource.id)">
+                    <span><i class="fas fa-thumbs-up"></i></span> {{item.resource.supportNumber}}
+                  </a>
                   <a href="#"><span><i class="fas fa-star"></i></span>{{item.resource.favorite_number}}</a>
                   <a href="#"><span><i class="fas fa-cloud-download-alt"></i></span>{{item.resource.downloads}}次</a>
                   <a
@@ -172,9 +175,11 @@
         let userId = this.$cookies.get('user_id');
         if (userId) {
           this.myPageData.user_id = userId;
+          return userId;
         } else {
           this.$message.info('您还没有登录喔，请先登录再查看~~~');
           this.$router.push('/login');
+          return false;
         }
       },
       // 获取下一页数据，dx：当前页的偏移量 +1、-1
@@ -240,6 +245,51 @@
       handleCurrentChange(val) {
         this.resourcePageData.currentPage = val;
         this.loadFocusUserResource(this.currentSelectId);
+      },
+
+      // 资源点赞处理函数
+      resourceSupportHandler(resourceId) {
+        // 获取登录信息
+        let userId = this.getLoginUserInfoByRouter();
+        if (!userId)
+          return;
+
+        let out_this = this;
+        this.$axios.get(`/support/resource/${userId}/${resourceId}`).then(response => {
+          let resData = response.data;
+          console.log(resData);
+
+          if (resData.code == 6051) {
+            out_this.$message({
+              message: resData.code + '~~~~' + resData.message,
+              type: 'success',
+              duration: 2000
+            });
+            // 点赞成功，将资源的点赞数+1
+            out_this.setResourceSupportNumber(resourceId, 1);
+          } else if (resData.code == 6052) {
+            out_this.$message({
+              message: resData.code + '~~~~' + resData.message,
+              type: 'success',
+              duration: 2000
+            });
+            // 取消成功，将资源的点赞数-1
+            out_this.setResourceSupportNumber(resourceId, -1);
+          } else {
+            out_this.$message.error(resData.code + '~~~~' + resData.message);
+          }
+
+        });
+      },
+
+      // 给资源的点赞数量加上一个增量
+      setResourceSupportNumber(resource_id, dx) {
+        for (let i = 0; i < this.resourceInfoList.length; ++i) {
+          if (this.resourceInfoList[i].resource.id == resource_id) {
+            this.resourceInfoList[i].resource.supportNumber += dx;
+            return;
+          }
+        }
       },
 
     }

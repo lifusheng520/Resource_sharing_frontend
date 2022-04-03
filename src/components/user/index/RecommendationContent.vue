@@ -96,7 +96,9 @@
                       <i class="el-icon-download"></i> {{item.downloads}} 次
                     </div>
                     <div class="part-info" id="div_resource_favorite">
-                      <i class="fas fa-star"></i> {{item.favorite_number}}
+                      <a v-on:click="goResourceDetailPage(item.id)">
+                        <span v-on:click="goResourceDetailPage(item.id)"><i class="fas fa-star"></i> {{item.favorite_number}}</span>
+                      </a>
                     </div>
                     <div class="part-info" id="div_resource_size">
                     <span v-if="item.size < 1024">
@@ -108,6 +110,12 @@
                       <span v-else>
                       <i class="fas el-icon-s-cooperation"></i> {{(item.size / 1024 / 1024).toFixed(1)}}Gb
                     </span>
+                    </div>
+
+                    <div class="part-info" id="div_resource_support">
+                      <a v-on:click="goResourceDetailPage(item.id)">
+                        <span><i class="fas fa-thumbs-up"></i> {{item.supportNumber}}</span>
+                      </a>
                     </div>
 
                     <div class="part-text">
@@ -243,6 +251,11 @@
       goResourceDetail(id) {
         this.$cookies.set('resource_id', id);
         this.$router.push('/detail');
+      },
+      // 跳转资源详情页面
+      goResourceDetailPage(id) {
+        this.$cookies.set('resource_id', id);
+        this.$router.push('/detail');
       }
     }
 
@@ -348,6 +361,11 @@
 
   #div_resource_download_button {
     text-align: right;
+  }
+
+  #div_resource_support {
+    margin-left: -15px;
+    margin-top: -30px;
   }
 
 </style>
