@@ -27,6 +27,9 @@
                   <a href="#">首页</a>
                 </li>
                 <li>
+                  <a href="#">皮皮虾</a>
+                </li>
+                <li>
                   <a href="#">哔哩哔哩</a>
                 </li>
                 <li>
@@ -94,8 +97,8 @@
   export default {
     name: "Footer",
     methods: {
-      goIndexPage(){
-        if (this.$route.path != '/'){
+      goIndexPage() {
+        if (this.$route.path != '/') {
           this.$router.push('/');
         }
       }

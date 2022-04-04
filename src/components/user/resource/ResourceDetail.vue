@@ -66,9 +66,31 @@
                     <span><i class="fas fa-thumbs-up"></i></span> {{UserAndResource.resource.supportNumber}}
                   </a>
                   <a><span><i class="fas fa-download"></i></span> {{UserAndResource.resource.downloads}}次</a>
-                  <a v-on:click="resourceFavouriteHandler(UserAndResource.userInfo.id, UserAndResource.resource.id)">
+
+                  <a v-on:click="resourceFavouriteHandler(UserAndResource.resource.id)">
                     <span><i class="fas fa-heart"></i> {{UserAndResource.resource.favorite_number}}</span>
                   </a>
+                  <el-dialog title="选择收藏夹" center :visible.sync="favouriteShow" width="400px">
+                    <div class="infinite-list-wrapper" style="overflow:auto;height: 250px">
+                      <el-checkbox-group v-model="selectList">
+                        <el-checkbox v-for="(item, index) in folderList" :key="index">
+                          {{item.folder_name}}
+                        </el-checkbox>
+                      </el-checkbox-group>
+                    </div>
+                    <div style="margin-top: 15px;">
+                      <el-input placeholder="请输入内容">
+                        <template slot="append">
+                          <el-button>默认按钮</el-button>
+                        </template>
+                      </el-input>
+                    </div>
+                    <div slot="footer" class="dialog-footer">
+                      <el-button @click="favouriteShow = false">取 消</el-button>
+                      <el-button type="primary" @click="favouriteShow = false">确 定</el-button>
+                    </div>
+                  </el-dialog>
+
                   <a
                     :href="`http://localhost:8080/resource/download/${UserAndResource.resource.disk_name}/${UserAndResource.resource.id}/${UserAndResource.resource.discipline}`"><span><i
                     class="fas fa-cloud-download-alt"></i> 下载</span></a>
@@ -216,6 +238,7 @@
 </template>
 
 <script>
+
   export default {
     name: "ResourceDetail",
     data() {
@@ -242,7 +265,22 @@
         focusForm: {
           user_id: '',
           focusUserId: '',
-        }
+        },
+        // 收藏表单
+        favouriteForm: {
+          user_id: '',
+          resource_id: '',
+          folder_id: '',
+          folder: '',
+        },
+        // 收藏夹列表
+        folderList: [],
+        //选择列表
+        selectList: [],
+        // 收藏夹显示
+        favouriteShow: false,
+        favouriteFormLabelWidth: '120px',
+        count: 10,
 
       }
     },
@@ -492,27 +530,22 @@
               duration: 2000
             });
             success = true;
-
           } else if (resData.code === 5001) {
             out_this.$message({
               message: resData.code + '~~~~' + resData.message,
               type: 'success',
               duration: 2000
             });
-
             success = true;
-
           } else {
             out_this.$message.error(resData.code + '~~~~' + resData.message);
           }
-
           if (success)
             out_this.$router.go(0);
 
         });
 
         this.replyHideEvent();
-
       },
       goLogin() {
         this.$router.push('/login');
@@ -560,8 +593,36 @@
         this.UserAndResource.resource.supportNumber += dx;
       },
       // 资源收藏处理函数
-      resourceFavouriteHandler(userId, resourceId) {
+      resourceFavouriteHandler(resourceId) {
+        // 获取用户登录信息，并设置收藏表单参数
+        let userId = this.getUserLoginInfo();
+        if (!userId)
+          return;
+        this.favouriteForm.user_id = userId;
+        this.favouriteForm.resource_id = resourceId;
+        this.favouriteShow = true;
 
+        // 获取用户的收藏文件夹列表
+        if (!this.folderList.length) {
+          this.getFavouriteFolderList(userId);
+        }
+
+
+      },
+      // 获取用户收藏文件夹列表
+      getFavouriteFolderList(userId) {
+        let out_this = this;
+        this.$axios.get(`/favourite/getFolders/${userId}`).then(response => {
+          let resData = response.data;
+          console.log(resData);
+
+          if (resData.code == 7005) {
+            out_this.folderList = resData.data;
+          } else {
+            out_this.$message.error(resData.code + '~~~~' + resData.message);
+          }
+
+        });
       }
     }
   }
