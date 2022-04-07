@@ -70,24 +70,42 @@
                   <a v-on:click="resourceFavouriteHandler(UserAndResource.resource.id)">
                     <span><i class="fas fa-heart"></i> {{UserAndResource.resource.favorite_number}}</span>
                   </a>
+
                   <el-dialog title="选择收藏夹" center :visible.sync="favouriteShow" width="400px">
                     <div class="infinite-list-wrapper" style="overflow:auto;height: 250px">
-                      <el-checkbox-group v-model="selectList">
-                        <el-checkbox v-for="(item, index) in folderList" :key="index">
-                          {{item.folder_name}}
-                        </el-checkbox>
-                      </el-checkbox-group>
+                      <table>
+                        <el-checkbox-group v-model="selectList">
+                          <tr v-for="(item, index) in folderList" :key="index">
+                            <td>
+                              <el-checkbox v-if="folderIsContain(item.folder_name)" checked :label="item">
+                                {{item.folder_name}}
+                              </el-checkbox>
+                              <el-checkbox v-else :label="item">
+                                {{item.folder_name}}
+                              </el-checkbox>
+                            </td>
+                          </tr>
+                        </el-checkbox-group>
+                      </table>
                     </div>
-                    <div style="margin-top: 15px;">
-                      <el-input placeholder="请输入内容">
+
+                    <div>
+                      <el-button v-on:click="showAddFolder=!showAddFolder" icon="el-icon-plus"
+                                 style="width: 100%;font-size: 18px;" plain>新建收藏夹
+                      </el-button>
+                    </div>
+                    <div v-show="showAddFolder" style="margin-top: 15px;">
+                      <el-input v-model="addFolderForm.folder_name" type="text"
+                                placeholder="最多输入20个字符" maxlength="20">
                         <template slot="append">
-                          <el-button>默认按钮</el-button>
+                          <el-button v-on:click="addFolderHandler" type="primary" plain>新 建</el-button>
                         </template>
                       </el-input>
                     </div>
+
                     <div slot="footer" class="dialog-footer">
-                      <el-button @click="favouriteShow = false">取 消</el-button>
-                      <el-button type="primary" @click="favouriteShow = false">确 定</el-button>
+                      <el-button @click="cancelAddEvent">取 消</el-button>
+                      <el-button type="primary" @click="addFavourite">确 定</el-button>
                     </div>
                   </el-dialog>
 
@@ -280,7 +298,15 @@
         // 收藏夹显示
         favouriteShow: false,
         favouriteFormLabelWidth: '120px',
-        count: 10,
+        // 新建收藏夹表单
+        addFolderForm: {
+          user_id: '',
+          folder_name: '',
+        },
+        // 新建收藏夹显示
+        showAddFolder: false,
+        // 收藏记录
+        favouriteRecord: [],
 
       }
     },
@@ -602,28 +628,102 @@
         this.favouriteForm.resource_id = resourceId;
         this.favouriteShow = true;
 
+        // 获取已收藏记录
+        this.getFavouriteRecord(userId, resourceId);
+
         // 获取用户的收藏文件夹列表
         if (!this.folderList.length) {
           this.getFavouriteFolderList(userId);
         }
-
-
       },
       // 获取用户收藏文件夹列表
       getFavouriteFolderList(userId) {
         let out_this = this;
         this.$axios.get(`/favourite/getFolders/${userId}`).then(response => {
           let resData = response.data;
-          console.log(resData);
 
           if (resData.code == 7005) {
             out_this.folderList = resData.data;
           } else {
             out_this.$message.error(resData.code + '~~~~' + resData.message);
           }
-
         });
+      },
+      // 添加收藏夹
+      addFolderHandler() {
+        // 获取用户id
+        this.addFolderForm.user_id = this.getUserLoginInfo();
+        if (!this.addFolderForm.user_id)
+          return 0;
+        if (!this.addFolderForm.folder_name) {
+          this.$message.info('收藏夹名称不能为空喔');
+          return 0;
+        }
+        // 添加收藏夹请求
+        let out_this = this;
+        this.$axios.post('/favourite/addFolder', this.addFolderForm).then(response => {
+          let resData = response.data;
+          if (resData.code == 7006) { // 添加成功
+            out_this.$message({
+              message: resData.code + '~~~~' + resData.message,
+              type: 'success',
+              duration: 2000
+            });
+            // 将刚刚添加的收藏夹加入到list
+            out_this.folderList.push(resData.data);
+          } else {
+            out_this.$message.error(resData.code + '~~~~' + resData.message);
+          }
+        });
+      },
+      // 添加收藏
+      addFavourite() {
+        console.log(this.selectList);
+        let out_this = this;
+        this.$axios.post('/favourite/add', {
+          'selectFoldersList': this.selectList,
+          'favourite': this.favouriteForm
+        }).then(response => {
+          let resData = response.data;
+          console.log(resData)
+          if (resData.code == 7006) { // 添加成功
+            out_this.$message({
+              message: resData.code + '~~~~' + resData.message,
+              type: 'success',
+              duration: 2000
+            });
+          } else {
+            out_this.$message.error(resData.code + '~~~~' + resData.message);
+          }
+        });
+
+        this.cancelAddEvent();
+      },
+      // 取消收藏的事件
+      cancelAddEvent() {
+        this.favouriteShow = false;
+      },
+      // 获取已经收藏的记录
+      getFavouriteRecord(user_id, resource_id) {
+        let out_this = this;
+        this.$axios.get(`/favourite/getRecord/${user_id}/${resource_id}`).then(response => {
+          let resData = response.data;
+          console.log(resData);
+
+          if (resData.code == 7009) {
+            out_this.favouriteRecord = resData.data;
+          }
+        });
+      },
+      // 判断收藏夹是否处于收藏记录中
+      folderIsContain(val) {
+        for (let i = 0; i < this.favouriteRecord.length; ++i)
+          if (this.favouriteRecord[i] == val)
+            return true;
+        return false;
       }
+
+
     }
   }
 </script>

@@ -82,6 +82,11 @@ export default new Router({
           name: 'FocusManager',
           component: () => import('../components/user/focus/FocusManager')
         },
+        {
+          path: '/favouriteManager',
+          name: 'FavouriteManager',
+          component: () => import('../components/user/favourite/FavouriteManager')
+        },
       ]
     }
   ]

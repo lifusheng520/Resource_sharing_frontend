@@ -9,8 +9,8 @@
           <div class="col-xl-8 col-lg-8">
             <div class="banner-content">
               <h1>白给网 —— 校园资料分享平台</h1>
-              <p>内卷无处不在，毕业设计也是如此。<br/>
-                你强任你强，卷王背行囊。加入我们，悄悄做卷王。</p>
+              <p>关于莫雷洛的内卷。<br/>
+                在传说中的第一次符文战争中，莫雷洛用他的魔法摧毁整个大陆。莫雷洛可能是世上最接近神的人。强大的魔法甚至摧毁了瑞兹的故乡...</p>
             </div>
           </div>
         </div>
@@ -85,7 +85,7 @@
             <div class="section-title text-center">
               <h2 class="extra-margin">最热门的<span> 资源</span></h2>
               <p>
-                卡达·烬——心思缜密的癫狂杀手，烬坚信谋杀是一门艺术。他曾在艾欧尼亚的监狱中服刑，但却因为执政议会里涌动着的暗流而得到释放，成为了权术斗争所利用的刺客。烬将手中的枪当成画笔，尽情地挥洒他所追求的残忍艺术，让受害者肝胆俱裂，令旁观者震悚难平。</p>
+                卡达·烬——心思缜密的癫狂艺术家，烬坚信谋杀是一门艺术。他曾在艾欧尼亚的监狱中服刑，但却因为执政议会里涌动着的暗流而得到释放，成为了权术斗争所利用的刺客。烬将手中的枪当成画笔，尽情地挥洒他所追求的残忍艺术。</p>
             </div>
           </div>
         </div>
@@ -102,7 +102,7 @@
                 </div>
                 <h3><a v-on:click="goResourceDetail(item.resource.id)">{{item.resource.origin_name}}</a></h3>
                 <h4>
-                  <span><i class="el-icon-s-custom"></i>&nbsp;&nbsp;&nbsp;{{item.userInfo.username}} </span>
+                  <span><i class="el-icon-s-custom"></i>&nbsp;&nbsp;&nbsp;{{item.userInfo.name}} </span>
                 </h4>
                 <h4>
                   <span>上传于：{{item.resource.upload_time}}</span>

@@ -31,20 +31,20 @@
               </el-menu-item-group>
             </el-submenu>
 
-            <el-submenu index="3">
-              <template slot="title"><i class="el-icon-reading"></i>历史记录</template>
-              <el-menu-item-group>
-                <el-menu-item index="3-1"><i class="el-icon-download"></i>下载记录</el-menu-item>
-                <el-menu-item index="3-2"><i class="el-icon-upload2"></i>上传记录</el-menu-item>
-                <el-menu-item index="3-3"><i class="el-icon-upload2"></i>浏览记录</el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
+<!--            <el-submenu index="3">-->
+<!--              <template slot="title"><i class="el-icon-reading"></i>历史记录</template>-->
+<!--              <el-menu-item-group>-->
+<!--                <el-menu-item index="3-1"><i class="el-icon-download"></i>下载记录</el-menu-item>-->
+<!--                <el-menu-item index="3-2"><i class="el-icon-upload2"></i>上传记录</el-menu-item>-->
+<!--                <el-menu-item index="3-3"><i class="el-icon-upload2"></i>浏览记录</el-menu-item>-->
+<!--              </el-menu-item-group>-->
+<!--            </el-submenu>-->
 
             <el-menu-item index="4" v-on:click="goFocusManager">
               <i class="el-icon-view"></i>我的关注
             </el-menu-item>
 
-            <el-menu-item index="5">
+            <el-menu-item index="5" v-on:click="goFavouriteManager">
               <i class="el-icon-star-on"></i>我的收藏
             </el-menu-item>
 
@@ -66,6 +66,7 @@
               <el-menu-item-group>
                 <el-menu-item index="8-1">上传数据管理</el-menu-item>
                 <el-menu-item index="8-2">下载数据管理</el-menu-item>
+                <el-menu-item index="8-3">数据统计</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
 
@@ -126,6 +127,11 @@
       goFocusManager() {
         if (this.$route.path !== '/focusManager') {
           this.$router.push('/focusManager');
+        }
+      },
+      goFavouriteManager() {
+        if (this.$route.path !== '/favouriteManager') {
+          this.$router.push('/favouriteManager');
         }
       },
     }
