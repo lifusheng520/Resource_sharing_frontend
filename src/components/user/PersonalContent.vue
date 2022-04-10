@@ -27,18 +27,18 @@
                 <el-menu-item index="2-1" v-on:click="goUpload"><i class="el-icon-upload"></i>添加资源</el-menu-item>
                 <el-menu-item index="2-2" v-on:click="goResourceManagement"><i class="el-icon-setting"></i>资源管理
                 </el-menu-item>
-                <el-menu-item index="2-3"><i class="el-icon-delete-solid"></i>垃圾箱</el-menu-item>
+                <el-menu-item index="2-3" v-on:click="goDeletedResourceManager"><i class="el-icon-delete-solid"></i>垃圾箱</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
 
-<!--            <el-submenu index="3">-->
-<!--              <template slot="title"><i class="el-icon-reading"></i>历史记录</template>-->
-<!--              <el-menu-item-group>-->
-<!--                <el-menu-item index="3-1"><i class="el-icon-download"></i>下载记录</el-menu-item>-->
-<!--                <el-menu-item index="3-2"><i class="el-icon-upload2"></i>上传记录</el-menu-item>-->
-<!--                <el-menu-item index="3-3"><i class="el-icon-upload2"></i>浏览记录</el-menu-item>-->
-<!--              </el-menu-item-group>-->
-<!--            </el-submenu>-->
+            <el-submenu index="3">
+              <template slot="title"><i class="el-icon-reading"></i>历史记录</template>
+              <el-menu-item-group>
+                <el-menu-item index="3-1"><i class="el-icon-download"></i>下载记录</el-menu-item>
+                <el-menu-item index="3-2"><i class="el-icon-upload2"></i>上传记录</el-menu-item>
+                <el-menu-item index="3-3"><i class="el-icon-upload2"></i>浏览记录</el-menu-item>
+              </el-menu-item-group>
+            </el-submenu>
 
             <el-menu-item index="4" v-on:click="goFocusManager">
               <i class="el-icon-view"></i>我的关注
@@ -112,6 +112,11 @@
       goResourceManagement() {
         if (this.$route.path !== '/resourceManagement') {
           this.$router.push('/resourceManagement');
+        }
+      },
+      goDeletedResourceManager(){
+        if (this.$route.path !== '/deletedResourceManagement') {
+          this.$router.push('/deletedResourceManagement');
         }
       },
       goUpdatePassword() {

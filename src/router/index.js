@@ -48,6 +48,16 @@ export default new Router({
       component: () => import('../views/headerMenu/FocusPage')
     },
     {
+      path: '/uploadData',
+      name: 'UploadParsePage',
+      component: () => import('../views/headerMenu/UploadParsePage')
+    },
+    {
+      path: '/downloadData',
+      name: 'DownloadParsePage',
+      component: () => import('../views/headerMenu/DownloadParsePage')
+    },
+    {
       path: '/personal',
       name: 'PersonalCenterPage',
       component: () => import('../views/service/personal/PersonalCenterPage'),
@@ -66,6 +76,11 @@ export default new Router({
           path: '/resourceManagement',
           name: 'ResourceManagement',
           component: () => import('../components/user/resource/ResourceManagement')
+        },
+        {
+          path: '/deletedResourceManagement',
+          name: 'DeletedResourceManager',
+          component: () => import('../components/user/resource/DeletedResourceManager')
         },
         {
           path: '/updatePass',

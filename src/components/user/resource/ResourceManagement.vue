@@ -209,8 +209,6 @@
             out_this.pageData.total = resData.data.total;
             out_this.pageData.pageSize = resData.data.pageSize;
 
-            console.log(out_this.tableData)
-
           } else {
             this.$message.error(resData.code + '~~~~' + resData.message);
           }
@@ -250,7 +248,7 @@
         this.$axios.post('/resource/delete', list).then(res => {
           let resData = res.data;
           if (resData.code === 4019) {
-            this.$message({
+            out_this.$message({
               message: resData.code + '~~~~  ' + resData.message,
               type: 'success',
               center: true,
@@ -258,9 +256,10 @@
             });
 
             //刷新页面
-            out_this.$router.go(0);
+            out_this.pageData.total -= list.length;
+            out_this.getUserResourceList();
           } else {
-            this.$message({
+            out_this.$message({
               message: resData.code + '~~~~  ' + resData.message,
               type: 'error',
               center: true,

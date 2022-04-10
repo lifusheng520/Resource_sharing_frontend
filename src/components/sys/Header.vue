@@ -42,8 +42,8 @@
                        role="button"
                        aria-haspopup="true" aria-expanded="false">数据图表</a>
                     <div class="dropdown-menu">
-                      <a class="dropdown-item" href="#">上传情况</a>
-                      <a class="dropdown-item" href="#">下载情况</a>
+                      <a class="dropdown-item" v-on:click="goUploadData">上传情况</a>
+                      <a class="dropdown-item" v-on:click="goDownloadData">下载情况</a>
                     </div>
                   </li>
                   <li class="nav-item">
@@ -66,8 +66,7 @@
             </div>
             <div id="div_username">
 
-              <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal"
-                       @select="handleSelect">
+              <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal">
                 <el-submenu index="1">
                   <template slot="title">
                     <span v-model="this.user.username">{{this.user.username}}</span>
@@ -112,9 +111,6 @@
       this.setUserInfo();
     },
     methods: {
-      handleSelect(key, keyPath) {
-        console.log(key, keyPath);
-      },
       setUserInfo() {
         let name = this.$cookies.get('username');
         if (name) {
@@ -140,7 +136,7 @@
         this.$store.pageTitle = '资源排行';
         this.$router.push('/rank');
       },
-      goLogin: function () {
+      goLogin() {
         // 如果当前路由是登录，不在进行路由跳转
         if (this.$route.path == "/login")
           return;
@@ -148,7 +144,21 @@
         this.$store.pageTitle = "Login";
         this.$router.push("/login");
       },
-      goFocusDetail(){
+      goUploadData() {
+        if (this.$route.path == "/uploadData")
+          return;
+
+        this.$store.pageTitle = "上传分析";
+        this.$router.push("/uploadData");
+      },
+      goDownloadData() {
+        if (this.$route.path == "/downloadData")
+          return;
+
+        this.$store.pageTitle = "下载分析";
+        this.$router.push("/downloadData");
+      },
+      goFocusDetail() {
         if (this.$route.path == '/focus')
           return;
 

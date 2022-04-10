@@ -112,12 +112,12 @@
                   <a
                     :href="`http://localhost:8080/resource/download/${UserAndResource.resource.disk_name}/${UserAndResource.resource.id}/${UserAndResource.resource.discipline}`"><span><i
                     class="fas fa-cloud-download-alt"></i> 下载</span></a>
-                  <a v-on:click="visible = !visible"><span><i class="fas fa-share"></i></span> 分享</a>
+                  <a v-on:click="copyURLVisible = !copyURLVisible"><span><i class="fas fa-share"></i></span> 分享</a>
                   <a hidden></a>
                 </div>
 
                 <el-popover placement="right" title="下载URL：" width="100%"
-                            v-model="visible" trigger="click">
+                            v-model="copyURLVisible" trigger="click">
                   <p>
                     {{`http://localhost:8080/resource/download/${UserAndResource.resource.disk_name}/${UserAndResource.resource.id}/${UserAndResource.resource.discipline}`}}</p>
                   <div>
@@ -125,7 +125,7 @@
                                @click="copyURL(`http://localhost:8080/resource/download/${UserAndResource.resource.disk_name}/${UserAndResource.resource.id}/${UserAndResource.resource.discipline}`)">
                       复制URL
                     </el-button>
-                    <el-button size="mini" type="primary" @click="visible = false">取消</el-button>
+                    <el-button size="mini" type="primary" @click="copyURLVisible = false">取消</el-button>
                   </div>
                 </el-popover>
 
@@ -266,7 +266,7 @@
           resource: '',
           userInfo: ''
         },
-        visible: false,
+        copyURLVisible: false,
         commentInfo: {
           resource_id: '',
           user_id: '',
@@ -277,6 +277,8 @@
         commentContentList: [],
         count: 0,
         loading: false,
+        // 回复对话框显示
+        showReply: false,
         // 关注列表
         focusList: [],
         // 关注表单
@@ -367,6 +369,7 @@
         }
         return false;
       },
+      // 取消关注
       deleteFocus(focusUid) {
         this.focusForm.focusUserId = focusUid;
         // 发起取消关注请求
@@ -481,6 +484,7 @@
           this.commentInfo.user_id = userId;
         }
       },
+      // 获取资源详情
       getResourceDetailInfo() {
         let out_this = this;
         this.$axios.get(`/resource/server/detail/${this.commentInfo.resource_id}`).then(res => {
@@ -496,6 +500,7 @@
         });
 
       },
+      // 获取评论区内容列表
       getCommentContentList() {
         let out_this = this;
         this.$axios.get(`/comment/load/${this.commentInfo.resource_id}`).then(response => {
@@ -510,6 +515,7 @@
         });
 
       },
+      // 添加评论处理函数
       addComment() {
         let temp = this.commentInfo.content.replace(/\s*/g, '');
         if (!temp) {
@@ -521,6 +527,7 @@
         this.sendComment();
 
       },
+      // 回复评论
       replyComment(to) {
         if (to) {
           let tempReply = this.replyContent.replace(/\s*/g, '');
@@ -531,10 +538,9 @@
           this.replyContent = tempReply;
           this.commentInfo.content = this.replyContent;
         }
-
         this.sendComment(to);
-
       },
+      // 发送评论
       sendComment(to) {
         this.getCommentUserId();
         if (!this.commentInfo.user_id) {
@@ -566,9 +572,9 @@
           } else {
             out_this.$message.error(resData.code + '~~~~' + resData.message);
           }
-          if (success)
-            out_this.$router.go(0);
 
+          if (success)
+            out_this.getCommentContentList();
         });
 
         this.replyHideEvent();
@@ -576,9 +582,11 @@
       goLogin() {
         this.$router.push('/login');
       },
+      // 回复内容复位
       replyHideEvent() {
         this.replyContent = '';
         this.commentInfo.content = '';
+        return true;
       },
       // 资源点赞处理函数
       resourceSupportHandler(resourceId) {
@@ -685,7 +693,7 @@
           'favourite': this.favouriteForm
         }).then(response => {
           let resData = response.data;
-          console.log(resData)
+          console.log(resData);
           if (resData.code == 7006) { // 添加成功
             out_this.$message({
               message: resData.code + '~~~~' + resData.message,

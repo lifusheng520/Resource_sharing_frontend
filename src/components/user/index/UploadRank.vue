@@ -6,10 +6,9 @@
         <div class="row justify-content-center">
           <div class="col-xl-8 col-lg-8">
             <div class="section-title text-center">
-              <h2>全场资源贡献最佳 <span> MVP</span> 排行</h2>
-              <p>优秀不值一提，你必须达到完美！这是属于你的show time，
-                你的表现将惊艳全场。旁人说你的表现真的show啊，
-                你永远不知道你是真的show，还是真的二，哈哈哈哈~~~~</p>
+              <h2>全场资源贡献最佳 <span> FMVP</span> 排行</h2>
+              <p>暗裔剑魔·亚托克斯，一位堕落的天神战士，曾经险些毁灭符文之地，
+                却最终和他的同类与远古时代的武器融为一体，被囚禁了无数世纪。</p>
             </div>
           </div>
         </div>

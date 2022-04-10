@@ -9,7 +9,6 @@ import axios from 'axios'
 import VueCookies from 'vue-cookies'
 
 
-
 import 'element-ui/lib/theme-chalk/index.css'
 import './config/axiosConfig'
 import qs from 'qs'
