@@ -27,7 +27,8 @@
                 <el-menu-item index="2-1" v-on:click="goUpload"><i class="el-icon-upload"></i>添加资源</el-menu-item>
                 <el-menu-item index="2-2" v-on:click="goResourceManagement"><i class="el-icon-setting"></i>资源管理
                 </el-menu-item>
-                <el-menu-item index="2-3" v-on:click="goDeletedResourceManager"><i class="el-icon-delete-solid"></i>垃圾箱</el-menu-item>
+                <el-menu-item index="2-3" v-on:click="goDeletedResourceManager"><i class="el-icon-delete-solid"></i>垃圾箱
+                </el-menu-item>
               </el-menu-item-group>
             </el-submenu>
 
@@ -44,9 +45,17 @@
               <i class="el-icon-view"></i>我的关注
             </el-menu-item>
 
-            <el-menu-item index="5" v-on:click="goFavouriteManager">
-              <i class="el-icon-star-on"></i>我的收藏
-            </el-menu-item>
+            <el-submenu index="5">
+              <template slot="title"><i class="el-icon-star-on"></i>我的收藏</template>
+              <el-menu-item-group>
+                <el-menu-item index="5" v-on:click="goFavouriteManager">
+                  <i class="el-icon-star-on"></i>收藏管理
+                </el-menu-item>
+                <el-menu-item index="3-2" v-on:click="goFavouriteFolderManager">
+                  <i class="el-icon-wallet"></i>收藏夹管理
+                </el-menu-item>
+              </el-menu-item-group>
+            </el-submenu>
 
             <el-menu-item index="6" v-on:click="goCommentManager">
               <i class="el-icon-s-comment"></i>我的评论
@@ -56,7 +65,8 @@
               <template slot="title"><i class="el-icon-s-tools"></i>管理员中心</template>
               <el-menu-item-group>
                 <el-menu-item index="7-1"><i class="el-icon-document-checked"></i>资源审批</el-menu-item>
-                <el-menu-item index="7-2"><i class="el-icon-document-checked"></i>用户管理</el-menu-item>
+                <el-menu-item index="7-2" v-on:click="goUserManager"><i class="el-icon-document-checked"></i>用户管理
+                </el-menu-item>
                 <el-menu-item index="7-3"><i class="el-icon-document-checked"></i>平台资源管理</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
@@ -97,6 +107,7 @@
       return {}
     },
     created() {
+
     },
     methods: {
       goPersonalInfo() {
@@ -114,7 +125,7 @@
           this.$router.push('/resourceManagement');
         }
       },
-      goDeletedResourceManager(){
+      goDeletedResourceManager() {
         if (this.$route.path !== '/deletedResourceManagement') {
           this.$router.push('/deletedResourceManagement');
         }
@@ -137,6 +148,16 @@
       goFavouriteManager() {
         if (this.$route.path !== '/favouriteManager') {
           this.$router.push('/favouriteManager');
+        }
+      },
+      goFavouriteFolderManager() {
+        if (this.$route.path !== '/favouriteFolderManager') {
+          this.$router.push('/favouriteFolderManager');
+        }
+      },
+      goUserManager() {
+        if (this.$route.path !== '/userManager') {
+          this.$router.push('/userManager');
         }
       },
     }

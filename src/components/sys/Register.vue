@@ -110,7 +110,7 @@
               if (resData) {
                 // 判断状态码
                 if (resData.code === 1003) { // 注册成功
-                  this.$message({
+                  _this.$message({
                     message: resData.code + '~~~~' + resData.message,
                     type: 'success'
                   });
@@ -120,20 +120,20 @@
                   _this.$router.push("/login");
 
                 } else if (resData.code === 1004) {
-                  this.$message.error(resData.code + '~~注册失败~~');
+                  _this.$message.error(resData.code + '~~注册失败~~');
                 } else if (resData.code === 1005) {
-                  this.$message({
+                  _this.$message({
                     message: resData.code + '~~~~' + resData.message,
                     type: 'error'
                   });
                 }
               } else {
                 // 注册失败，不做跳转
-                this.$message.error('注册错误，请重新注册~~');
+                _this.$message.error('注册错误，请重新注册~~');
               }
             });
           } else {
-            this.$message.error('错误的提交~~');
+            _this.$message.error('错误的提交~~');
             return false;
           }
         });

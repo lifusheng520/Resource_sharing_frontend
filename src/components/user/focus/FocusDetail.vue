@@ -47,68 +47,74 @@
 
       </div>
 
-      <div class="blog-post">
-        <div class="bg-img" style="margin-top: -200px">
-          <img src="static/img/blog-post-bg.png" alt="">
-        </div>
-        <div class="container">
+      <el-empty v-if="resourceInfoList.length === 0" style="margin: 20% auto" description="该用户暂时还没有任何可看的~~~"></el-empty>
 
-          <div class="row">
+      <div v-else>
 
-            <div style="margin-top: 20px" class="col-xl-6 col-lg-6 col-md-6"
-                 v-for="(item, index) in resourceInfoList">
-              <div class="single-blog">
-                <div class="part-text">
-                  <div class="user-img">
-                    <img v-if="item.userInfo.headIcon" :src="item.userInfo.headIcon" alt="">
-                    <img v-else src="static/ico/none.png" alt="">
+        <div class="blog-post">
+          <div class="bg-img" style="margin-top: -200px">
+            <img src="static/img/blog-post-bg.png" alt="">
+          </div>
+          <div class="container">
+
+            <div class="row">
+
+              <div style="margin-top: 20px" class="col-xl-6 col-lg-6 col-md-6"
+                   v-for="(item, index) in resourceInfoList" :key="index">
+
+                <div class="single-blog">
+                  <div class="part-text">
+                    <div class="user-img">
+                      <img v-if="item.userInfo.headIcon" :src="item.userInfo.headIcon" alt="">
+                      <img v-else src="static/ico/none.png" alt="">
+                    </div>
+                    <h3><a v-on:click="goResourceDetail(item.resource.id)">{{item.resource.origin_name}}</a></h3>
+                    <h4>
+                      <span><i class="el-icon-s-custom"></i>&nbsp;&nbsp;&nbsp;{{item.userInfo.username}} </span>
+                    </h4>
+                    <h4>
+                      <span>隶属：{{item.resource.discipline}}</span>
+                    </h4>
+                    <h4>
+                      <span>上传于：{{item.resource.upload_time}}</span>
+                    </h4>
+                    <div class="div_resource_description">
+                      <!--                  {{item.resource.description.length > 35 ? item.resource.description.slice(0, 35) + '...' :-->
+                      <!--                  item.resource.description}}sdfasfd sdf asdf s-->
+                      {{item.resource.description}}
+                    </div>
                   </div>
-                  <h3><a v-on:click="goResourceDetail(item.resource.id)">{{item.resource.origin_name}}</a></h3>
-                  <h4>
-                    <span><i class="el-icon-s-custom"></i>&nbsp;&nbsp;&nbsp;{{item.userInfo.username}} </span>
-                  </h4>
-                  <h4>
-                    <span>隶属：{{item.resource.discipline}}</span>
-                  </h4>
-                  <h4>
-                    <span>上传于：{{item.resource.upload_time}}</span>
-                  </h4>
-                  <div class="div_resource_description">
-                    <!--                  {{item.resource.description.length > 35 ? item.resource.description.slice(0, 35) + '...' :-->
-                    <!--                  item.resource.description}}sdfasfd sdf asdf s-->
-                    {{item.resource.description}}
+                  <div class="part-social">
+                    <a v-on:click="resourceSupportHandler(item.resource.id)">
+                      <span><i class="fas fa-thumbs-up"></i></span> {{item.resource.supportNumber}}
+                    </a>
+                    <a href="#"><span><i class="fas fa-star"></i></span>{{item.resource.favorite_number}}</a>
+                    <a href="#"><span><i class="fas fa-cloud-download-alt"></i></span>{{item.resource.downloads}}次</a>
+                    <a
+                      :href="`http://localhost:8080/resource/download/${item.resource.disk_name}/${item.resource.id}/${item.resource.discipline}`"><span><i
+                      class="fas fa-download"></i></span>下载</a>
+                    <a v-on:click="goResourceDetail(item.resource.id)"> More</a>
                   </div>
-                </div>
-                <div class="part-social">
-                  <a v-on:click="resourceSupportHandler(item.resource.id)">
-                    <span><i class="fas fa-thumbs-up"></i></span> {{item.resource.supportNumber}}
-                  </a>
-                  <a href="#"><span><i class="fas fa-star"></i></span>{{item.resource.favorite_number}}</a>
-                  <a href="#"><span><i class="fas fa-cloud-download-alt"></i></span>{{item.resource.downloads}}次</a>
-                  <a
-                    :href="`http://localhost:8080/resource/download/${item.resource.disk_name}/${item.resource.id}/${item.resource.discipline}`"><span><i
-                    class="fas fa-download"></i></span>下载</a>
-                  <a v-on:click="goResourceDetail(item.resource.id)"> More</a>
                 </div>
               </div>
+
             </div>
 
           </div>
-
         </div>
-      </div>
 
-      <div align="center">
-        <el-pagination background
-                       @size-change="handleSizeChange"
-                       @current-change="handleCurrentChange"
-                       :page-size="resourcePageData.pageSize"
-                       layout="total, sizes, prev, pager, next, jumper"
-                       :total="resourcePageData.total">
-        </el-pagination>
-      </div>
-      <br>
+        <div align="center">
+          <el-pagination background
+                         @size-change="handleSizeChange"
+                         @current-change="handleCurrentChange"
+                         :page-size="resourcePageData.pageSize"
+                         layout="total, sizes, prev, pager, next, jumper"
+                         :total="resourcePageData.total">
+          </el-pagination>
+        </div>
+        <br>
 
+      </div>
     </div>
   </div>
 </template>
@@ -159,8 +165,13 @@
             out_this.myPageData.total = resData.data.total;
             out_this.focusUserInfoList = resData.data.pageList;
 
+            // 获取用户内容
             if (!out_this.currentSelectId) {
-              out_this.currentSelectId = out_this.focusUserInfoList[0].focus_uid;
+              let focusUser = out_this.$cookies.get('focus_uid');
+              if (focusUser)
+                out_this.currentSelectId = focusUser;
+              else
+                out_this.currentSelectId = out_this.focusUserInfoList[0].focus_uid;
               out_this.loadFocusUserResource(out_this.currentSelectId);
             }
 

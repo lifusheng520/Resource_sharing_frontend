@@ -1,7 +1,7 @@
 <template>
   <div id="div_focus_box">
     <el-empty v-if="this.isEmpty" style="margin: 20% auto" description="网络开小差了，请重新登录~~~"></el-empty>
-    <div v-else style="margin: 3%; width: 100%">
+    <div v-else style="margin: 3%; width: 94%">
 
 
       <h3>关注列表</h3>
@@ -34,7 +34,7 @@
 
         <el-table-column label="操作" min-width="100px" fixed="right">
           <template slot-scope="scope">
-            <el-button @click="goFocusPage" type="text" plain>查看</el-button>
+            <el-button @click="goFocusPage(scope.row.focus_uid)" type="text" plain>查看</el-button>
           </template>
         </el-table-column>
 
@@ -99,7 +99,7 @@
               duration: 1500
             });
 
-            out_this.deletefocusTableListItem(resData.data);
+            out_this.deleteFocusTableListItem(resData.data);
           } else {
             out_this.$message.error(resData.code + '~~~~' + resData.message);
           }
@@ -108,7 +108,7 @@
 
       },
       // 将取消关注的行删除
-      deletefocusTableListItem(focus_uid) {
+      deleteFocusTableListItem(focus_uid) {
         for (let i = 0; i < this.focusTableList.length; ++i) {
           if (this.focusTableList[i].focus_uid == focus_uid) {
             this.focusTableList.splice(i, 1);
@@ -167,8 +167,12 @@
         }
       },
       // 跳转到关注首页
-      goFocusPage() {
-
+      goFocusPage(val) {
+        if(this.$route.path !== '/focus'){
+          // 添加需要查看的用户id
+          this.$cookies.set('focus_uid', val);
+          this.$router.push('/focus');
+        }
       }
     }
   }

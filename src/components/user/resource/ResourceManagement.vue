@@ -197,12 +197,6 @@
           let resData = res.data;
           // 如果请求成功
           if (resData.code === 4015 || resData.code === 4018) {
-            this.$message({
-              message: resData.code + '~~~~  ' + resData.message,
-              type: 'success',
-              center: true,
-              duration: 2000
-            });
 
             out_this.tableData = resData.data.pageList;
             out_this.pageData.currentPage = resData.data.currentPage;

@@ -47,7 +47,7 @@
             </div>
             <div class="container">
 
-              <el-checkbox-group v-model="selectFavouriteList">
+              <el-checkbox-group v-model="selectFavouriteList" @change="selectChangeHandler">
 
                 <div class="row">
 
@@ -209,7 +209,10 @@
       //  菜单处理函数
       menuHandler(val) {
         this.favouritePageData.folder_name = val;
-        this.getFavouriteList()
+        this.getFavouriteList();
+        // 重置选择list
+        this.selectFavouriteList = [];
+        this.checkAll = false;
       },
       // 获取登录信息
       getLoginInfo() {
@@ -260,6 +263,11 @@
           this.selectFavouriteList.push(id);
         }
 
+        if (this.selectFavouriteList.length === 0) {
+          this.$message.info('请先选择需要取消的内容~~~');
+          return;
+        }
+
         let out_this = this;
         this.$axios.post('/favourite/cancel', this.selectFavouriteList).then(response => {
           let resData = response.data;
@@ -292,6 +300,12 @@
       },
       // 移动收藏内容请求
       moveFavourite() {
+
+        if (this.selectFavouriteList.length === 0) {
+          this.$message.info('请先选择需要移动的内容~~~');
+          return;
+        }
+
         let out_this = this;
         this.$axios.post('/favourite/move', {
           selectList: this.selectFavouriteList,
@@ -327,6 +341,12 @@
       },
       // 复制收藏内容请求
       copyFavourite() {
+
+        if (this.selectFavouriteList.length === 0) {
+          this.$message.info('请先选择需要复制内容~~~');
+          return;
+        }
+
         let out_this = this;
         this.$axios.post('/favourite/copy', {
           favouriteIdList: this.selectFavouriteList,
@@ -372,6 +392,7 @@
         let out_this = this;
         this.$axios.post('/favourite/addFolder', this.addFolderForm).then(response => {
           let resData = response.data;
+          console.log(resData.data);
           if (resData.code == 7006) { // 添加成功
             out_this.$message({
               message: resData.code + '~~~~' + resData.message,
@@ -380,11 +401,11 @@
             });
             // 将刚刚添加的收藏夹加入到list
             out_this.folderMenuData.push(resData.data);
+            out_this.showAddFolder = false;
           } else {
             out_this.$message.error(resData.code + '~~~~' + resData.message);
           }
 
-          out_this.favouriteDialogShow = false;
         });
       },
       // 取消收藏的事件
@@ -426,6 +447,12 @@
       handleCurrentChange(val) {
         this.favouritePageData.currentPage = val;
         this.getFavouriteList();
+      },
+      // 选则框变动是的处理函数
+      selectChangeHandler() {
+        if (this.selectFavouriteList.length === 0) {
+          this.checkAll = false;
+        }
       },
     }
   }

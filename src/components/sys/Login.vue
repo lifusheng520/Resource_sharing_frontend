@@ -157,7 +157,7 @@
             // 没有对应的用户信息
             if (!resdata.data) {
               this.$message({
-                message: resdata.code + '~~ 用户名或密码错误 ~~' + resdata.message,
+                message: resdata.code + '~~~~' + resdata.message,
                 type: 'error',
                 center: true,
                 duration: 2000

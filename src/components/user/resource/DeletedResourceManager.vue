@@ -12,7 +12,7 @@
           </div>
         </div>
 
-        <div v-show="checkAll || deletedSelect.length != 0" class="div-operation-box">
+        <div v-show="deletedSelect.length !== 0" class="div-operation-box">
           <el-button v-on:click="deleteResourceBinRecord" type="primary" plain round>删除</el-button>
           <el-button v-on:click="reinstateResource" type="success" plain round>恢复</el-button>
         </div>
@@ -32,7 +32,7 @@
 
                       <tr>
                         <th scope="col">
-                          <el-checkbox v-model="checkAll" @change="handleCheckAllChange">{{checkAll ? '取消' : '全选'}}
+                          <el-checkbox v-model="checkAll" @change="handleCheckAllChange()">{{checkAll ? '取消' : '全选'}}
                           </el-checkbox>
                         </th>
                         <th scope="col">删除时间</th>
@@ -67,14 +67,16 @@
 
                   </el-checkbox-group>
 
-                  <el-pagination
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :current-page="deletedPageData.currentPage"
-                    :page-size="deletedPageData.pageSize"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="deletedPageData.total">
-                  </el-pagination>
+                  <div align="center">
+                    <el-pagination
+                      @size-change="handleSizeChange"
+                      @current-change="handleCurrentChange"
+                      :current-page="deletedPageData.currentPage"
+                      :page-size="deletedPageData.pageSize"
+                      layout="total, sizes, prev, pager, next, jumper"
+                      :total="deletedPageData.total">
+                    </el-pagination>
+                  </div>
 
                 </div>
 
@@ -179,18 +181,29 @@
       },
       // 全选处理事件
       handleCheckAllChange() {
-        this.checkAll = !this.checkAll;
+        this.deletedSelect = [];
         // 如果全选，则将当前表格中的所有数据添加到集合中
-        if (this.checkAll) {
+        if (  !this.checkAll) {
           for (let i = 0; i < this.deletedTableData.length; ++i)
             this.deletedSelect.push(this.deletedTableData[i]);
-        } else
-          this.deletedSelect = [];
+          this.deletedSelect.push(undefined);
+          this.checkAll = true;
+        } else if (this.checkAll) {
+          this.checkAll = false;
+        }
+
+        console.log(this.deletedSelect);
+
       },
       // 删除回收箱记录
       deleteResourceBinRecord() {
         // 将全选选择框的值从list中删除
         this.updateSelectList();
+
+        if (this.deletedSelect.length === 0) {
+          this.handleCheckAllChange();
+          return;
+        }
 
         let out_this = this;
         this.$axios.post('/resource/realDelete', this.deletedSelect).then(response => {
@@ -215,7 +228,8 @@
           }
         });
 
-        this.handleCheckAllChange();
+        // 重置选择内容
+        this.deletedSelect = [];
       },
       // 将全选选择框的值从list中删除
       updateSelectList() {
@@ -225,13 +239,21 @@
             k = i;
             break;
           }
-        if (k != -1)
+        if (k != -1) {
           this.deletedSelect.splice(k, 1);
+          return true;
+        }
+        return false;
       },
       // 资源恢复
       reinstateResource() {
         // 将全选选择框的值从list中删除
         this.updateSelectList();
+
+        if (this.deletedSelect.length === 0) {
+          this.handleCheckAllChange();
+          return;
+        }
 
         let out_this = this;
         this.$axios.post('/resource/reinstate', this.deletedSelect).then(response => {
@@ -257,7 +279,8 @@
           }
         });
 
-        this.handleCheckAllChange();
+        // 重置选择内容
+        this.deletedSelect = [];
       },
 
     }

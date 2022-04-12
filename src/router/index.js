@@ -102,6 +102,16 @@ export default new Router({
           name: 'FavouriteManager',
           component: () => import('../components/user/favourite/FavouriteManager')
         },
+        {
+          path: '/favouriteFolderManager',
+          name: 'FavouriteFolderManager',
+          component: () => import('../components/user/favourite/FavouriteFolderManager')
+        },
+        {
+          path: '/userManager',
+          name: 'UserManager',
+          component: () => import('../components/user/admin/UserManager')
+        },
       ]
     }
   ]

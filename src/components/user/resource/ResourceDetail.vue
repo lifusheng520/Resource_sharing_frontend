@@ -679,6 +679,7 @@
             });
             // 将刚刚添加的收藏夹加入到list
             out_this.folderList.push(resData.data);
+            out_this.showAddFolder = false;
           } else {
             out_this.$message.error(resData.code + '~~~~' + resData.message);
           }
