@@ -7,15 +7,20 @@
 
       <div style="width: 100%;">
 
-        <div style="width: 100%;" class="div-operation-button">
+        <div style="width: 100%;">
           <el-button @click="dialogFormVisible = true" icon="el-icon-plus" type="primary" size="small">
             添加用户
           </el-button>
-          <el-button v-show="tableSelectList.length !== 0" @click="" type="danger" size="small" round>
+          <el-button v-show="tableSelectList.length !== 0" @click="addLockOnUserAccount" type="danger" size="small"
+                     round>
             冻结账号
           </el-button>
+          <el-button v-show="tableSelectList.length !== 0" @click="unlockUserAccount" type="success" size="small"
+                     round>
+            激活账号
+          </el-button>
 
-          <el-dialog title="收货地址" width="500px" center :visible.sync="dialogFormVisible">
+          <el-dialog title="添加账号信息" width="500px" center :visible.sync="dialogFormVisible">
 
             <el-form :model="addUserForm" :rules="rules">
 
@@ -47,7 +52,7 @@
           <el-table-column prop="enabled" label="状态" min-width="100">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.enabled === 1" type="success">使用中</el-tag>
-              <el-tag v-else type="danger">已禁用</el-tag>
+              <el-tag v-else type="danger"><i class="fa fa-lock"></i>已禁用</el-tag>
             </template>
           </el-table-column>
           <el-table-column prop="email" label="绑定邮箱" min-width="150"></el-table-column>
@@ -161,9 +166,27 @@
       },
 
       // 选择发生变化时的事件
-      handleSelectionChange(val) {
-        this.tableSelectList = val;
-        console.log(val)
+      handleSelectionChange() {
+        // 遍历选择列表，去除管理员权限选项
+        for (let i = 0; i < this.$refs.multipleTable.selection.length; ++i) {
+          let flag = false;
+          for (let j = 0; j < this.$refs.multipleTable.selection[i].roles.length; ++j)
+            if (this.$refs.multipleTable.selection[i].roles[j] === 'admin') {
+              flag = true;
+              break;
+            }
+
+          if (flag) {
+            this.$refs.multipleTable.selection.splice(i, 1);
+            this.$message.info('对管理员的操作已经取消');
+          }
+        }
+        this.tableSelectList = this.$refs.multipleTable.selection;
+      },
+      //取消选择
+      cancelSelectionHandler() {
+        this.$refs.multipleTable.clearSelection();
+        this.tableSelectList = [];
       },
 
       // 添加用户处理函数
@@ -230,6 +253,82 @@
       },
 
       // 冻结账号
+      addLockOnUserAccount() {
+        this.tableSelectList = this.clearRepeatedHandler(this.tableSelectList, 0);
+        if(this.tableSelectList.length ===0){
+          this.$message.info('选择的内容不符合条件');
+          return;
+        }
+
+        let out_this = this;
+        this.$axios.post('/admin/lockAccounts', this.tableSelectList).then(response => {
+          let resData = response.data;
+          console.log(resData);
+          if (resData.code === 8002) {
+            out_this.$message({
+              message: resData.code + '~~~~  ' + resData.message,
+              type: 'success',
+              center: true,
+              duration: 2000
+            });
+
+            // 根据后端返回的被冻结账号id，更新表格视图
+            let lockIds = resData.data;
+            for (let i = 0; i < lockIds.length; ++i)
+              for (let j = 0; j < out_this.userTableList.length; ++j)
+                if (lockIds[i] === out_this.userTableList[j].id)
+                  out_this.userTableList[j].enabled = 0;
+
+          } else {
+            out_this.$message.error(resData.code + '~~~~' + resData.message);
+          }
+        });
+
+        this.cancelSelectionHandler();
+      },
+      // 解禁账号
+      unlockUserAccount() {
+        this.tableSelectList = this.clearRepeatedHandler(this.tableSelectList, 1);
+        if(this.tableSelectList.length ===0){
+          this.$message.info('选择的内容不符合条件');
+          return;
+        }
+
+        let out_this = this;
+        this.$axios.post('/admin/unlockAccounts', this.tableSelectList).then(response => {
+          let resData = response.data;
+          console.log(resData);
+          if (resData.code === 8004) {
+            out_this.$message({
+              message: resData.code + '~~~~  ' + resData.message,
+              type: 'success',
+              center: true,
+              duration: 2000
+            });
+
+            // 根据后端返回的激活账号id，更新表格视图
+            let unlockIds = resData.data;
+            for (let i = 0; i < unlockIds.length; ++i)
+              for (let j = 0; j < out_this.userTableList.length; ++j)
+                if (unlockIds[i] === out_this.userTableList[j].id)
+                  out_this.userTableList[j].enabled = 1;
+
+          } else {
+            out_this.$message.error(resData.code + '~~~~' + resData.message);
+          }
+        });
+
+        this.cancelSelectionHandler();
+      },
+      // 将重复处理的内容清除,将账号状态不为val的去除
+      clearRepeatedHandler(list, val) {
+        let result = [];
+        for (let i = 0; i < list.length; ++i)
+          if (list[i].enabled !== val)
+            result.push(list[i]);
+        return result;
+      },
+
 
     }
   }

@@ -15,7 +15,7 @@
     </div>
     <!-- page-title 页面标题结束 -->
 
-    <el-empty v-if="this.isEmpty" style="margin: 0;background: white;height: 700px" description="网络开小差了呢~~~"></el-empty>
+    <el-empty v-if="this.isEmpty" style="margin: 0;background: white;height: 700px" :description="isEmptyDescription"></el-empty>
 
     <div v-else>
 
@@ -46,7 +46,9 @@
                     </el-button>
                   </div>
 
-                  <h3><a href="#">{{UserAndResource.resource.origin_name}}</a></h3>
+                  <h3><a
+                    :href="`http://localhost:8080/resource/download/${UserAndResource.resource.disk_name}/${UserAndResource.resource.id}/${UserAndResource.resource.discipline}`">
+                    {{UserAndResource.resource.origin_name}}</a></h3>
                   <h4>
                     <span class="admin"><i class="el-icon-s-custom"></i>用户：{{UserAndResource.userInfo.username}}</span>
                   </h4>
@@ -262,6 +264,7 @@
     data() {
       return {
         isEmpty: false,
+        isEmptyDescription: '网络开小差了呢~~~',
         UserAndResource: {
           resource: '',
           userInfo: ''
@@ -320,8 +323,8 @@
       }
 
       this.commentInfo.resource_id = resourceId;
-      this.getCommentUserId();
       this.getResourceDetailInfo();
+      this.getCommentUserId();
       this.getCommentContentList();
 
       if (this.focusForm.user_id)
@@ -494,6 +497,15 @@
           if (resData.code === 4028) {
             out_this.UserAndResource.resource = resData.data.resource;
             out_this.UserAndResource.userInfo = resData.data.userInfo;
+          } else if (resData.code === 4029) {
+            this.$message({
+              message: resData.code + '~~~~' + resData.message,
+              type: 'info',
+              duration: 3000
+            });
+
+            out_this.isEmpty = true;
+            out_this.isEmptyDescription = resData.message;
           } else {
             out_this.$message.error(resData.code + '~~~~' + resData.message);
           }

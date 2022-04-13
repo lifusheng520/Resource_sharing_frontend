@@ -52,10 +52,10 @@
                           {{getTimePass(item.time)}}
                         </td>
                         <td>
-                          {{item.size}}
+                          {{item.origin_name}}
                         </td>
                         <td>
-                          {{item.origin_name}}
+                          {{item.size}}
                         </td>
                         <td>
                           {{item.discipline}}
@@ -183,7 +183,7 @@
       handleCheckAllChange() {
         this.deletedSelect = [];
         // 如果全选，则将当前表格中的所有数据添加到集合中
-        if (  !this.checkAll) {
+        if (!this.checkAll) {
           for (let i = 0; i < this.deletedTableData.length; ++i)
             this.deletedSelect.push(this.deletedTableData[i]);
           this.deletedSelect.push(undefined);

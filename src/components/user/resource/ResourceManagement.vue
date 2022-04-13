@@ -1,7 +1,7 @@
 <template>
   <div id="div_resource_table">
     <el-empty v-if="this.isEmpty" style="margin: 20% auto" description="网络开小差了，请重新登录~~~"></el-empty>
-    <div v-else style="margin: 3%;width: 100%">
+    <div v-else style="margin: 3%;width: 94%">
 
       <h3>资源管理</h3>
 
@@ -28,6 +28,12 @@
         <el-table-column type="selection" width="50"></el-table-column>
         <el-table-column prop="upload_time" label="上传时间" sortable min-width="150"></el-table-column>
         <el-table-column prop="origin_name" label="文件名" min-width="200"></el-table-column>
+        <el-table-column prop="state" label="状态" min-width="120">
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.state === '审批中'" type="danger"><i class="el-icon-loading"></i>{{scope.row.state}}</el-tag>
+            <el-tag v-else type="success">{{scope.row.state}}</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column prop="downloads" label="下载量" sortable min-width="100px"></el-table-column>
         <el-table-column prop="favorite_number" label="收藏人数" sortable min-width="100px"></el-table-column>
         <el-table-column prop="size" label="大小" sortable min-width="100px">
@@ -216,7 +222,6 @@
           this.hostURL = '/resource/search';
 
           this.getUserResourceList();
-
         }
       },
       resetForm() {
@@ -248,6 +253,11 @@
               center: true,
               duration: 2000
             });
+
+            // 重置分页参数
+            this.pageData.currentPage = -1;
+            this.pageData.total = -1;
+            this.pageData.searcher = '';
 
             //刷新页面
             out_this.pageData.total -= list.length;

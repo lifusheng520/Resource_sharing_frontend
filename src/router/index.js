@@ -108,9 +108,19 @@ export default new Router({
           component: () => import('../components/user/favourite/FavouriteFolderManager')
         },
         {
+          path: '/checkResource',
+          name: 'CheckResource',
+          component: () => import('../components/user/admin/CheckResource')
+        },
+        {
           path: '/userManager',
           name: 'UserManager',
           component: () => import('../components/user/admin/UserManager')
+        },
+        {
+          path: '/platformResourceManager',
+          name: 'PlatformResourceManager',
+          component: () => import('../components/user/admin/PlatformResourceManager')
         },
       ]
     }

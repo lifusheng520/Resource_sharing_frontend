@@ -64,15 +64,17 @@
             <el-submenu index="7">
               <template slot="title"><i class="el-icon-s-tools"></i>管理员中心</template>
               <el-menu-item-group>
-                <el-menu-item index="7-1"><i class="el-icon-document-checked"></i>资源审批</el-menu-item>
-                <el-menu-item index="7-2" v-on:click="goUserManager"><i class="el-icon-document-checked"></i>用户管理
+                <el-menu-item index="7-1" v-on:click="goCheckResource"><i class="el-icon-document-checked"></i>资源审批
                 </el-menu-item>
-                <el-menu-item index="7-3"><i class="el-icon-document-checked"></i>平台资源管理</el-menu-item>
+                <el-menu-item index="7-2" v-on:click="goUserManager"><i class="el-icon-user"></i>用户管理
+                </el-menu-item>
+                <el-menu-item index="7-3" v-on:click="goPlatformResourceManager"><i class="fa fa-cogs"></i>&nbsp;&nbsp;平台资源管理
+                </el-menu-item>
               </el-menu-item-group>
             </el-submenu>
 
             <el-submenu index="8">
-              <template slot="title"><i class="el-icon-s-data"></i>数据中心</template>
+              <template slot="title"><i class="fa fa-chart-bar"></i>&nbsp;&nbsp;&nbsp;数据中心</template>
               <el-menu-item-group>
                 <el-menu-item index="8-1">上传数据管理</el-menu-item>
                 <el-menu-item index="8-2">下载数据管理</el-menu-item>
@@ -155,9 +157,19 @@
           this.$router.push('/favouriteFolderManager');
         }
       },
+      goCheckResource() {
+        if (this.$route.path !== '/checkResource') {
+          this.$router.push('/checkResource');
+        }
+      },
       goUserManager() {
         if (this.$route.path !== '/userManager') {
           this.$router.push('/userManager');
+        }
+      },
+      goPlatformResourceManager() {
+        if (this.$route.path !== '/platformResourceManager') {
+          this.$router.push('/platformResourceManager');
         }
       },
     }

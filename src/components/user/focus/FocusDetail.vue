@@ -25,7 +25,8 @@
                  v-on:click="loadFocusUserResourceHandler(item.focus_uid)">
 
               <div class="div-focus-user-headIcon">
-                <img :src="item.focusUserIcon" alt="">
+                <img v-if="item.focusUserIcon" :src="item.focusUserIcon" alt="">
+                <img v-else src="static/ico/ico.png" alt="">
               </div>
 
               <div align="center">
