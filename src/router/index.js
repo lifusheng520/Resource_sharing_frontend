@@ -93,6 +93,11 @@ export default new Router({
           component: () => import('../components/user/comment/CommentManager')
         },
         {
+          path: '/browseRecordManager',
+          name: 'BrowseRecordManager',
+          component: () => import('../components/user/browse/BrowseRecordManager')
+        },
+        {
           path: '/focusManager',
           name: 'FocusManager',
           component: () => import('../components/user/focus/FocusManager')
@@ -121,6 +126,11 @@ export default new Router({
           path: '/platformResourceManager',
           name: 'PlatformResourceManager',
           component: () => import('../components/user/admin/PlatformResourceManager')
+        },
+        {
+          path: '/dataCenter',
+          name: 'DataCenter',
+          component: () => import('../components/user/data/DataCenter')
         },
       ]
     }

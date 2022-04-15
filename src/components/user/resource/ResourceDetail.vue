@@ -15,7 +15,8 @@
     </div>
     <!-- page-title 页面标题结束 -->
 
-    <el-empty v-if="this.isEmpty" style="margin: 0;background: white;height: 700px" :description="isEmptyDescription"></el-empty>
+    <el-empty v-if="this.isEmpty" style="margin: 0;background: white;height: 700px"
+              :description="isEmptyDescription"></el-empty>
 
     <div v-else>
 
@@ -313,6 +314,10 @@
         // 收藏记录
         favouriteRecord: [],
 
+        // 浏览记录用户id
+        userId: '',
+        resourceId: '',
+
       }
     },
     created() {
@@ -322,6 +327,14 @@
         return;
       }
 
+      let userId = this.$cookies.get('user_id');
+      if (!userId) {
+        this.$message.info('请先登录再查看~~');
+        this.$router.push('/login');
+      }
+      this.resourceId = resourceId;
+      this.userId = userId;
+
       this.commentInfo.resource_id = resourceId;
       this.getResourceDetailInfo();
       this.getCommentUserId();
@@ -329,6 +342,9 @@
 
       if (this.focusForm.user_id)
         this.getUserFocusInfoList(this.focusForm.user_id);
+
+      // 添加浏览记录
+      this.addBrowseRecord();
 
     },
     computed: {
@@ -340,6 +356,11 @@
       }
     },
     methods: {
+      // 添加浏览记录
+      addBrowseRecord() {
+        this.$axios.get(`/browse/add/${this.userId}/${this.resourceId}`);
+      },
+
       // 关注按钮的触发事件
       focusHandler(focusUid) {
         // 检查登录信息

@@ -1,25 +1,6 @@
 <template>
   <div>
 
-    <!--    <el-row :gutter="10" style="margin: 20px auto;text-align: center">-->
-    <!--      <el-col :span="6">-->
-    <!--        <el-card>-->
-    <!--          1-->
-    <!--        </el-card>-->
-    <!--      </el-col>-->
-    <!--      <el-col :span="6">-->
-    <!--        <el-card>-->
-    <!--          2-->
-    <!--        </el-card>-->
-    <!--      </el-col>-->
-    <!--      <el-col :span="6">-->
-    <!--        <el-card>3</el-card>-->
-    <!--      </el-col>-->
-    <!--      <el-col :span="6">-->
-    <!--        <el-card>4</el-card>-->
-    <!--      </el-col>-->
-    <!--    </el-row>-->
-
     <el-row>
       <el-col>
         <div id="upload_data_div" style="margin: 0px"></div>

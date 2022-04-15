@@ -32,14 +32,10 @@
               </el-menu-item-group>
             </el-submenu>
 
-            <el-submenu index="3">
-              <template slot="title"><i class="el-icon-reading"></i>历史记录</template>
-              <el-menu-item-group>
-                <el-menu-item index="3-1"><i class="el-icon-download"></i>下载记录</el-menu-item>
-                <el-menu-item index="3-2"><i class="el-icon-upload2"></i>上传记录</el-menu-item>
-                <el-menu-item index="3-3"><i class="el-icon-upload2"></i>浏览记录</el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
+
+            <el-menu-item index="3" v-on:click="goBrowseRecordManager">
+              <i class="el-icon-edit-outline" v-on:click=""></i>浏览记录
+            </el-menu-item>
 
             <el-menu-item index="4" v-on:click="goFocusManager">
               <i class="el-icon-view"></i>我的关注
@@ -73,15 +69,8 @@
               </el-menu-item-group>
             </el-submenu>
 
-            <el-submenu index="8">
-              <template slot="title"><i class="fa fa-chart-bar"></i>&nbsp;&nbsp;&nbsp;数据中心</template>
-              <el-menu-item-group>
-                <el-menu-item index="8-1">上传数据管理</el-menu-item>
-                <el-menu-item index="8-2">下载数据管理</el-menu-item>
-                <el-menu-item index="8-3">数据统计</el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
-
+            <el-menu-item index="8" v-on:click="goDataCenter">
+              <i class="fa fa-chart-bar"></i>&nbsp;&nbsp;&nbsp;数据中心</el-menu-item>
 
           </el-menu>
         </el-aside>
@@ -172,6 +161,16 @@
           this.$router.push('/platformResourceManager');
         }
       },
+      goBrowseRecordManager() {
+        if (this.$route.path !== '/browseRecordManager') {
+          this.$router.push('/browseRecordManager');
+        }
+      },
+      goDataCenter(){
+        if (this.$route.path !== '/dataCenter') {
+          this.$router.push('/dataCenter');
+        }
+      }
     }
   }
 </script>
