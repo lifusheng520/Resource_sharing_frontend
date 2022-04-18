@@ -158,6 +158,10 @@
           this.selectCheckList = [];
         console.log(this.selectCheckList)
       },
+      // 取消选择
+      cancelSelection(){
+        this.$refs.multipleTable.clearSelection();
+      },
 
       //加载需要审批的资源
       loadCheckResourceList() {
@@ -213,6 +217,8 @@
             out_this.$message.error(resData.code + '~~~~' + resData.message);
           }
         });
+
+        this.cancelSelection();
       },
       // 删除审批的资源
       deleteCheckResourceHandler() {
@@ -235,6 +241,8 @@
             out_this.$message.error(resData.code + '~~~~' + resData.message);
           }
         });
+
+        this.cancelSelection();
       },
 
       // 播放视频处理函数
@@ -244,8 +252,8 @@
       },
       // 关闭对话框处理函数
       closeDialogHandler() {
-        let myVideo = document.getElementById('video-check-resource')    //对应video标签的ID
-        myVideo.pause()
+        let myVideo = document.getElementById('video-check-resource');    //对应video标签的ID
+        myVideo.pause();
       },
       // 判断是否为支持的视频格式
       supportVideoType(type) {
