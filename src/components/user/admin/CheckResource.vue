@@ -161,6 +161,7 @@
       // 取消选择
       cancelSelection(){
         this.$refs.multipleTable.clearSelection();
+        this.selectCheckList = [];
       },
 
       //加载需要审批的资源

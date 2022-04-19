@@ -170,11 +170,13 @@
               duration: 2000
             });
 
-            out_this.$router.go(0);
+            out_this.getCommentList();
           } else {
             this.$message.error(resData.code + '~~~~  ' + resData.message);
           }
         });
+
+        this.toggleSelection();
       },
       // 查看评论内容
       goCommentDetailPage(val) {

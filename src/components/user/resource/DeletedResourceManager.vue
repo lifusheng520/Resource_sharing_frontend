@@ -191,9 +191,6 @@
         } else if (this.checkAll) {
           this.checkAll = false;
         }
-
-        console.log(this.deletedSelect);
-
       },
       // 删除回收箱记录
       deleteResourceBinRecord() {

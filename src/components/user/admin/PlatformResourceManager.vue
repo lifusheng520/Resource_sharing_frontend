@@ -109,6 +109,11 @@
           for (let i = 0; i < selects.length; ++i)
             this.resourceSelectList.push(selects[i].resource.id);
       },
+      // 取消选择
+      cancelSelection(){
+        this.$refs.multipleTable.clearSelection();
+        this.selectCheckList = [];
+      },
 
       // 加载资源到表格中
       loadResourceList() {
@@ -183,9 +188,9 @@
           }
 
         });
+
+        this.cancelSelection();
       },
-
-
     }
   }
 </script>

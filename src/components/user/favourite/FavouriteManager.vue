@@ -251,9 +251,7 @@
           } else {
             out_this.$message.error(resData.code + '~~~~' + resData.message);
           }
-
         });
-
       },
       // 取消收藏
       cancelFavouriteHandler(id) {
@@ -286,6 +284,8 @@
             out_this.$message.error(resData.code + '~~~~' + resData.message);
           }
         });
+
+        this.cancelSelection();
       },
       // 移动收藏内容 处理函数
       moveFavouriteHandler(id) {
@@ -327,6 +327,7 @@
             out_this.$message.error(resData.code + '~~~~' + resData.message);
           }
         });
+        this.cancelSelection();
       },
       // 复制收藏内容 处理函数
       copyFavouriteHandler(id) {
@@ -368,6 +369,7 @@
             out_this.$message.error(resData.code + '~~~~' + resData.message);
           }
         });
+        this.cancelSelection();
       },
       // 请求处理函数
       sendRequestHandler() {
@@ -405,7 +407,6 @@
           } else {
             out_this.$message.error(resData.code + '~~~~' + resData.message);
           }
-
         });
       },
       // 取消收藏的事件
@@ -453,6 +454,11 @@
         if (this.selectFavouriteList.length === 0) {
           this.checkAll = false;
         }
+      },
+      // 取消选择
+      cancelSelection(){
+        this.selectFavouriteList = [];
+        this.selectChangeHandler();
       },
     }
   }

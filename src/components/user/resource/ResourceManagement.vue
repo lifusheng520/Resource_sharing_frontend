@@ -271,7 +271,10 @@
             });
           }
         });
+
+        this.toggleSelection();
       },
+      // 取消选中
       toggleSelection() {
         this.$refs.multipleTable.clearSelection();
         this.multipleSelection = [];

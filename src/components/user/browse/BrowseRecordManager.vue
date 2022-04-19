@@ -171,6 +171,8 @@
             out_this.$message.error(resData.code + '~~~~' + resData.message);
           }
         });
+
+        this.cancelSelection();
       },
     }
   }

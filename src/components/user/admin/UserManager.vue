@@ -215,7 +215,7 @@
           }
         });
 
-
+        this.cancelSelectionHandler();
         this.dialogFormVisible = false
       },
       // 判断表单是否符合要求

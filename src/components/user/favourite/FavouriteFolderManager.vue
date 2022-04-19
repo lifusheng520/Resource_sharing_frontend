@@ -53,20 +53,20 @@
 
         <el-table-column type="selection" width="55"></el-table-column>
 
-        <el-table-column prop="time" label="时间" sortable width="100">
+        <el-table-column prop="time" label="时间" sortable min-width="160">
           <template slot-scope="scope">
             {{timeFormat(scope.row.time)}}
           </template>
         </el-table-column>
 
-        <el-table-column prop="time" label="创建于" sortable width="130">
+        <el-table-column prop="time" label="创建于" sortable min-width="140">
           <template slot-scope="scope">
             {{getTimePass(scope.row.time)}}
           </template>
         </el-table-column>
 
-        <el-table-column prop="folder_name" label="收藏夹名称" width="320"></el-table-column>
-        <el-table-column prop="resourceNumber" label="收藏量" sortable width="100"></el-table-column>
+        <el-table-column prop="resourceNumber" label="收藏量" sortable min-width="100"></el-table-column>
+        <el-table-column prop="folder_name" label="收藏夹名称" min-width="320"></el-table-column>
 
       </el-table>
 
@@ -250,8 +250,9 @@
           } else {
             out_this.$message.error(resData.code + '~~~~' + resData.message);
           }
-
         });
+
+        this.cancelSelect();
       },
       // 取消选择
       cancelSelect() {
