@@ -3,7 +3,7 @@
     <el-row>
       <el-col>
         <div id="download_data_div" style="margin: 0px"></div>
-        <div style="margin-top: -30px;margin-bottom: 30px; text-align: center">本周下载量分析</div>
+        <div style="margin-top: -30px;margin-bottom: 30px; text-align: center;font-size: 25px">本周下载量分析</div>
       </el-col>
     </el-row>
 

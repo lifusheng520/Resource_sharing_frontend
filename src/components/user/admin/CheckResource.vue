@@ -56,7 +56,7 @@
           <el-table-column label="" min-width="120" fixed="right">
             <template slot-scope="scope">
               <el-button v-if="supportVideoType(scope.row.type)"
-                         v-on:click="playVideoHandler(scope.row.id)" slot="reference">
+                         v-on:click="playVideoHandler(scope.row.id, scope.row.origin_name)" slot="reference">
                 <i class="fa fa-play-circle fa-2x"></i></el-button>
               <span v-else>不支持的格式</span>
             </template>
@@ -87,24 +87,11 @@
         </el-pagination>
       </div>
 
-      <el-dialog title="视频审批" :visible.sync="videoDialogVisible"
+      <el-dialog :title="'正在审批：' + videoFileName" :visible.sync="videoDialogVisible"
                  @close="closeDialogHandler" width="90%" center>
-        <!-- video begin-->
-        <div class="video">
-          <div class="container">
-
-            <div class="row">
-              <div class="col-xl-12 col-lg-12">
-                <div class="part-video">
-                  <img src="assets/img/about-video.jpg" alt="">
-                  <video id="video-check-resource" controls :src="videoHostURL"/>
-                </div>
-
-              </div>
-            </div>
-          </div>
+        <div align="center" style="width: 100%">
+          <video id="video-check-resource" controls :src="videoHostURL"/>
         </div>
-        <!-- video end -->
       </el-dialog>
 
     </div>
@@ -128,6 +115,7 @@
 
         videoDialogVisible: false,
         videoHostURL: '',
+        videoFileName: '',
       }
     },
     created() {
@@ -159,7 +147,7 @@
         console.log(this.selectCheckList)
       },
       // 取消选择
-      cancelSelection(){
+      cancelSelection() {
         this.$refs.multipleTable.clearSelection();
         this.selectCheckList = [];
       },
@@ -247,9 +235,10 @@
       },
 
       // 播放视频处理函数
-      playVideoHandler(resourceId) {
+      playVideoHandler(resourceId, fileName) {
         this.videoDialogVisible = true;
         this.videoHostURL = `http://localhost:8080/resource/server/getVideo/${resourceId}`;
+        this.videoFileName = fileName;
       },
       // 关闭对话框处理函数
       closeDialogHandler() {
@@ -299,7 +288,7 @@
     width: 69%;
   }
 
-  .part-video{
+  .part-video {
     border-radius: 10px;
   }
 

@@ -59,7 +59,7 @@
                   <h4>
                     <span class="category">隶属：{{UserAndResource.resource.discipline}}</span>
                   </h4>
-                  <p>资料介绍: <br>
+                  <p>资料介绍: <br>&nbsp;&nbsp;&nbsp;&nbsp;
                     {{UserAndResource.resource.description}}
                   </p>
                 </div>
@@ -116,6 +116,10 @@
                     :href="`http://localhost:8080/resource/download/${UserAndResource.resource.disk_name}/${UserAndResource.resource.id}/${UserAndResource.resource.discipline}`"><span><i
                     class="fas fa-cloud-download-alt"></i> 下载</span></a>
                   <a v-on:click="copyURLVisible = !copyURLVisible"><span><i class="fas fa-share"></i></span> 分享</a>
+                  <a v-on:click="playVideo(UserAndResource.resource.id)"
+                     v-show="isSupportVideoType(UserAndResource.resource.type)">
+                    <span><i class="fa fa-play-circle"></i></span> 在线观看
+                  </a>
                   <a hidden></a>
                 </div>
 
@@ -131,6 +135,14 @@
                     <el-button size="mini" type="primary" @click="copyURLVisible = false">取消</el-button>
                   </div>
                 </el-popover>
+
+                <el-dialog :title="'正在观看：' + UserAndResource.resource.origin_name"
+                           :visible.sync="playVideoDialogVisible"
+                           @close="closePlayVideoDialogHandler" width="90%" center>
+                  <div align="center" style="width: 100%">
+                    <video id="video-play-resource" controls :src="playVideoURL"/>
+                  </div>
+                </el-dialog>
 
               </div>
 
@@ -318,6 +330,9 @@
         userId: '',
         resourceId: '',
 
+        playVideoDialogVisible: false,
+        playVideoURL: '',
+
       }
     },
     created() {
@@ -356,6 +371,28 @@
       }
     },
     methods: {
+      // 判断是否为支持的视频格式
+      isSupportVideoType(type) {
+        if (type === 'mp4')
+          return true;
+        if (type === 'webm')
+          return true;
+        if (type === 'ogg')
+          return true;
+        return false;
+      },
+      // 播放视频处理函数
+      playVideo(resourceId) {
+        console.log(resourceId);
+        this.playVideoDialogVisible = true;
+        this.playVideoURL = `http://localhost:8080/resource/server/getVideo/${resourceId}`;
+      },
+      // 关闭视频播放对话框处理函数
+      closePlayVideoDialogHandler() {
+        let player = document.getElementById('video-play-resource');    //对应video标签的ID
+        player.pause();
+      },
+
       // 添加浏览记录
       addBrowseRecord() {
         this.$axios.get(`/browse/add/${this.userId}/${this.resourceId}`);
@@ -927,6 +964,5 @@
     font-weight: bolder;
     font-size: 16px;
   }
-
 
 </style>

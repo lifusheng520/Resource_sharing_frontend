@@ -28,12 +28,15 @@
 
         <el-row :gutter="10" style="margin: 20px 0px;text-align: center">
 
-            <el-col id="el-col-box" :span="6" v-for="(item, index) in browseRecordTableList" :key="index">
-              <el-card>
+          <el-col id="el-col-box" :span="6" v-for="(item, index) in browseRecordTableList" :key="index">
 
-                <div id="div-browse-checkbox">
-                  <el-checkbox v-model="browseRecordSelection" :label="item.id">&nbsp;</el-checkbox>
-                </div>
+            <el-card>
+
+              <div id="div-browse-checkbox">
+                <el-checkbox v-model="browseRecordSelection" :label="item.id">&nbsp;</el-checkbox>
+              </div>
+
+              <div v-on:click="goResourceDetailPage(item.resource_id)" id="browse-card-div">
 
                 <el-row>
                   <el-col :span="8">
@@ -56,10 +59,13 @@
 
                 <el-row style="margin-top: 10px;margin-bottom: -10px;">{{item.time}}</el-row>
 
-                <div>
-                </div>
-              </el-card>
-            </el-col>
+              </div>
+
+              <div>
+              </div>
+            </el-card>
+
+          </el-col>
 
         </el-row>
       </div>
@@ -174,6 +180,13 @@
 
         this.cancelSelection();
       },
+
+      // 跳转到资源详情页面
+      goResourceDetailPage(resourceId) {
+        console.log(resourceId);
+        this.$cookies.set('resource_id', resourceId);
+        this.$router.push('/detail');
+      }
     }
   }
 </script>
@@ -204,6 +217,10 @@
     border-radius: 50%;
     overflow: hidden;
     margin: 0px auto;
+  }
+
+  #browse-card-div {
+    cursor: pointer;
   }
 
 </style>

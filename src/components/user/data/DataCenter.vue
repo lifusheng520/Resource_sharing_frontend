@@ -3,6 +3,7 @@
     <div style="margin: 3%;width: 94%">
 
       <h3>数据统计</h3>
+      <br>
 
       <div style="width: 100%;">
 
