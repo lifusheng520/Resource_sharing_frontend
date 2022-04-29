@@ -66,11 +66,17 @@
                 </el-menu-item>
                 <el-menu-item index="7-3" v-on:click="goPlatformResourceManager"><i class="fa fa-cogs"></i>&nbsp;&nbsp;平台资源管理
                 </el-menu-item>
+                <el-menu-item index="7-4">
+                  <a href="http://localhost:8080/druid" target="_blank">
+                    <i class="fas fa-shield-alt"></i>&nbsp;&nbsp;平台监控
+                  </a>
+                </el-menu-item>
               </el-menu-item-group>
             </el-submenu>
 
             <el-menu-item index="8" v-on:click="goDataCenter">
-              <i class="fa fa-chart-bar"></i>&nbsp;&nbsp;&nbsp;数据中心</el-menu-item>
+              <i class="fa fa-chart-bar"></i>&nbsp;&nbsp;&nbsp;数据中心
+            </el-menu-item>
 
           </el-menu>
         </el-aside>
@@ -166,7 +172,7 @@
           this.$router.push('/browseRecordManager');
         }
       },
-      goDataCenter(){
+      goDataCenter() {
         if (this.$route.path !== '/dataCenter') {
           this.$router.push('/dataCenter');
         }
