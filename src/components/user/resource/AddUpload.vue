@@ -22,8 +22,8 @@
         </el-upload>
         <br>
 
-        <el-form-item label="资源所属科目类别" prop="discipline">
-          <el-select v-model="fileForm.discipline" placeholder="请选择资源科目">
+        <el-form-item label="资源所属学科" prop="discipline">
+          <el-select v-model="fileForm.discipline" placeholder="请选择学科信息">
             <el-option label="计算机科学" value="计算机科学"></el-option>
             <el-option label="哲学" value="哲学"></el-option>
             <el-option label="文学" value="文学"></el-option>

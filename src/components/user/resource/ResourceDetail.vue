@@ -771,6 +771,8 @@
               type: 'success',
               duration: 2000
             });
+
+            out_this.getResourceDetailInfo();
           } else {
             out_this.$message.error(resData.code + '~~~~' + resData.message);
           }

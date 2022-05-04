@@ -43,14 +43,14 @@
     <el-empty v-if="this.isEmpty" style="margin: 0;background: white;height: 700px" description="网络开小差了呢~~~"></el-empty>
 
     <div v-else>
-      <el-menu :default-active="'1'" class="el-menu-demo" mode="horizontal"
+      <!-- <el-menu :default-active="'1'" class="el-menu-demo" mode="horizontal"
                @select="handleSelect" background-color="#545c64" text-color="#fff"
                active-text-color="#ffd04b" style="width: 75%;margin: -30px auto;">
         <el-menu-item index="1">下载量</el-menu-item>
         <el-menu-item index="2">最新</el-menu-item>
         <el-menu-item index="3">最热门</el-menu-item>
         <el-menu-item index="4">收藏最多</el-menu-item>
-      </el-menu>
+      </el-menu> -->
 
       <el-backtop>TOP</el-backtop>
 
