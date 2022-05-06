@@ -6,8 +6,7 @@
 
       <h3>评论管理</h3>
 
-      <el-form :model="commentPageData" ref="searchForm" label-width="100px" style="width: 100%;margin: 10px auto"
-               align="right">
+      <el-form :model="commentPageData" ref="searchForm">
         <el-form-item>
           <template>
             <el-popconfirm title="确定删除选中的内容吗？" @confirm="deleteListOfComment(multipleSelection)"
@@ -19,7 +18,7 @@
         </el-form-item>
       </el-form>
 
-      <h5>红色标记为违规的评论</h5>
+      <h5 align="right">红色标记为违规的评论</h5>
 
       <el-table :data="commentTableData" @selection-change="handleSelectionChange" ref="multipleTable"
                 :row-class-name="tableRowClassName" style="width: 100%;"
@@ -209,10 +208,14 @@
   }
 </script>
 
-<style>
+<style scoped>
 
   #div_comment_table {
     width: 95%;
+  }
+
+  .el-table {
+    margin-top: 20px;
   }
 
   .el-table .warning-row {
@@ -221,6 +224,14 @@
 
   .el-table .success-row {
     background: RGBA(240, 249, 235, 0.5);
+  }
+
+  .el-form {
+    position: absolute;
+    margin-left: 0px;
+  }
+  .el-form-item{
+    margin: 0px;
   }
 
 
