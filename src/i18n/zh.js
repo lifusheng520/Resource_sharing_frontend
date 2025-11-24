@@ -15,6 +15,10 @@ day: '天',
 year: '年',
 yearsAgo: '年前',
 monthsAgo: '月前',
+notFound404: '网络好像罢工了...',
+download: '下载',
+supportSuccess: '感谢你的支持',
+alias: '昵称',
   header: {
     home: '首页',
     recommendation: '资源推荐',
@@ -247,6 +251,24 @@ monthsAgo: '月前',
     selectionPrompt1: '请先选择需要移动的内容',
     selectionPrompt2: '请先选择需要复制内容'
 
+  },
+  focusDetail: {
+    notFocusYet: '您还没有关注过其他用户',
+    description: '暂时还没有内容',
+    belongTo: '隶属：',
+    uploadDate: '上传于：'
+  },
+  focusManager: {
+    title: '关 注 列 表',
+    cancelFocusNotice: '确定取消关注改用户吗？',
+    cancelFocus: '取消关注',
+    browseContent: '查看他/她的资源'
+  },
+  downloadDataParse: {
+    title: '本周下载量分析'
+  },
+  home: {
+    welcome: '欢迎来到校园资源享平台'
   },
   home: {
     welcome: '欢迎来到校园资源享平台'

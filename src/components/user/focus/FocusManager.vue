@@ -4,16 +4,16 @@
     <div v-else style="margin: 3%; width: 94%">
 
 
-      <h3>关注列表</h3>
+      <h3>{{$t('focusManager.title')}}</h3>
 
       <el-table :data="focusTableList" ref="multipleTable"
                 style="width: 100%;"
                 :default-sort="{prop: 'time', order: 'descending'}">
 
-        <el-table-column prop="time" label="关注时间" sortable min-width="110"></el-table-column>
+        <el-table-column prop="time" :label="`${$t('date')}`" sortable min-width="110"></el-table-column>
 
 
-        <el-table-column prop="resource_name" label="用户信息" min-width="60">
+        <el-table-column prop="resource_name" label="" min-width="60">
           <template slot-scope="scope">
             <div class="div-user-icon">
               <img v-if="scope.row.focusUserIcon" :src="scope.row.focusUserIcon" alt="">
@@ -21,20 +21,20 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="focusUserName" min-width="100"></el-table-column>
+        <el-table-column prop="focusUserName" :label="`${$t('alias')}`" min-width="100"></el-table-column>
 
         <el-table-column min-width="100px" fixed="right">
           <template slot-scope="scope">
-            <el-popconfirm title="确定删除选中的内容吗？" @confirm="cancelFocus(scope.row)"
+            <el-popconfirm :title="`${$t('focusManager.cancelFocusNotice')}`" @confirm="cancelFocus(scope.row)"
                            @cancel="toggleSelection">
-              <el-button slot="reference" type="danger" plain>取消关注</el-button>
+              <el-button slot="reference" type="danger" plain>{{ $t('focusManager.cancelFocus') }}</el-button>
             </el-popconfirm>
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" min-width="100px" fixed="right">
+        <el-table-column  min-width="100px" fixed="right">
           <template slot-scope="scope">
-            <el-button @click="goFocusPage(scope.row.focus_uid)" type="text" plain>查看</el-button>
+            <el-button @click="goFocusPage(scope.row.focus_uid)" type="text" plain>{{$t('focusManager.browseContent')}}</el-button>
           </template>
         </el-table-column>
 
@@ -93,15 +93,9 @@
           console.log(resData);
 
           if (resData.code == 6004) {
-            out_this.$message({
-              message: resData.code + '~~~~' + resData.message,
-              type: 'success',
-              duration: 1500
-            });
-
             out_this.deleteFocusTableListItem(resData.data);
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + '~~~~' + out_this.$t('serverError'));
           }
 
         });
@@ -135,22 +129,16 @@
         let out_this = this;
         this.$axios.post('/focus/getInfo', this.focusPageData).then(response => {
           let resData = response.data;
-          console.log(resData);
+          //console.log(resData);
 
           if (resData.code == 6006) {
-            out_this.$message({
-              message: resData.code + '~~~~' + resData.message,
-              type: 'success',
-              duration: 1500
-            });
-
             out_this.focusPageData.currentPage = resData.data.currentPage;
             out_this.focusPageData.pageSize = resData.data.pageSize;
             out_this.focusPageData.total = resData.data.total;
             out_this.focusTableList = resData.data.pageList;
 
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + '~~~~' + out_this.$t('serverError'));
           }
 
         });

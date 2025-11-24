@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-empty v-if="this.isEmpty" style="margin: 0;background: white;height: 700px" description="网络开小差了呢~~~"></el-empty>
+    <el-empty v-if="this.isEmpty" style="margin: 0;background: white;height: 700px" :description="`${$t('notFound404')}`"></el-empty>
     <div v-else>
 
       <div class="div-focus-user-list-box">
@@ -14,7 +14,7 @@
 
         <div v-if="!focusUserInfoList.length" style="width: 100%">
           <br><br>
-          <p align="center">您还没有关注过的用户</p>
+          <p align="center">{{ $t('focusDetail.notFocusYet') }}</p>
         </div>
 
         <div v-else class="div-focus-user-list">
@@ -48,7 +48,7 @@
 
       </div>
 
-      <el-empty v-if="resourceInfoList.length === 0" style="margin: 20% auto" description="该用户暂时还没有任何可看的~~~"></el-empty>
+      <el-empty v-if="resourceInfoList.length === 0" style="margin: 20% auto" :description="`${$t('focusDetail.description')}`"></el-empty>
 
       <div v-else>
 
@@ -74,10 +74,10 @@
                       <span><i class="el-icon-s-custom"></i>&nbsp;&nbsp;&nbsp;{{item.userInfo.username}} </span>
                     </h4>
                     <h4>
-                      <span>隶属：{{item.resource.discipline}}</span>
+                      <span>{{$t('focusDetail.belongTo')}}{{item.resource.discipline}}</span>
                     </h4>
                     <h4>
-                      <span>上传于：{{item.resource.upload_time}}</span>
+                      <span>{{$t('focusDetail.uploadDate')}}{{item.resource.upload_time}}</span>
                     </h4>
                     <div class="div_resource_description">
                       <!--                  {{item.resource.description.length > 35 ? item.resource.description.slice(0, 35) + '...' :-->
@@ -93,7 +93,7 @@
                     <a href="#"><span><i class="fas fa-cloud-download-alt"></i></span>{{item.resource.downloads}}次</a>
                     <a
                       :href="`${backendBaseURL }/resource/download/${item.resource.disk_name}/${item.resource.id}/${item.resource.discipline}`"><span><i
-                      class="fas fa-download"></i></span>下载</a>
+                      class="fas fa-download"></i></span>{{ $t('download') }}</a>
                     <a v-on:click="goResourceDetail(item.resource.id)"> More</a>
                   </div>
                   
@@ -177,7 +177,7 @@
             }
 
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + '~~~~' + out_this.$t('serverError'));
           }
 
         });
@@ -189,7 +189,7 @@
           this.myPageData.user_id = userId;
           return userId;
         } else {
-          this.$message.info('您还没有登录喔，请先登录再查看~~~');
+          this.$message.info(this.$t('sessionExpired'));
           this.$router.push('/login');
           return false;
         }
@@ -237,7 +237,7 @@
             out_this.resourceInfoList = resData.data.pageList;
 
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + '~~~~' + out_this.$t('serverError'));
           }
 
         });
@@ -272,22 +272,18 @@
 
           if (resData.code == 6051) {
             out_this.$message({
-              message: resData.code + '~~~~' + resData.message,
+              message: resData.code + '~~~~' + out_this.$t('supportSuccess'),
               type: 'success',
               duration: 2000
             });
             // 点赞成功，将资源的点赞数+1
             out_this.setResourceSupportNumber(resourceId, 1);
           } else if (resData.code == 6052) {
-            out_this.$message({
-              message: resData.code + '~~~~' + resData.message,
-              type: 'success',
-              duration: 2000
-            });
+
             // 取消成功，将资源的点赞数-1
             out_this.setResourceSupportNumber(resourceId, -1);
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + '~~~~' + out_this.$t('serverError'));
           }
 
         });
