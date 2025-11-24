@@ -24,7 +24,7 @@ export default {
         law: '法学',
         engineering: '工学',
         management: '管理学',
-        computerScience: '计算机科学cs',
+        computerScience: '计算机科学',
         education: '教育学',
         economics: '经济学',
         militaryScience: '军事学',
@@ -320,7 +320,59 @@ export default {
         all: '全部'
     },
     uploadDataParse: {
-        welcome: '欢迎来到校园资源享平台'
+        chartTitle1: '上 周 上 传 量',
+        chartTitle2: '各 科 资 源 的 上 传 量 占 比',
+        chartTitle3: '按 学 科 分 类',
+        chartTitle4: '上 周'
+    },
+    uploadRank: {
+        title1: '全场资源贡献最佳 ',
+        title2: 'FMVP',
+        title3: '排行',
+
+        description1: '暗裔剑魔·亚托克斯，一位堕落的天神战士，曾经险些毁灭符文之地，却最终和他的同类与远古时代的武器融为一体，被囚禁了无数世纪。',
+
+        ranking: '名次',
+        user: '用户',
+        contributionAmount: '贡献资源数',
+
+        focus: '关注',
+        cancel: '取消'
+    },
+    personalInfo: {
+        avatarUpload: '上传头像',
+        uploadPrompt: '将文件拖到此处，或',
+        clickUpload: '点击上传',
+        avatarUploadNotice: '只能上传jpg/png文件，且不超过10MB',
+        account: '账号',
+        uninputed: '未填写',
+        alias: '昵称',
+        gender: '性别',
+        accountState: '账号状态',
+        using: '正常使用',
+        locked: '封禁状态',
+        system: '系统',
+        privilege: '权限',
+        createDate: '创建日期',
+        bindedEmail: '已绑定邮箱',
+        modifyBinding: '修改绑定',
+        unbinded: '未绑定',
+        bind: '绑定',
+
+        bindingEmailNotice1: '绑定安全邮箱作用于您的身份验证，不会拿您的邮箱做其他用途，请放心绑定',
+        bindingEmailNotice2: '例如：更改您的密码',
+
+        email: '邮箱',
+        verifyCode: '验证码',
+        contact: '联系地址',
+        modifyInfo: '修改个人信息',
+        boy: '男',
+        girl: '女'
+
+
+
+
+
     },
     home: {
         welcome: '欢迎来到校园资源享平台'

@@ -6,9 +6,8 @@
         <div class="row justify-content-center">
           <div class="col-xl-8 col-lg-8">
             <div class="section-title text-center">
-              <h2>全场资源贡献最佳 <span> FMVP</span> 排行</h2>
-              <p>暗裔剑魔·亚托克斯，一位堕落的天神战士，曾经险些毁灭符文之地，
-                却最终和他的同类与远古时代的武器融为一体，被囚禁了无数世纪。</p>
+              <h2>{{$t('uploadRank.title1')}} <span> {{$t('uploadRank.title2')}}</span> {{$t('uploadRank.title3')}}</h2>
+              <p>{{$t('uploadRank.description1')}}</p>
             </div>
           </div>
         </div>
@@ -25,9 +24,9 @@
                     <thead align="center">
 
                     <tr>
-                      <th scope="col">TOP</th>
-                      <th scope="col">用户</th>
-                      <th scope="col">贡献资源</th>
+                      <th scope="col">{{$t('uploadRank.ranking')}}</th>
+                      <th scope="col">{{$t('uploadRank.user')}}</th>
+                      <th scope="col">{{$t('uploadRank.contributionAmount')}}</th>
                       <th scope="col"></th>
                     </tr>
 
@@ -39,7 +38,7 @@
                       <th scope="row" class="d-flex">
                         <div class="user-img">
                           <img v-if="item.headIcon" :src="item.headIcon" alt="">
-                          <img v-else src="static/ico/none.png" alt="">
+                          <img v-else src="/static/ico/headIcon.png" alt="">
                         </div>
                         <span>{{item.username}}</span>
                       </th>
@@ -49,7 +48,7 @@
                                    :type="isFocus(item.user_id) ? 'danger' : 'info'"
                                    round>
                           <i class="el-icon-plus"></i>
-                          {{isFocus(item.user_id) ? '取消' : '关注'}}
+                          {{chooseButton(item.user_id)}}
                         </el-button>
                       </td>
                     </tr>
@@ -220,6 +219,15 @@
             return;
           }
         }
+      },
+      // 更新 关注/取消 按钮
+      chooseButton(user_id) {
+        console.log('here --- ' +  this.$t('uploadRank.cancel'))
+        let focused = this.isFocus(user_id);
+        if(focused)
+          return this.$t('uploadRank.cancel');
+        else
+          return this.$t('uploadRank.focus');
       }
 
     }

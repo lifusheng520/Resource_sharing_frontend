@@ -158,14 +158,14 @@
           </el-descriptions>
           <p>
             <br>
-            <el-button type="primary" size="small" @click="dialogFormVisible = true">修改我的信息<i
+            <el-button type="primary" size="small" @click="dialogFormVisible = true">修改个人信息<i
               class="el-icon-edit el-icon--right"></i></el-button>
             <!-- Form -->
             <el-dialog title="修改个人信息" :visible.sync="dialogFormVisible">
 
               <el-form :model="updateForm">
 
-                <el-form-item label="姓名" :label-width="formLabelWidth">
+                <el-form-item label="昵称" :label-width="formLabelWidth">
                   <el-input v-model="updateForm.name" autocomplete="off"></el-input>
                 </el-form-item>
 
