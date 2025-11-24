@@ -5,21 +5,21 @@
     <div v-else style="margin: 3%; width: 94%">
 
       <div>
-        <h3>收藏夹管理</h3>
+        <h3>{{$t('favouriteFolderManager.title')}}</h3>
         <br>
 
         <!-- Form -->
-        <el-button type="primary" size="small" @click="dialogFormVisible = true">新建收藏夹</el-button>
+        <el-button type="primary" size="small" @click="dialogFormVisible = true">{{$t('favouriteFolderManager.newFolder')}}</el-button>
 
-        <el-dialog center title="新建收藏夹" :visible.sync="dialogFormVisible">
+        <el-dialog center :title="`${$t('favouriteFolderManager.newFolder')}`" :visible.sync="dialogFormVisible">
           <el-form :model="newFolderForm">
-            <el-form-item label="收藏夹名称">
+            <el-form-item :label="`${$t('favouriteFolderManager.albumName')}`">
               <el-input v-model="newFolderForm.folder_name" autocomplete="off"></el-input>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="newFolderHandler">确 定</el-button>
+            <el-button @click="dialogFormVisible = false">{{$t('cancelButton')}}</el-button>
+            <el-button type="primary" @click="newFolderHandler">{{$t('confirmButton')}}</el-button>
           </div>
         </el-dialog>
 
@@ -28,19 +28,21 @@
         <el-popover placement="top"
                     width="200" trigger="click" v-model="visible">
 
-          <p>删除收藏夹后，收藏夹的收藏内容也会一并全部删除，确定删除吗？</p>
+          <p>{{ $t('favouriteFolderManager.notice') }}</p>
           <div style="text-align: right; margin: 0">
-            <el-button size="mini" type="text" @click="visible = false">取消</el-button>
+            <el-button size="mini" type="text" @click="visible = false">
+              {{$t('cancelButton')}}
+            </el-button>
             <el-button v-on:click="deleteFavouriteFolders" type="primary" size="mini" @click="visible = false">
-              确定
+              {{$t('confirmButton')}}
             </el-button>
           </div>
 
           <el-button slot="reference" type="danger" size="small" plain>
-            删 除
+            {{$t('delete')}}
           </el-button>
         </el-popover>
-        <el-button v-on:click="cancelSelect" size="small" plain>取 消</el-button>
+        <el-button v-on:click="cancelSelect" size="small" plain>{{$t('cancelButton')}}</el-button>
       </div>
 
       <el-table
@@ -53,20 +55,20 @@
 
         <el-table-column type="selection" width="55"></el-table-column>
 
-        <el-table-column prop="time" label="时间" sortable min-width="160">
+        <el-table-column prop="time" :label="`${$t('date')}`" sortable min-width="160">
           <template slot-scope="scope">
             {{timeFormat(scope.row.time)}}
           </template>
         </el-table-column>
 
-        <el-table-column prop="time" label="创建于" sortable min-width="140">
+        <el-table-column prop="time" :label="`${$t('favouriteFolderManager.duration')}`" sortable min-width="140">
           <template slot-scope="scope">
             {{getTimePass(scope.row.time)}}
           </template>
         </el-table-column>
 
-        <el-table-column prop="resourceNumber" label="收藏量" sortable min-width="100"></el-table-column>
-        <el-table-column prop="folder_name" label="收藏夹名称" min-width="320"></el-table-column>
+        <el-table-column prop="resourceNumber" :label="`${$t('favouriteFolderManager.favouriteAmount')}`" sortable min-width="100"></el-table-column>
+        <el-table-column prop="folder_name" :label="`${$t('favouriteFolderManager.albumName')}`" min-width="320"></el-table-column>
 
       </el-table>
 
@@ -130,7 +132,7 @@
           }
         if (k != -1) {
           this.$refs.multipleTable.selection.splice(k, 1);
-          this.$message.info('默认收藏夹不能操作喔~~');
+          this.$message.info(this.$t('favouriteFolderManager.denialOperation'));
           return this.$refs.multipleTable.selection;
         }
         return this.$refs.multipleTable.selection;
@@ -152,7 +154,7 @@
           this.folderPageData.user_id = userId;
 
         } else {
-          this.$message.info('请先登录再查看~~~');
+          this.$message.info(this.$t('sessionExpired'));
           this.$router.push('/login');
         }
       },
@@ -161,14 +163,14 @@
         let out_this = this;
         this.$axios.post('/favourite/getFolders', this.folderPageData).then(response => {
           let resData = response.data;
-          console.log(resData);
+          //console.log(resData);
           if (resData.code === 7015) {
             out_this.folderPageData.currentPage = resData.data.currentPage;
             out_this.folderPageData.pageSize = resData.data.pageSize;
             out_this.folderPageData.total = resData.data.total;
             out_this.folderTableData = resData.data.pageList;
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + '~~~~' + out_this.$t('serverError'));
           }
         });
       },
@@ -180,32 +182,32 @@
         // 计算间隔了多少秒
         let gapTime = parseInt(gap / 1000);
         if (gapTime < 60)
-          result = '不到1分钟前';
+          result = this.$t('withinOneMinute');
         // 计算间隔了多少分钟
         gapTime = parseInt(gapTime / 60);
         if (!result && gapTime < 60)
-          result = gapTime + '分钟前';
+          result = gapTime +  this.$t('minutesAgo');
         // 计算间隔了多少小时
         let hours = parseInt(gapTime / 60);
         let min = gapTime % 60;
         if (!result && hours < 24)
-          result = hours + '小时' + min + '分钟前';
+          result = hours + this.$t('hour') + min +this.$t('minutesAgo');
         // 计算间隔了多少天
         let days = parseInt(hours / 24);
         hours = hours % 24;
         if (!result && days < 30)
-          result = days + '天' + hours + '小时前';
+          result = days + this.$t('day') + hours + this.$t('hoursAgo');
         // 计算年
         let years = new Date().getFullYear() - new Date(timeStamp).getFullYear();
         // 计算月
         let month = new Date().getMonth() - new Date(timeStamp).getMonth();
         month = Math.abs(month);
         if (!result && years > 0 && month > 0)
-          result = years + '年' + month + '月前';
+          result = years + this.$t('year') + month + this.$t('monthsAgo');
         if (!result && years > 0 && month === 0)
-          result = years + '年前';
+          result = years + this.$t('yearsAgo');
         if (!result && years === 0 && month > 0)
-          result = month + '月前';
+          result = month + this.$t('monthsAgo');
         return result;
       },
       // 格式化时间
@@ -234,10 +236,10 @@
         let out_this = this;
         this.$axios.post('/favourite/deleteFolders', this.folderSelectList).then(response => {
           let resData = response.data;
-          console.log(resData);
+          //console.log(resData);
           if (resData.code === 7016) {
             out_this.$message({
-              message: resData.code + '~~~~  ' + resData.message,
+              message: resData.code + ' ~~~~  ' + out_this.$t('deleteSuccess'),
               type: 'success',
               center: true,
               duration: 2000
@@ -248,7 +250,7 @@
             out_this.folderPageData.total = -1;
             out_this.loadFavouriteFolderInfoList();
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + ' ~~~~ ' + out_this.$t('serverError'));
           }
         });
 
@@ -265,11 +267,11 @@
         // 获取用户id
         let userId = this.$cookies.get('user_id');
         if (!userId) {
-          this.$message.info('获取您的登录信息失败，请重新登录试试');
+          this.$message.info(this.$t('sessionExpired'));
           return 0;
         }
         if (!this.newFolderForm.folder_name) {
-          this.$message.info('收藏夹名称不能为空喔');
+          this.$message.info(this.$t('favouriteFolderManager.rule1'));
           return 0;
         }
         this.newFolderForm.user_id = userId;
@@ -280,7 +282,7 @@
           let resData = response.data;
           if (resData.code == 7006) { // 添加成功
             out_this.$message({
-              message: resData.code + '~~~~' + resData.message,
+              message: resData.code + ' ~~~~ ' + out_this.$t('operationSuccess'),
               type: 'success',
               duration: 2000
             });
@@ -289,7 +291,7 @@
             out_this.folderPageData.total = -1;
             out_this.loadFavouriteFolderInfoList();
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + ' ~~~~ ' + out_this.$t('serverError'));
           }
         });
 

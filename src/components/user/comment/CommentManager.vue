@@ -1,59 +1,63 @@
 <template>
   <div id="div_comment_table">
-    <el-empty v-if="this.isEmpty" style="margin: 20% auto" description="网络开小差了，请重新登录~~~"></el-empty>
+    <el-empty v-if="this.isEmpty" style="margin: 20% auto" :description="`${$t('sessionExpired')}`"></el-empty>
     <div v-else style="margin: 3%; width: 100%">
 
 
-      <h3>评论管理</h3>
+      <h3>{{$t('commentManager.title')}}</h3>
 
       <el-form :model="commentPageData" ref="searchForm">
         <el-form-item>
           <template>
-            <el-popconfirm title="确定删除选中的内容吗？" @confirm="deleteListOfComment(multipleSelection)"
+            <el-popconfirm :title="`${$t('commentManager.confirmPrompt')}`" @confirm="deleteListOfComment(multipleSelection)"
                            @cancel="toggleSelection">
-              <el-button slot="reference" v-show="hadSelected" type="danger" style="margin-left: 20px" round>删除
+              <el-button slot="reference" v-show="hadSelected" type="danger" style="margin-left: 20px" round>{{$t('delete')}}
               </el-button>
             </el-popconfirm>
           </template>
         </el-form-item>
       </el-form>
 
-      <h5 align="right">红色标记为违规的评论</h5>
+      <div id="bigger-box"></div>
 
       <el-table :data="commentTableData" @selection-change="handleSelectionChange" ref="multipleTable"
                 :row-class-name="tableRowClassName" style="width: 100%;"
                 :default-sort="{prop: 'time', order: 'descending'}">
 
         <el-table-column type="selection" width="50"></el-table-column>
-        <el-table-column prop="time" label="评论时间" sortable min-width="100"></el-table-column>
+        <el-table-column prop="time" :label="`${$t('date')}`" sortable min-width="100"></el-table-column>
 
-        <el-table-column label="判定" min-width="80">
+        <el-table-column :label="`${$t('commentManager.judgement')}`" min-width="80">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.isIllegal == 1" type="danger">违规</el-tag>
-            <el-tag v-else type="success">正常</el-tag>
+            <el-tag v-if="scope.row.isIllegal == 1" type="danger">
+              {{$t('commentManager.inappropriate')}}
+            </el-tag>
+            <el-tag v-else type="success">
+              {{$t('commentManager.appropriate')}}
+            </el-tag>
           </template>
         </el-table-column>
 
-        <el-table-column prop="resource_name" label="对应资源名" sortable min-width="200"></el-table-column>
-        <el-table-column prop="support_number" label="点赞数" sortable min-width="100"></el-table-column>
+        <el-table-column prop="resource_name" :label="`${$t('commentManager.resourceName')}`" sortable min-width="200"></el-table-column>
+        <el-table-column prop="support_number" :label="`${$t('commentManager.supportNumber')}`" sortable min-width="100"></el-table-column>
 
-        <el-table-column label="回复" min-width="150px">
+        <el-table-column :label="`${$t('commentManager.reply')}`" min-width="150px">
           <template slot-scope="scope">
             <el-tag v-if="scope.row.to_name" type="info">{{'@' + scope.row.to_name}}</el-tag>
           </template>
         </el-table-column>
 
-        <el-table-column prop="content" label="内容" sortable min-width="300"></el-table-column>
+        <el-table-column prop="content" :label="`${$t('commentManager.content')}`" sortable min-width="300"></el-table-column>
 
-        <el-table-column label="操作" min-width="100px" fixed="right">
+        <el-table-column :label="`${$t('commentManager.operation')}`" min-width="100px" fixed="right">
           <template slot-scope="scope">
 
-            <el-popconfirm title="确定删除选中的内容吗？" @confirm="deleteRow(scope.row)"
+            <el-popconfirm :title="`${$t('commentManager.confirmPrompt')}`" @confirm="deleteRow(scope.row)"
                            @cancel="toggleSelection">
-              <el-button slot="reference" type="text" plain>删除</el-button>
+              <el-button slot="reference" type="text" plain>{{$t('delete')}}</el-button>
             </el-popconfirm>
 
-            <el-button @click="goCommentDetailPage(scope.row)" type="text" plain>查看</el-button>
+            <el-button @click="goCommentDetailPage(scope.row)" type="text" plain>{{$t('commentManager.browse')}}</el-button>
           </template>
         </el-table-column>
 
@@ -114,20 +118,13 @@
           console.log(resData);
 
           if (resData.code === 5005) {
-            this.$message({
-              message: resData.code + '~~~~  ' + resData.message,
-              type: 'success',
-              center: true,
-              duration: 2000
-            });
-
             out_this.commentTableData = resData.data.pageList;
             out_this.commentPageData.currentPage = resData.data.currentPage;
             out_this.commentPageData.total = resData.data.total;
             out_this.commentPageData.pageSize = resData.data.pageSize;
 
           } else {
-            this.$message.error(resData.code + '~~~~  ' + resData.message);
+            out_this.$message.error(resData.code + '~~~~  ' + out_this.$t('serverError'));
           }
 
         });
@@ -162,8 +159,8 @@
           console.log(resData);
 
           if (resData.code === 5006) {
-            this.$message({
-              message: resData.code + '~~~~  ' + resData.message,
+            out_this.$message({
+              message: resData.code + '~~~~  ' + out_this.$t('deleteSuccess'),
               type: 'success',
               center: true,
               duration: 2000
@@ -171,7 +168,7 @@
 
             out_this.getCommentList();
           } else {
-            this.$message.error(resData.code + '~~~~  ' + resData.message);
+            this.$message.error(resData.code + '~~~~  ' + out_this.$t('serverError'));
           }
         });
 
@@ -188,7 +185,7 @@
         let userId = this.$cookies.get('user_id');
         if (!userId) {
           this.$message({
-            message: '请先登录再查看喔~',
+            message: this.$t('sessionExpired'),
             type: 'warning'
           });
           this.isEmpty = true;
@@ -232,6 +229,10 @@
   }
   .el-form-item{
     margin: 0px;
+  }
+
+  #bigger-box {
+    height: 20px;
   }
 
 

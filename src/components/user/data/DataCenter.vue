@@ -2,7 +2,7 @@
   <div style="width: 100%">
     <div style="margin: 3%;width: 94%">
 
-      <h3>数据统计</h3>
+      <h3>{{$t('dataCenter.title')}}</h3>
       <br>
 
       <div style="width: 100%;">
@@ -32,7 +32,7 @@
 
       option = {
         title: {
-          text: '2022年系统服务器分析'
+          text: '2022年'
         },
         tooltip: {
           trigger: 'axis',
@@ -44,7 +44,7 @@
           }
         },
         legend: {
-          data: ['上传量', '下载量', '浏览量', '用户量']
+          data: [this.$t('dataCenter.dataItem1'), this.$t('dataCenter.dataItem2'), this.$t('dataCenter.dataItem3'), this.$t('dataCenter.dataItem4')]
         },
         toolbox: {
           feature: {
@@ -61,7 +61,7 @@
           {
             type: 'category',
             boundaryGap: false,
-            data: ['1月', '2月', '3月', '4月']
+            data: ['Jan.', 'Feb.', 'Mar.', 'Apr.']
           }
         ],
         yAxis: [
@@ -71,7 +71,7 @@
         ],
         series: [
           {
-            name: '上传量',
+            name: this.$t('dataCenter.dataItem1'),
             type: 'line',
             stack: 'Total',
             areaStyle: {},
@@ -81,7 +81,7 @@
             data: [120, 132, 101, 134, 90, 230, 210]
           },
           {
-            name: '下载量',
+            name: this.$t('dataCenter.dataItem2'),
             type: 'line',
             stack: 'Total',
             areaStyle: {},
@@ -91,7 +91,7 @@
             data: [220, 182, 191, 234, 290, 330, 310]
           },
           {
-            name: '浏览量',
+            name: this.$t('dataCenter.dataItem3'),
             type: 'line',
             stack: 'Total',
             areaStyle: {},
@@ -101,7 +101,7 @@
             data: [150, 232, 201, 154, 190, 330, 410]
           },
           {
-            name: '用户量',
+            name: this.$t('dataCenter.dataItem4'),
             type: 'line',
             stack: 'Total',
             areaStyle: {},
