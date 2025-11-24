@@ -13,19 +13,19 @@
                      label-width="100px"
                      class="demo-ruleForm">
 
-              <el-form-item label="账 号" prop="username">
+              <el-form-item :label="`${$t('forgetPassword.account')}`" prop="username">
                 <el-input type="text" v-model="ruleForm.username"></el-input>
               </el-form-item>
 
-              <el-form-item label="新的密码" prop="password">
+              <el-form-item :label="`${$t('forgetPassword.newPassword')}`" prop="password">
                 <el-input type="password" v-model="ruleForm.password" autocomplete="off"></el-input>
               </el-form-item>
 
-              <el-form-item label="确认密码" prop="checkPass">
+              <el-form-item :label="`${$t('forgetPassword.confirmPassword')}`" prop="checkPass">
                 <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
               </el-form-item>
 
-              <el-form-item label="验证码" prop="verifyCode">
+              <el-form-item :label="`${$t('forgetPassword.varificationCode')}`" prop="verifyCode">
                 <el-input type="text" v-model="ruleForm.verifyCode"></el-input>
               </el-form-item>
 
@@ -37,8 +37,8 @@
 
               <br>
               <el-form-item>
-                <el-button type="primary" @click="submitForm('ruleForm')">确 认 修 改</el-button>
-                <el-button @click="resetForm('ruleForm')">重 置</el-button>
+                <el-button type="primary" @click="submitForm('ruleForm')">{{$t('forgetPassword.confirm')}}</el-button>
+                <el-button @click="resetForm('ruleForm')">{{$t('forgetPassword.reset')}}</el-button>
               </el-form-item>
 
             </el-form>
@@ -68,24 +68,24 @@
         },
         rules: {
           username: [
-            {required: true, message: '账号不能为空', trigger: 'blur'},
-            {min: 5, max: 10, message: '长度在 5 到 10 个字符', trigger: 'blur'}
+            {required: true, message: this.$t('forgetPassword.rule1'), trigger: 'blur'},
+            {min: 5, max: 10, message: this.$t('forgetPassword.rule2'), trigger: 'blur'}
           ],
           password: [
-            {required: true, message: '请输入新的密码', trigger: 'blur'},
-            {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
+            {required: true, message: this.$t('forgetPassword.rule3'), trigger: 'blur'},
+            {min: 6, max: 20, message: this.$t('forgetPassword.rule4'), trigger: 'blur'}
           ],
           checkPass: [
-            {required: true, message: '请确认新的密码', trigger: 'blur'},
-            {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
+            {required: true, message: this.$t('forgetPassword.rule5'), trigger: 'blur'},
+            {min: 6, max: 20, message: this.$t('forgetPassword.rule4'), trigger: 'blur'}
           ],
           verifyCode: [
-            {required: true, message: '请输入验证码', trigger: 'blur'},
-            {min: 6, max: 6, message: '长度为 6 个字符', trigger: 'blur'}
+            {required: true, message: this.$t('forgetPassword.rule6'), trigger: 'blur'},
+            {min: 6, max: 6, message: this.$t('forgetPassword.rule7'), trigger: 'blur'}
           ]
         },
         needWaitting: false,
-        sendEmailButtionMessage: '发送验证码'
+        sendEmailButtionMessage: this.$t('forgetPassword.sendCode')
       };
     },
     methods: {
@@ -107,7 +107,7 @@
         let plen = this.ruleForm.password.length;
         let vlen = this.ruleForm.verifyCode.length;
         if (!ulen || !plen || !vlen) {
-          this.$message.error('请完善表单内容~~~');
+          this.$message.error(this.$t('forgetPassword.invalidForm'));
           return false;
         }
         if (!(ulen >= 5 && ulen <= 10))
@@ -116,7 +116,7 @@
           return false;
         if (this.ruleForm.password !== this.ruleForm.checkPass) {
           this.$message({
-            message: '两次输入的密码不一致~~',
+            message: this.$t('forgetPassword.passwordMismatch'),
             type: 'error'
           });
           return false;
@@ -126,7 +126,7 @@
       sendEmail() {
         // 验证表单
         if (!this.ruleForm.username) {
-          this.$message.error('请填写账号~~~');
+          this.$message.error(this.$t('forgetPassword.rule1'));
           return;
         }
         const out_this = this;
@@ -134,10 +134,10 @@
         // 验证码发送计时器
         let seconds = 60;
         const timerHandle = window.setInterval(function () {
-          out_this.sendEmailButtionMessage = seconds + '秒后重新发送';
+          out_this.sendEmailButtionMessage = seconds + out_this.$t('forgetPassword.sending');
           if (seconds <= 0) {
             out_this.needWaitting = false;
-            out_this.sendEmailButtionMessage = '发送验证码';
+            out_this.sendEmailButtionMessage = out_this.$t('forgetPassword.sendCode');
             window.clearInterval(timerHandle);
           }
           seconds--;
@@ -148,7 +148,7 @@
           console.log(resData);
           if (resData.code === 4006) {
             this.$message({
-              message: resData.code + '~~~~' + resData.message + '~~注意查收',
+              message: resData.code + '~~~~' + resData.message + out_this.$t('forgetPassword.checkEmail'),
               type: 'success',
               duration: 3000
             });

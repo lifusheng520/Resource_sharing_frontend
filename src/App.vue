@@ -10,8 +10,9 @@ export default {
   mounted() {
 
   },
+  create(){
+  },
   methods: {
-
   }
 }
 </script>
@@ -26,4 +27,5 @@ export default {
   /*margin-top: 60px;*/
   cursor: pointer;
 }
+
 </style>

@@ -2,7 +2,7 @@
   <div id="div_platform_resource_box">
     <div style="margin: 3%;width: 94%">
 
-      <h3>平台资源</h3>
+      <h3>{{$t('platformResourceManager.title')}}</h3>
 
       <div class="div-top-operation-box">
 
@@ -10,7 +10,7 @@
           <el-button v-show="this.resourceSelectList.length !== 0"
                      @click="deleteSelectResource"
                      type="danger" plain round>
-            删 除
+            {{$t('platformResourceManager.delete')}}
           </el-button>
         </div>
 
@@ -19,7 +19,7 @@
           <el-form :model="tablePageData" ref="searchForm" label-width="100px" style="width: 100%;"
                    align="right">
             <el-form-item>
-              <el-input v-model="tablePageData.search" placeholder="请输入文件名"
+              <el-input v-model="tablePageData.search" :placeholder="`${$t('platformResourceManager.placeholderPrompt')}`"
                         style="width: 60%; margin-right: 20px"></el-input>
               <el-button type="primary" icon="el-icon-search" @click="searchResource" circle></el-button>
               <el-button type="info" @click="reloadResourceList" circle><i class="el-icon-refresh"></i></el-button>
@@ -34,19 +34,19 @@
                 :default-sort="{prop: 'resource.upload_time', order: 'descending'}">
 
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="resource.upload_time" label="上传时间" sortable min-width="160"></el-table-column>
-        <el-table-column prop="user.username" label="上传者" min-width="120"></el-table-column>
-        <el-table-column prop="userInfo.name" label="姓名" min-width="120"></el-table-column>
-        <el-table-column prop="resource.origin_name" label="文件名" min-width="300"></el-table-column>
-        <el-table-column prop="resource.discipline" label="科目" min-width="120"></el-table-column>
+        <el-table-column prop="resource.upload_time" :label="`${$t('platformResourceManager.uploadTime')}`" sortable min-width="160"></el-table-column>
+        <el-table-column prop="user.username" :label="`${$t('platformResourceManager.owner')}`" min-width="120"></el-table-column>
+        <el-table-column prop="userInfo.name" :label="`${$t('platformResourceManager.alias')}`" min-width="120"></el-table-column>
+        <el-table-column prop="resource.origin_name" :label="`${$t('platformResourceManager.fileName')}`" min-width="300"></el-table-column>
+        <el-table-column prop="resource.discipline" :label="`${$t('platformResourceManager.discipline')}`" min-width="120"></el-table-column>
 
-        <el-table-column label="资源简介" min-width="100">
+        <el-table-column :label="`${$t('platformResourceManager.overview')}`" min-width="100">
           <template slot-scope="scope">
             <el-popover placement="bottom"
-                        title="资源介绍"
+                        :title="`${$t('platformResourceManager.resourceIntroduction')}`"
                         width="500" trigger="click"
                         :content="scope.row.resource.description">
-              <el-button slot="reference">查看</el-button>
+              <el-button slot="reference">{{$t('platformResourceManager.introductionReview')}}</el-button>
             </el-popover>
           </template>
         </el-table-column>
@@ -123,11 +123,6 @@
           console.log(resData);
 
           if (resData.code === 8006) {
-            out_this.$message({
-              message: resData.code + '~~~~' + resData.message,
-              type: 'success',
-              duration: 1500
-            });
 
             out_this.tablePageData.currentPage = resData.data.currentPage;
             out_this.tablePageData.pageSize = resData.data.pageSize;
@@ -135,7 +130,7 @@
             out_this.tableDataList = resData.data.pageList;
 
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + '~~~~' + out_this.$t('serverError'));
           }
 
         });
@@ -144,7 +139,7 @@
       searchResource() {
         let content = this.tablePageData.search;
         if (!content) {
-          this.$message.info('请输入搜索内容~~~');
+          this.$message.info(this.$t('platformResourceManager.inputSearchKeyword'));
           return;
         }
 
@@ -172,7 +167,7 @@
 
           if (resData.code === 8007) {
             out_this.$message({
-              message: resData.code + '~~~~' + resData.message,
+              message: resData.code + '~~~~' + out_this.$t('deleteSuccess'),
               type: 'success',
               duration: 1500
             });
@@ -184,7 +179,7 @@
             out_this.loadResourceList();
 
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + '~~~~' + out_this.$t('serverError'));
           }
 
         });

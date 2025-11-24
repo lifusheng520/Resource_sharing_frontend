@@ -10,7 +10,7 @@
               <a v-on:click="goIndexPage">
                 <img src="static/img/logo.png" alt="">
               </a>
-              <p>我们是提供资源共享的网上分享平台，您需要的学习资源都可以在本站查找。有了本站提供的服务，您就不需要为查找资源发愁了！</p>
+              <p>{{ $t('footer.introduction') }}</p>
             </div>
             <div class="social">
               <a href="#"><i class="fab fa-qq"></i></a>
@@ -21,58 +21,58 @@
           </div>
           <div class="col-xl-2 col-lg-2 col-md-6">
             <div class="links">
-              <h3>友情链接</h3>
+              <h3>{{$t('footer.friendlyLinks')}}</h3>
               <ul>
                 <li>
-                  <a href="#">首页</a>
+                  <a href="#">{{ $t('footer.link1') }}</a>
                 </li>
                 <li>
-                  <a href="#">皮皮虾</a>
+                  <a href="#">{{ $t('footer.link2') }}</a>
                 </li>
                 <li>
-                  <a href="#">哔哩哔哩</a>
+                  <a href="#">{{ $t('footer.link3') }}</a>
                 </li>
                 <li>
-                  <a href="#">中国大学MOOC</a>
+                  <a href="#">{{ $t('footer.link4') }}</a>
                 </li>
                 <li>
-                  <a href="#">Google</a>
+                  <a href="#">{{ $t('footer.link5') }}</a>
                 </li>
               </ul>
             </div>
           </div>
           <div class="col-xl-2 col-lg-2 col-md-6">
             <div class="links">
-              <h3>关于我们</h3>
+              <h3>{{ $t('footer.aboutUs') }}</h3>
               <ul>
                 <li>
-                  <a href="#">开发人员</a>
+                  <a href="#">{{ $t('footer.devlopers') }}</a>
                 </li>
                 <li>
-                  <a href="#">系统介绍</a>
+                  <a href="#">{{ $t('footer.systemIntroduction') }}</a>
                 </li>
                 <li>
-                  <a href="#">联系我们</a>
+                  <a href="#">{{ $t('footer.contactUs') }}</a>
                 </li>
                 <li>
-                  <a href="#">技术支持</a>
+                  <a href="#">{{ $t('footer.techiqueSupport') }}</a>
                 </li>
               </ul>
             </div>
           </div>
           <div class="col-xl-3 col-lg-3 col-md-6">
             <div class="address">
-              <h3>联系我们</h3>
+              <h3>{{ $t('footer.contactUs') }}</h3>
               <ul>
                 <li>
-                  湖南省张家界市永定区子午路吉<br/>
-                  首大学张家界校区
+                  {{ $t('footer.address') }} (
+                  {{ $t('footer.campus') }} )
                 </li>
                 <li>
-                  1992968196@qq.com
+                  {{ $t('footer.email1') }}
                 </li>
                 <li>
-                  QQ:1992968196
+                  {{ $t('footer.email2') }}
                 </li>
               </ul>
             </div>
@@ -81,7 +81,7 @@
         <div class="row">
           <div class="col-xl-12 col-lg-12 text-center">
             <div class="copyright">
-              <p>© 2022. 保留版权所有 <a href="#" title="baigei.com">白给网</a>&nbsp;&nbsp;|&nbsp;&nbsp;隐私政策</p>
+              <p>© 2022. {{ $t('footer.rightReserved') }} <a href="#" title="baigei.com">{{ $t('footer.websiteName') }}</a>&nbsp;&nbsp;|&nbsp;&nbsp;{{ $t('footer.privacyPolicy') }}</p>
             </div>
           </div>
         </div>

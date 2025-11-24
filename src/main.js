@@ -7,6 +7,7 @@ import store from './store'
 import Element from 'element-ui'
 import axios from 'axios'
 import VueCookies from 'vue-cookies'
+import i18n from './i18n'
 
 
 import 'element-ui/lib/theme-chalk/index.css'
@@ -28,10 +29,14 @@ Vue.prototype.$apiUrl = process.env.VUE_APP_API_BASE_URL;
 import '../static/js/main'
 
 
+
+
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  i18n,
   store,
   render: h => h(App),
   components: {App},

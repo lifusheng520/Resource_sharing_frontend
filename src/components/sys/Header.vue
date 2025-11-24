@@ -4,6 +4,29 @@
   <div class="header">
     <div class="container">
       <div class="row justify-content-between d-flex">
+
+        
+        <div class="col-xl-16 col-lg-16 min-height-none">
+          <div class="main-menu">
+            <nav class="navbar navbar-expand-lg">
+              <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <ul class="navbar-nav nav justify-content-center">
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                       role="button" v-on:mouseover="showLangMenu = true"
+                       aria-haspopup="true" aria-expanded="false">En&nbsp;/&nbsp中</a>
+                    <div class="dropdown-menu" v-show="showLangMenu">
+                      <a class="dropdown-item" v-on:click="changeLang('zh')">中文</a>
+                      <a class="dropdown-item" v-on:click="changeLang('en')">English</a>
+                    </div>
+                  </li>
+
+                </ul>
+              </div>
+            </nav>
+          </div>
+        </div>
+
         <div class="col-xl-2 col-lg-2 d-xl-flex d-lg-flex d-block align-items-center mobile-header">
           <div class="row d-flex">
             <div class="col-xl-12 col-lg-12 col-6 d-flex align-items-center">
@@ -28,26 +51,26 @@
               <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <ul class="navbar-nav nav justify-content-center">
                   <li class="nav-item">
-                    <a class="nav-link active" v-on:click="goIndex">主页 <span
+                    <a class="nav-link active" v-on:click="goIndex">{{ $t('header.home') }} <span
                       class="sr-only">(current)</span></a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" v-on:click="goRecommendation">资源推荐</a>
+                    <a class="nav-link" v-on:click="goRecommendation">{{ $t('header.recommendation') }}</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" v-on:click="goRank">贡献达人</a>
+                    <a class="nav-link" v-on:click="goRank">{{ $t('header.contribution') }}</a>
                   </li>
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
                        role="button"
-                       aria-haspopup="true" aria-expanded="false">数据图表</a>
+                       aria-haspopup="true" aria-expanded="false">{{ $t('header.statistics') }}</a>
                     <div class="dropdown-menu">
-                      <a class="dropdown-item" v-on:click="goUploadData">上传情况</a>
-                      <a class="dropdown-item" v-on:click="goDownloadData">下载情况</a>
+                      <a class="dropdown-item" v-on:click="goUploadData">{{ $t('header.uploadDetails') }}</a>
+                      <a class="dropdown-item" v-on:click="goDownloadData">{{ $t('header.downloadDetails') }}</a>
                     </div>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" v-on:click="goFocusDetail">关注</a>
+                    <a class="nav-link" v-on:click="goFocusDetail">{{ $t('header.focus') }}</a>
                   </li>
 
                 </ul>
@@ -75,10 +98,10 @@
                   <template slot="title">
                     <span v-model="this.user.username">{{this.user.username}}</span>
                   </template>
-                  <el-menu-item index="1-1" v-on:click="goPersonalCenter">个人空间</el-menu-item>
-                  <el-menu-item index="1-3" v-on:click="goLogin" v-if="!this.user.isLogin">登录
+                  <el-menu-item index="1-1" v-on:click="goPersonalCenter">{{ $t('header.dashboard') }}</el-menu-item>
+                  <el-menu-item index="1-3" v-on:click="goLogin" v-if="!this.user.isLogin">{{ $t('header.login') }}
                   </el-menu-item>
-                  <el-menu-item index="2-3" v-on:click="goLogout" v-else>退出</el-menu-item>
+                  <el-menu-item index="2-3" v-on:click="goLogout" v-else>{{ $t('header.logout') }}</el-menu-item>
                 </el-submenu>
               </el-menu>
 
@@ -108,7 +131,8 @@
           headIcon: ''
         },
         activeIndex: '1',
-        activeIndex2: '1'
+        activeIndex2: '1',
+        showLangMenu: false
       }
     },
     created: function () {
@@ -149,7 +173,7 @@
       },
       goRank() {
         if (this.$route.path === '/rank') return;
-        this.$store.pageTitle = '资源排行';
+        this.$store.pageTitle = this.$t('header.rank');
         this.$router.push('/rank');
       },
       goLogin() {
@@ -177,8 +201,7 @@
       goFocusDetail() {
         if (this.$route.path == '/focus')
           return;
-
-        this.$store.pageTitle = "我的关注";
+        this.$store.pageTitle = "我的关注12";
         this.$router.push("/focus");
       },
       goLogout: function () {
@@ -192,7 +215,7 @@
           console.log(resData);
 
           if (!resData) {
-            this.$message.error('退出登录失败~~');
+            this.$message.error(this.$t('header.networkError'));
           } else {
             this.$message({
               message: resData.code + '~~~~' + resData.message,
@@ -221,7 +244,7 @@
         // 判断用户是否已经登录
         if (!this.$cookies.get('user_id')) {
           this.$message({
-            message: '请先登录，你还没有登录喔~~',
+            message: this.$t('header.loginFirst'),
             type: 'info',
             center: true,
             duration: 2000
@@ -232,6 +255,11 @@
         this.$store.pageTitle = "Personal Center";
         this.$router.push('/personal');
       },
+      changeLang(lang) {
+        this.$i18n.locale = lang;
+        localStorage.setItem('locale', lang);  // 保存选择，下次打开还是这个语言
+        this.showLangMenu = false;
+      }
     },
     computed: {}
   }
@@ -262,5 +290,10 @@
   .el-menu-demo span:hover {
     color: black;
   }
+
+  #language-switch {
+  color: white;
+  margin-top: 15px;
+}
 
 </style>

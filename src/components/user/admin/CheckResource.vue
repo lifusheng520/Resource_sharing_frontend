@@ -2,7 +2,7 @@
   <div id="div_check_resource_box">
     <div>
 
-      <h3>资源审批</h3>
+      <h3>{{$t('checkResource.title')}}</h3>
 
       <div style="width: 100%;">
 
@@ -11,11 +11,11 @@
           <div class="div-check-resource-delete">
             <el-button v-show="this.selectCheckList.length !== 0"
                        @click="passCheckHandler" type="danger" size="small" round>
-              通过审批
+              {{$t('checkResource.passCheck')}}
             </el-button>
             <el-button v-show="this.selectCheckList.length !== 0"
                        @click="deleteCheckResourceHandler" type="danger" size="small" round>
-              删除
+              {{$t('checkResource.deleteResource')}}
             </el-button>
           </div>
 
@@ -24,7 +24,7 @@
             <el-form :model="checkResourcePageData" ref="searchForm" label-width="100px" style="width: 100%;"
                      align="right">
               <el-form-item>
-                <el-input v-model="checkResourcePageData.search" placeholder="请输入文件名"
+                <el-input v-model="checkResourcePageData.search" :placeholder="`${$t('checkResource.placeholderPrompt')}`"
                           style="width: 60%; margin-right: 20px"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="loadCheckResourceBySearch" circle></el-button>
                 <el-button type="info" @click="reloadCheckResourceList" circle><i class="el-icon-refresh"></i>
@@ -41,36 +41,36 @@
                   :default-sort="{prop: 'upload_time', order: 'descending'}">
 
           <el-table-column type="selection" width="55"></el-table-column>
-          <el-table-column prop="upload_time" label="上传时间" sortable min-width="150"></el-table-column>
-          <el-table-column label="状态" min-width="100">
+          <el-table-column prop="upload_time" :label="`${$t('checkResource.uploadTime')}`" sortable min-width="150"></el-table-column>
+          <el-table-column :label="`${$t('checkResource.state')}`" min-width="100">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.state === '审批中'" type="danger">
-                <i class="el-icon-loading"></i>待审批
+                <i class="el-icon-loading"></i>{{$t('checkResource.waitting')}}
               </el-tag>
-              <el-tag v-else type="info">{{scope.row.state}}</el-tag>
+              <el-tag v-else type="info">{{scope.row.state == '已通过审批'? $t('checkResource.passed'): $t('checkResource.waitting')}}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="origin_name" label="文件名" min-width="350"></el-table-column>
-          <el-table-column prop="discipline" label="学科" min-width="120"></el-table-column>
+          <el-table-column prop="origin_name" :label="`${$t('checkResource.fileName')}`" min-width="350"></el-table-column>
+          <el-table-column prop="discipline" :label="`${$t('checkResource.discipline')}`" min-width="120"></el-table-column>
 
           <el-table-column label="" min-width="120" fixed="right">
             <template slot-scope="scope">
               <el-button v-if="supportVideoType(scope.row.type)"
                          v-on:click="playVideoHandler(scope.row.id, scope.row.origin_name)" slot="reference">
                 <i class="fa fa-play-circle fa-2x"></i></el-button>
-              <span v-else>不支持的格式</span>
+              <span v-else>{{$t('checkResource.donotSupportPlay')}}</span>
             </template>
           </el-table-column>
 
-          <el-table-column label="资源介绍" min-width="100">
+          <el-table-column :label="`${$t('checkResource.resourceIntroduction')}`" min-width="100">
             <template slot-scope="scope">
               <el-popover
                 placement="bottom"
-                title="资源介绍"
+                :title="`${$t('checkResource.resourceIntroduction')}`"
                 width="500"
                 trigger="click"
                 :content="scope.row.description">
-                <el-button slot="reference">查看介绍</el-button>
+                <el-button slot="reference">{{$t('checkResource.introductionReview')}}</el-button>
               </el-popover>
             </template>
           </el-table-column>
@@ -87,7 +87,7 @@
         </el-pagination>
       </div>
 
-      <el-dialog :title="'正在审批：' + videoFileName" :visible.sync="videoDialogVisible"
+      <el-dialog :title="`${$t('checkResource.checking')}` + videoFileName" :visible.sync="videoDialogVisible"
                  @close="closeDialogHandler" width="90%" center style="margin-top: -5%;">
         <div align="center" style="width: 100%;">
           <video id="video-check-resource" controls :src="videoHostURL" style="position: absolute; top: 60px; left: 0; width: 100%; height: auto;"/>
@@ -144,7 +144,6 @@
             this.selectCheckList.push(selection[i].id);
         else
           this.selectCheckList = [];
-        console.log(this.selectCheckList)
       },
       // 取消选择
       cancelSelection() {
@@ -164,7 +163,7 @@
             out_this.checkResourcePageData.total = resData.data.total;
             out_this.checkResourceTableList = resData.data.pageList;
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + '~~~~' + out_this.$t('checkResource.loadingError'));
           }
         });
       },
@@ -192,18 +191,12 @@
           let resData = response.data;
           console.log(resData);
           if (resData.code === 8009) {
-            out_this.$message({
-              message: resData.code + '~~~~' + resData.message,
-              type: 'success',
-              duration: 1500
-            });
-
             // 更新表格数据
             out_this.checkResourcePageData.currentPage = -1;
             out_this.checkResourcePageData.total = -1;
             out_this.loadCheckResourceList();
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + '~~~~' + out_this.$t('serverError'));
           }
         });
 
@@ -217,7 +210,7 @@
           console.log(resData);
           if (resData.code === 8007) {
             out_this.$message({
-              message: resData.code + '~~~~' + resData.message,
+              message: resData.code + '~~~~' + out_this.$t('checkResource.deleted'),
               type: 'success',
               duration: 1500
             });
@@ -227,7 +220,7 @@
             out_this.checkResourcePageData.total = -1;
             out_this.loadCheckResourceList();
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + '~~~~' + out_this.$t('serverError'));
           }
         });
 
@@ -237,7 +230,7 @@
       // 播放视频处理函数
       playVideoHandler(resourceId, fileName) {
         this.videoDialogVisible = true;
-        this.videoHostURL = `http://localhost:8080/resource/server/getVideo/${resourceId}`;
+        this.videoHostURL = `${this.$axios.defaults.baseURL}/resource/server/getVideo/${resourceId}`;
         this.videoFileName = fileName;
       },
       // 关闭对话框处理函数

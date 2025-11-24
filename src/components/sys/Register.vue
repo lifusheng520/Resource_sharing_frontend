@@ -10,8 +10,8 @@
         <div class="row justify-content-center">
           <div class="col-xl-6 col-lg-6">
             <div class="section-title text-center">
-              <h2>注&nbsp;册&nbsp;<span>你的账号</span></h2>
-              <p>把你的分享想法付诸行动，进行全方位的投资。享受实在的便利和服务，您的资料管家~</p>
+              <h2>{{$t('register.register')}}&nbsp;<span>{{$t('register.register')}}你的账号</span></h2>
+              <p>{{$t('register.introduction')}}</p>
             </div>
           </div>
         </div>
@@ -22,21 +22,21 @@
             <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px"
                      class="demo-ruleForm">
 
-              <el-form-item label="账号" prop="username">
+              <el-form-item :label="`${$t('register.account')}`" prop="username">
                 <el-input type="text" v-model="ruleForm.username"></el-input>
               </el-form-item>
 
-              <el-form-item label="密码" prop="password">
+              <el-form-item :label="`${$t('register.password')}`" prop="password">
                 <el-input type="password" v-model="ruleForm.password" autocomplete="off"></el-input>
               </el-form-item>
 
-              <el-form-item label="确认密码" prop="checkPass">
+              <el-form-item :label="`${$t('register.confirmPassword')}`" prop="checkPass">
                 <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
               </el-form-item>
 
               <el-form-item>
-                <el-button type="primary" @click="submitForm('ruleForm')">立 即 注 册</el-button>
-                <el-button @click="resetForm('ruleForm')">重置</el-button>
+                <el-button type="primary" @click="submitForm('ruleForm')">{{$t('register.registerButton')}}</el-button>
+                <el-button @click="resetForm('ruleForm')">{{$t('register.reset')}}</el-button>
               </el-form-item>
 
             </el-form>
@@ -60,7 +60,7 @@
     data() {
       var validatePass = (rule, value, callback) => {
         if (value === '') {
-          callback(new Error('请输入密码'));
+          callback(new Error(this.$t('register.rule1')));
         } else {
           if (this.ruleForm.checkPass !== '') {
             this.$refs.ruleForm.validateField('checkPass');
@@ -70,9 +70,9 @@
       };
       var validatePass2 = (rule, value, callback) => {
         if (value === '') {
-          callback(new Error('请再次输入密码'));
+          callback(new Error(this.$t('register.rule2')));
         } else if (value !== this.ruleForm.password) {
-          callback(new Error('两次输入密码不一致!'));
+          callback(new Error(this.$t('register.rule3')));
         } else {
           callback();
         }
@@ -85,12 +85,12 @@
         },
         rules: {
           username: [
-            {required: true, message: '账号不能为空', trigger: 'blur'},
-            {min: 5, max: 10, message: '长度在 5 到 10 个字符', trigger: 'blur'}
+            {required: true, message: this.$t('register.rule4'), trigger: 'blur'},
+            {min: 5, max: 10, message: this.$t('register.rule5'), trigger: 'blur'}
           ],
           password: [
             {validator: validatePass, trigger: 'blur'},
-            {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
+            {min: 6, max: 20, message: this.$t('register.rule6'), trigger: 'blur'}
           ],
           checkPass: [
             {validator: validatePass2, trigger: 'blur'}
@@ -111,7 +111,7 @@
                 // 判断状态码
                 if (resData.code === 1003) { // 注册成功
                   _this.$message({
-                    message: resData.code + '~~~~' + resData.message,
+                    message: resData.code + '~~~~' + _this.$t('register.registerSuccess'),
                     type: 'success'
                   });
 
@@ -120,20 +120,20 @@
                   _this.$router.push("/login");
 
                 } else if (resData.code === 1004) {
-                  _this.$message.error(resData.code + '~~注册失败~~');
+                  _this.$message.error(resData.code + _this.$t('register.registerFailed'));
                 } else if (resData.code === 1005) {
                   _this.$message({
-                    message: resData.code + '~~~~' + resData.message,
+                    message: resData.code + '~~~~' + _this.$t('register.accountExists'),
                     type: 'error'
                   });
                 }
               } else {
                 // 注册失败，不做跳转
-                _this.$message.error('注册错误，请重新注册~~');
+                _this.$message.error(_this.$t('register.errorOccurred'));
               }
             });
           } else {
-            _this.$message.error('错误的提交~~');
+            _this.$message.error(_this.$t('register.errorSubmit'));
             return false;
           }
         });

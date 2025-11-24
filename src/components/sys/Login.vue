@@ -10,8 +10,7 @@
         <div class="row justify-content-center">
           <div class="col-xl-12 col-lg-12">
             <div class="section-title text-center">
-              <h2>登&nbsp;录&nbsp;<span>你的账号</span></h2>
-              <p>把你的分享想法付诸行动，进行全方位的投资。享受实在的便利和服务，您的资料管家~</p>
+              <h2>{{ $t('login.login') }} <span>{{ $t('login.yourAccount') }}</span></h2>
             </div>
           </div>
         </div>
@@ -24,7 +23,7 @@
                   <div class="form-group">
 
                     <el-form-item prop="username">
-                      <label for="InputName">账&nbsp;号<span class="requred">*</span></label>
+                      <label for="InputName">{{ $t('login.account') }}<span class="requred">*</span></label>
                       <el-input type="text" v-model="loginForm.username" class="form-control" id="InputName"
                                 placeholder="Enter Your Account" required></el-input>
                     </el-form-item>
@@ -35,7 +34,7 @@
                   <div class="form-group">
 
                     <el-form-item prop="password">
-                      <label for="InputAmount">密&nbsp;码<span class="requred">*</span></label>
+                      <label for="InputAmount">{{ $t('login.password') }}<span class="requred">*</span></label>
                       <el-input type="password" class="form-control" id="InputAmount" placeholder="Enter Your Password"
                                 v-model="loginForm.password" required></el-input>
                     </el-form-item>
@@ -47,7 +46,7 @@
                     <div class="form-check pl-0">
                       <input class="form-check-input" type="checkbox" id="gridCheck1" v-model="loginForm.remember">
                       <label class="form-check-label" for="gridCheck1">
-                        记住密码
+                        {{ $t('login.rememberMe') }}
                       </label>
                     </div>
                   </div>
@@ -56,11 +55,11 @@
                 <div class="col-xl-12 col-lg-12">
                   <div class="row d-flex">
                     <div class="col-xl-6 col-lg-6">
-                      <el-button class="login-button" @click="loginSubmit()">立&nbsp;即&nbsp;登&nbsp;录</el-button>
+                      <el-button class="login-button" @click="loginSubmit()">{{ $t('login.loginButton') }}</el-button>
                     </div>
                     <div class="col-xl-6 col-lg-6 d-flex align-items-center">
-                      <a v-on:click="goRegister" class="forgetting-password">没账号？去注册</a>
-                      <a v-on:click="goForgetPassword" class="forgetting-password">忘记密码？</a>
+                      <a v-on:click="goRegister" class="forgetting-password">{{ $t('login.noAccount') }}</a>
+                      <a v-on:click="goForgetPassword" class="forgetting-password">{{ $t('login.forgetPassword') }}</a>
                     </div>
                   </div>
                 </div>
@@ -94,12 +93,12 @@ import PageTitle from "./PageTitle";
         },
         rules: {
           username: [
-            {required: true, message: '请输入用户名', trigger: 'blur'},
-            {min: 5, max: 10, message: '长度在 5 到 10 个字符', trigger: 'blur'}
+            {required: true, message: this.$t('login.rule1'), trigger: 'blur'},
+            {min: 5, max: 10, message: this.$t('login.rule2'), trigger: 'blur'}
           ],
           password: [
-            {required: true, message: '请输入密码', trigger: 'blur'},
-            {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
+            {required: true, message: this.$t('login.rule3'), trigger: 'blur'},
+            {min: 6, max: 20, message: this.$t('login.rule4'), trigger: 'blur'}
           ]
         }
       }
@@ -123,7 +122,7 @@ import PageTitle from "./PageTitle";
         let plen = this.loginForm.password.length;
         if (!ulen) {
           this.$message({
-            message: '用户名不能为空~',
+            message: this.$t('login.rule1'),
             type: 'error'
           });
           return;
@@ -131,7 +130,7 @@ import PageTitle from "./PageTitle";
 
         if (!plen) {
           this.$message({
-            message: '密码不能为空~',
+            message: this.$t('login.rule3'),
             type: 'error'
           });
           return;
@@ -139,12 +138,12 @@ import PageTitle from "./PageTitle";
 
         if (!(ulen >= 5 && ulen <= 10)) {
           this.$message({
-            message: '用户名长度在 5 到 10 个字符~',
+            message: this.$t('login.rule2'),
             type: 'error'
           });
         } else if (!(plen >= 6 && plen <= 20)) {
           this.$message({
-            message: '密码长度在 6 到 20 个字符~',
+            message: this.$t('login.rule4'),
             type: 'error'
           });
         } else {
@@ -158,14 +157,14 @@ import PageTitle from "./PageTitle";
             // 没有对应的用户信息
             if (!resdata.data) {
               this.$message({
-                message: resdata.code + '~~~~' + resdata.message,
+                message: resdata.code + '~~~~' + _this.$t('login.loginFailed'),
                 type: 'error',
                 center: true,
                 duration: 2000
               });
             } else {
               this.$message({
-                message: resdata.code + '~~~~  ' + resdata.message,
+                message: resdata.code + '~~~~  ' + _this.$t('login.loginSuccess'),
                 type: 'success',
                 center: true,
                 duration: 2000

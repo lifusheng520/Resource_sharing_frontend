@@ -8,7 +8,7 @@
           <div class="col-xl-8 col-lg-8">
             <div class="page-title-content">
               <h1>{{titleContent}}</h1>
-              <p>享受方便快捷的资料查找和分享服务</p>
+              <p>{{$t('pageTitle.introduction')}}</p>
             </div>
           </div>
         </div>
@@ -35,15 +35,15 @@
         let path = this.$route.path;
         let title;
         switch (path) {
-          case '/login': title = 'Login';break;
-          case '/register': title = '账 户 注 册';break;
-          case '/forgetpass': title = '忘 记 密 码';break;
-          case '/rank': title = '上 传 排 行';break;
-          case '/focus': title = '我 的 关 注';break;
-          case '/uploadData': title = '上 传 分 析';break;
-          case '/downloadData': title = '下 载 分 析';break;
-          case '/personal': title = 'Personal Space';break;
-          default: title = 'Personal Space';
+          case '/login': title = this.$t('pageTitle.login');break;
+          case '/register': title = this.$t('pageTitle.register');break;
+          case '/forgetpass': title = this.$t('pageTitle.forgetPassword');break;
+          case '/rank': title = this.$t('pageTitle.rank');break;
+          case '/focus': title = this.$t('pageTitle.focus');break;
+          case '/uploadData': title = this.$t('pageTitle.uploadAnalysis');break;
+          case '/downloadData': title = this.$t('pageTitle.downloadAnalysis');break;
+          case '/personal': title = this.$t('pageTitle.dashboard');break;
+          default: title = this.$t('pageTitle.dashboard');
         }
 
         this.titleContent = title;
