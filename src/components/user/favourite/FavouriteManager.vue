@@ -27,18 +27,18 @@
         <div>
           <el-checkbox v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
           <el-button v-on:click="cancelFavouriteHandler()" type="primary" size="mini" v-show="checkAll" plain>
-            取消收藏
+            {{$t('favouriteManager.cancelFavourite')}}
           </el-button>
           <el-button v-on:click="moveFavouriteHandler()" type="primary" size="mini" v-show="checkAll" plain>
-            移动
+            {{$t('favouriteManager.shiftFavourite')}}
           </el-button>
           <el-button v-on:click="copyFavouriteHandler()" type="primary" size="mini" v-show="checkAll" plain>
-            复制
+            {{$t('favouriteManager.copyFavourite')}}
           </el-button>
         </div>
 
         <el-empty v-if="!this.favouriteTableData.length" style="margin: 10% auto"
-                  description="啥也没有呀~~~"></el-empty>
+                  :description="`${$t('favouriteManager.notFound')}`"></el-empty>
 
         <div v-else>
           <div class="blog-post">
@@ -71,9 +71,9 @@
                           <span><i class="el-icon-s-custom"></i>&nbsp;&nbsp;&nbsp;{{item.userInfo.name}} </span>
                         </h4>
                         <h4>
-                          <span>收藏于：{{item.favourite.time}}</span>
+                          <span>{{$t('favouriteManager.favouriteAt')}}{{item.favourite.time}}</span>
                         </h4>
-                        <h4><span>介绍：</span></h4>
+                        <h4><span>{{$t('favouriteManager.introduction')}}</span></h4>
                         <div class="div_resource_description">
                           <!--                  {{item.resource.description.length > 35 ? item.resource.description.slice(0, 35) + '...' :-->
                           <!--                  item.resource.description}}sdfasfd sdf asdf s-->
@@ -82,13 +82,13 @@
                       </div>
                       <div class="part-social">
                         <a v-on:click="cancelFavouriteHandler(item.favourite.id)">
-                          <span><i class="fas fa-times-circle"></i></span> 取消收藏
+                          <span><i class="fas fa-times-circle"></i></span> {{$t('favouriteManager.cancelFavourite')}}
                         </a>
                         <a v-on:click="moveFavouriteHandler(item.favourite.id)">
-                          <span><i class="fas fa-arrows-alt"></i></span> 移动
+                          <span><i class="fas fa-arrows-alt"></i></span> {{$t('favouriteManager.shiftFavourite')}}
                         </a>
                         <a v-on:click="copyFavouriteHandler(item.favourite.id)">
-                          <span><i class="fas fa-copy"></i></span> 复制
+                          <span><i class="fas fa-copy"></i></span> {{$t('favouriteManager.copyFavourite')}}
                         </a>
                         <a hidden> More</a>
                       </div>
@@ -122,21 +122,23 @@
 
                 <div>
                   <el-button v-on:click="showAddFolder=!showAddFolder" icon="el-icon-plus"
-                             style="width: 100%;font-size: 18px;" plain>新建收藏夹
+                             style="width: 100%;font-size: 18px;" plain>{{$t('favouriteFolderManager.newFolder')}}
                   </el-button>
                 </div>
                 <div v-show="showAddFolder" style="margin-top: 15px;">
                   <el-input v-model="addFolderForm.folder_name" type="text"
-                            placeholder="最多输入20个字符" maxlength="20">
+                            :placeholder="`${$t('favouriteManager.placeholderPrompt')}`" maxlength="20">
                     <template slot="append">
-                      <el-button v-on:click="addFolderHandler" type="primary" plain>新 建</el-button>
+                      <el-button v-on:click="addFolderHandler" type="primary" plain>
+                        {{$t('favouriteManager.create')}}
+                      </el-button>
                     </template>
                   </el-input>
                 </div>
 
                 <div slot="footer" class="dialog-footer">
-                  <el-button @click="cancelAddEvent">取 消</el-button>
-                  <el-button type="primary" @click="sendRequestHandler">确 定</el-button>
+                  <el-button @click="cancelAddEvent">{{$t('cancelButton')}}</el-button>
+                  <el-button type="primary" @click="sendRequestHandler">{{$t('confirmButton')}}</el-button>
                 </div>
               </el-dialog>
 
@@ -204,6 +206,7 @@
 
       // 获取默认收藏夹内容'
       this.getFavouriteList();
+
     },
     methods: {
       //  菜单处理函数
@@ -221,7 +224,7 @@
           this.favouritePageData.user_id = userId;
           return userId;
         } else {
-          this.$message.info('请登录重试~~');
+          this.$message.info($t('sessionExpired'));
           this.$router.push('/login');
           return false;
         }
@@ -249,7 +252,7 @@
             out_this.favouritePageData.pageSize = resData.data.pageSize;
             out_this.favouriteTableData = resData.data.pageList;
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + '~~~~' + out_this.$t('serverError'));
           }
         });
       },
@@ -262,7 +265,7 @@
         }
 
         if (this.selectFavouriteList.length === 0) {
-          this.$message.info('请先选择需要取消的内容~~~');
+          this.$message.info(this.$t('favouriteManager.operationPrompt'));
           return;
         }
 
@@ -273,7 +276,7 @@
           // 取消收藏成功
           if (resData.code == 7001) {
             out_this.$message({
-              message: resData.code + '~~~~' + resData.message,
+              message: resData.code + '~~~~' + out_this.$t('operationSuccess'),
               type: 'success',
               duration: 2000
             });
@@ -281,7 +284,7 @@
             // 重新获取收藏内容
             out_this.getFavouriteList();
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + '~~~~' + out_this.$t('serverError'));
           }
         });
 
@@ -295,14 +298,14 @@
           this.selectFavouriteList.push(id);
         }
 
-        this.favouriteDialogTitle = '你正在移动1个项到';
+        this.favouriteDialogTitle = this.$t('favouriteManager.dialogTitle1');
         this.favouriteDialogShow = true;
       },
       // 移动收藏内容请求
       moveFavourite() {
 
         if (this.selectFavouriteList.length === 0) {
-          this.$message.info('请先选择需要移动的内容~~~');
+          this.$message.info(this.$t('favouriteManager.selectionPrompt1'));
           return;
         }
 
@@ -316,7 +319,7 @@
           // 移动收藏成功
           if (resData.code == 7011) {
             out_this.$message({
-              message: resData.code + '~~~~' + resData.message,
+              message: resData.code + '~~~~' + out_this.$t('operationSuccess'),
               type: 'success',
               duration: 2000
             });
@@ -324,7 +327,7 @@
             // 重新获取收藏内容
             out_this.getFavouriteList();
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + '~~~~' + out_this.$t('serverError'));
           }
         });
         this.cancelSelection();
@@ -337,14 +340,14 @@
           this.selectFavouriteList.push(id);
         }
 
-        this.favouriteDialogTitle = '你正在复制1个项到';
+        this.favouriteDialogTitle = this.$t('favouriteManager.dialogTitle2');
         this.favouriteDialogShow = true;
       },
       // 复制收藏内容请求
       copyFavourite() {
 
         if (this.selectFavouriteList.length === 0) {
-          this.$message.info('请先选择需要复制内容~~~');
+          this.$message.info(this.$t('favouriteManager.selectionPrompt2'));
           return;
         }
 
@@ -373,7 +376,7 @@
       },
       // 请求处理函数
       sendRequestHandler() {
-        if (this.favouriteDialogTitle == '你正在移动1个项到') {
+        if (this.favouriteDialogTitle == this.$t('favouriteManager.dialogTitle1')) {
           this.moveFavourite();
         } else {
           this.copyFavourite();
@@ -387,7 +390,7 @@
         if (!this.addFolderForm.user_id)
           return 0;
         if (!this.addFolderForm.folder_name) {
-          this.$message.info('收藏夹名称不能为空喔');
+          this.$message.info(this.$t('favouriteFolderManager.rule1'));
           return 0;
         }
         // 添加收藏夹请求
@@ -397,7 +400,7 @@
           console.log(resData.data);
           if (resData.code == 7006) { // 添加成功
             out_this.$message({
-              message: resData.code + '~~~~' + resData.message,
+              message: resData.code + '~~~~' + out_this.$t('operationSuccess'),
               type: 'success',
               duration: 2000
             });
@@ -405,7 +408,7 @@
             out_this.folderMenuData.push(resData.data);
             out_this.showAddFolder = false;
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + '~~~~' + out_this.$t('serverError'));
           }
         });
       },

@@ -1,5 +1,5 @@
 export default {
-serverError: '服务器错误，请稍后重试',
+serverError: '输入信息错误，或服务器错误，请稍后重试',
 deleteSuccess: '删除成功',
 sessionExpired: '服务器连接已经断开，请重新登录',
 operationSuccess: '操作成功',
@@ -229,6 +229,23 @@ monthsAgo: '月前',
     duration: '创建于',
     favouriteAmount: '收藏量',
     denialOperation: '默认收藏夹不能操作喔',
+    
+    rule1: '收藏夹名称不能为空'
+  },
+  favouriteManager: {
+    cancelFavourite: '取消收藏',
+    shiftFavourite: '移动',
+    copyFavourite: '复制',
+    notFound: '空空如也',
+    favouriteAt: '收藏于：',
+    introduction: '介绍：',
+    placeholderPrompt: '最多输入20个字符',
+    create: '新 建',
+    operationPrompt: '请先选择需要取消的内容',
+    dialogTitle1: '你正在移动1个项到',
+    dialogTitle2: '你正在复制1个项到',
+    selectionPrompt1: '请先选择需要移动的内容',
+    selectionPrompt2: '请先选择需要复制内容'
 
   },
   home: {
