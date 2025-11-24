@@ -1,41 +1,41 @@
 <template>
   <div id="div_user_manager_box">
-    <el-empty v-if="userTableList.length === 0" style="margin: 20% auto" description="没有用户信息~~~"></el-empty>
+    <el-empty v-if="userTableList.length === 0" style="margin: 20% auto" :description="`${$t('userManager.withoutUserInfo')}`"></el-empty>
     <div v-else>
 
-      <h3>用户管理</h3>
+      <h3>{{$t('userManager.title')}}</h3>
 
       <div style="width: 100%;">
 
         <div style="width: 100%;">
           <el-button @click="dialogFormVisible = true" icon="el-icon-plus" type="primary" size="small">
-            添加用户
+            {{$t('userManager.addUser')}}
           </el-button>
           <el-button v-show="tableSelectList.length !== 0" @click="addLockOnUserAccount" type="danger" size="small"
                      round>
-            冻结账号
+            {{$t('userManager.lockAccount')}}
           </el-button>
           <el-button v-show="tableSelectList.length !== 0" @click="unlockUserAccount" type="success" size="small"
                      round>
-            激活账号
+            {{$t('userManager.activateAccount')}}
           </el-button>
 
-          <el-dialog title="添加账号信息" width="500px" center :visible.sync="dialogFormVisible">
+          <el-dialog :title="`${$t('userManager.addUserAccount')}`" width="500px" center :visible.sync="dialogFormVisible">
 
             <el-form :model="addUserForm" :rules="rules">
 
-              <el-form-item label="用户名" prop="username">
+              <el-form-item :label="`${$t('userManager.username')}`" prop="username">
                 <el-input v-model="addUserForm.username" autocomplete="off"></el-input>
               </el-form-item>
 
-              <el-form-item label="密码" prop="password">
+              <el-form-item :label="`${$t('userManager.password')}`" prop="password">
                 <el-input v-model="addUserForm.password" type="password" show-password autocomplete="off"></el-input>
               </el-form-item>
             </el-form>
 
             <div slot="footer" class="dialog-footer">
-              <el-button @click="dialogFormVisible = false">取 消</el-button>
-              <el-button type="primary" @click="addUserHandler">确 定</el-button>
+              <el-button @click="dialogFormVisible = false">{{$t('userManager.cancel')}}</el-button>
+              <el-button type="primary" @click="addUserHandler">{{$t('userManager.confirmation')}}</el-button>
             </div>
           </el-dialog>
         </div>
@@ -46,18 +46,22 @@
                   :default-sort="{prop: 'create_time', order: 'descending'}">
 
           <el-table-column type="selection" width="55"></el-table-column>
-          <el-table-column prop="create_time" label="注册时间" sortable min-width="150"></el-table-column>
-          <el-table-column prop="username" label="账号" min-width="110"></el-table-column>
-          <el-table-column prop="name" label="姓名" min-width="100"></el-table-column>
-          <el-table-column prop="enabled" label="状态" min-width="100">
+          <el-table-column prop="create_time" :label="`${$t('userManager.registerDate')}`" sortable min-width="150"></el-table-column>
+          <el-table-column prop="username" :label="`${$t('userManager.account')}`" min-width="110"></el-table-column>
+          <el-table-column prop="name" :label="`${$t('userManager.alias')}`" min-width="100"></el-table-column>
+          <el-table-column prop="enabled" :label="`${$t('userManager.state')}`" min-width="100">
             <template slot-scope="scope">
-              <el-tag v-if="scope.row.enabled === 1" type="success">使用中</el-tag>
-              <el-tag v-else type="danger"><i class="fa fa-lock"></i>已禁用</el-tag>
+              <el-tag v-if="scope.row.enabled === 1" type="success">
+                {{$t('userManager.using')}}
+              </el-tag>
+              <el-tag v-else type="danger">
+                <i class="fa fa-lock"></i>{{$t('userManager.locked')}}
+              </el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="email" label="绑定邮箱" min-width="150"></el-table-column>
+          <el-table-column prop="email" :label="`${$t('userManager.email')}`" min-width="150"></el-table-column>
 
-          <el-table-column prop="roles" label="权限" min-width="100">
+          <el-table-column prop="roles" :label="`${$t('userManager.privilege')}`" min-width="100">
             <template slot-scope="scope">
               <el-tag v-for="(item, index) in scope.row.roles" :key="index" type="danger">
                 {{item}}
@@ -106,12 +110,12 @@
         },
         rules: {
           username: [
-            {required: true, message: '账号不能为空', trigger: 'blur'},
-            {min: 5, max: 10, message: '长度在 5 到 10 个字符', trigger: 'blur'}
+            {required: true, message: this.$t('userManager.rule1'), trigger: 'blur'},
+            {min: 5, max: 10, message: this.$t('userManager.rule2'), trigger: 'blur'}
           ],
           password: [
-            {required: true, message: '密码不能为空', trigger: 'blur'},
-            {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
+            {required: true, message: this.$t('userManager.rule3'), trigger: 'blur'},
+            {min: 6, max: 20, message: this.$t('userManager.rule4'), trigger: 'blur'}
           ],
         },
         dialogFormVisible: false,
@@ -144,7 +148,7 @@
           this.userPageData.user_id = id;
           return id;
         } else {
-          this.$message.info('获取身份信息失败，请重新登录~~~');
+          this.$message.info(this.$t('sessionExpired'));
           return false;
         }
       },
@@ -160,7 +164,7 @@
             out_this.userPageData.total = resData.data.total;
             out_this.userTableList = resData.data.pageList;
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + '~~~~' + out_this.$t('serverError'));
           }
         });
       },
@@ -178,7 +182,7 @@
 
           if (flag) {
             this.$refs.multipleTable.selection.splice(i, 1);
-            this.$message.info('对管理员的操作已经取消');
+            this.$message.info(this.$t('userManager.insufficientPrivilege'));
           }
         }
         this.tableSelectList = this.$refs.multipleTable.selection;
@@ -203,7 +207,7 @@
           console.log(resData);
           if (resData.code === 1003) {
             out_this.$message({
-              message: resData.code + '~~~~' + resData.message,
+              message: resData.code + '~~~~' + out_this.$t('userManager.registerSuccess'),
               type: 'success',
               duration: 2000
             });
@@ -211,7 +215,7 @@
             // 重新加载账号信息list
             out_this.loadUserAccountInfoList();
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + '~~~~' + out_this.$t('userManager.registerFailed'));
           }
         });
 
@@ -223,22 +227,22 @@
         let username = this.addUserForm.username;
         let password = this.addUserForm.password;
         if (username.replace(/\s*/g, '').length === 0) {
-          this.$message.error('请输入正确的用户名');
+          this.$message.error(this.$t('userManager.rule5'));
           return false;
         }
 
         if (username.includes(' ')) {
-          this.$message.error('用户名不能包含空格');
+          this.$message.error(this.$t('userManager.rule6'));
           return false;
         }
 
         if (password.replace(/\s*/g, '').length === 0) {
-          this.$message.error('请输入正确的密码');
+          this.$message.error(this.$t('userManager.rule7'));
           return false;
         }
 
         if (password.includes(' ')) {
-          this.$message.error('密码不能包含空格');
+          this.$message.error(this.$t('userManager.rule8'));
           return false;
         }
 
@@ -256,7 +260,7 @@
       addLockOnUserAccount() {
         this.tableSelectList = this.clearRepeatedHandler(this.tableSelectList, 0);
         if(this.tableSelectList.length ===0){
-          this.$message.info('选择的内容不符合条件');
+          this.$message.info(this.$t('userManager.invalidSelection'));
           return;
         }
 
@@ -266,7 +270,7 @@
           console.log(resData);
           if (resData.code === 8002) {
             out_this.$message({
-              message: resData.code + '~~~~  ' + resData.message,
+              message: resData.code + '~~~~  ' + out_this.$t('operationSuccess'),
               type: 'success',
               center: true,
               duration: 2000
@@ -280,7 +284,7 @@
                   out_this.userTableList[j].enabled = 0;
 
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + '~~~~' + out_this.$t('serverError'));
           }
         });
 
@@ -290,7 +294,7 @@
       unlockUserAccount() {
         this.tableSelectList = this.clearRepeatedHandler(this.tableSelectList, 1);
         if(this.tableSelectList.length ===0){
-          this.$message.info('选择的内容不符合条件');
+          this.$message.info(this.$t('userManager.invalidSelection'));
           return;
         }
 
@@ -300,7 +304,7 @@
           console.log(resData);
           if (resData.code === 8004) {
             out_this.$message({
-              message: resData.code + '~~~~  ' + resData.message,
+              message: resData.code + '~~~~  ' + out_this.$t('operationSuccess'),
               type: 'success',
               center: true,
               duration: 2000
@@ -314,7 +318,7 @@
                   out_this.userTableList[j].enabled = 1;
 
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + '~~~~' + out_this.$t('serverError'));
           }
         });
 

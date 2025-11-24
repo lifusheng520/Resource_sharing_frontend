@@ -2,7 +2,7 @@
   <div style="width: 100%">
     <div style="margin: 3%;width: 94%">
 
-      <h3>我的足迹</h3>
+      <h3>{{$t('browseRecordManager.title')}}我的足迹</h3>
 
       <div style="width: 100%;">
 
@@ -12,15 +12,15 @@
 
             <el-button v-show="this.browseRecordSelection.length !== 0"
                        @click="checkAllHandler" type="danger" size="small" round>
-              全选
+              {{$t('browseRecordManager.selectAll')}}
             </el-button>
             <el-button v-show="this.browseRecordSelection.length !== 0"
                        @click="cancelSelection" type="danger" size="small" round>
-              取消
+              {{$t('browseRecordManager.cancel')}}
             </el-button>
             <el-button v-show="this.browseRecordSelection.length !== 0"
                        @click="deleteBrowseRecord" type="danger" size="small" round>
-              删除
+              {{$t('browseRecordManager.delete')}}
             </el-button>
           </div>
 
@@ -105,7 +105,7 @@
       if (userId) {
         this.browseRecordPageData.user_id = userId;
       } else {
-        this.$message.info('请重新登录~~~');
+        this.$message.info(this.$t('sessionExpired'));
         this.$router.push('/login');
       }
 
@@ -151,7 +151,7 @@
             out_this.browseRecordPageData.total = resData.data.total;
             out_this.browseRecordTableList = resData.data.pageList;
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + ' ~~~~ ' + out_this.$t('serverError'));
           }
         });
       },
@@ -164,7 +164,7 @@
           console.log(resData);
           if (resData.code === 9002) {
             out_this.$message({
-              message: resData.code + '~~~~' + resData.message,
+              message: resData.code + ' ~~~~ ' + out_this.$t('operationSuccess'),
               type: 'success',
               duration: 2000
             });
@@ -174,7 +174,7 @@
             out_this.browseRecordPageData.total = -1;
             out_this.loadBrowseRecord();
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + ' ~~~~ ' + out_this.$t('serverError'));
           }
         });
 

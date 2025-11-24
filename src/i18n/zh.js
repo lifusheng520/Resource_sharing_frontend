@@ -1,6 +1,8 @@
 export default {
 serverError: '服务器错误，请稍后重试',
 deleteSuccess: '删除成功',
+sessionExpired: '服务器连接已经断开，请重新登录',
+operationSuccess: '操作成功',
   header: {
     home: '首页',
     recommendation: '资源推荐',
@@ -151,12 +153,41 @@ deleteSuccess: '删除成功',
     addUser: '添加用户',
     lockAccount: '冻结账号',
     activateAccount: '激活账号',
-    addUserInfo: '添加账号信息',
-    account: '用户名',
-    password: '密码',
+    addUserAccount: '添加账号',
+    username: '用 户 名',
+    password: '密 码',
     cancel: '取 消',
-    confirmation: '确 认'
+    confirmation: '确 认',
+    registerDate: '注册时间',
+    account: '账号',
+    alias: '昵称',
+    state: '状态',
+    using: '使用中',
+    locked: '已禁用',
+    email: '邮箱',
+    privilege: '权限',
 
+    rule1: '请输入用户名',
+    rule2: '长度在 5 到 10 个字符',
+    rule3: '请输入密码',
+    rule4: '长度在 6 到 20 个字符',
+
+    insufficientPrivilege: '没有权限对管理员进行操作...',
+    registerSuccess: '注册成功',
+    registerFailed: '注册失败',
+
+    rule5: '请输入正确的用户名',
+    rule6: '用户名不能包含空格',
+    rule7: '请输入正确的密码',
+    rule8: '密码不能包含空格',
+    invalidSelection: '选择的内容不符合条件'
+
+  },
+  browseRecordManager: {
+    title: '我 的 足 迹',
+    selectAll: '全选',
+    cancel: '取消',
+    delete: '删除'
 
   },
   home: {
