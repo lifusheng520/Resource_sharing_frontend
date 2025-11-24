@@ -3,14 +3,14 @@
     <el-row>
       <el-col>
         <div id="download_data_div" style="margin: 0px"></div>
-        <div style="margin-top: -30px;margin-bottom: 30px; text-align: center;font-size: 25px">本周下载量分析</div>
+        <div style="margin-top: -30px;margin-bottom: 30px; text-align: center;font-size: 25px">{{$t('downloadDataParse.chartTitle1')}}</div>
       </el-col>
     </el-row>
 
     <el-row>
       <el-col>
         <div id="download_pie" style="margin: 0px 10%"></div>
-        <div style="margin-top: -25px;margin-bottom: 50px; text-align: center;font-size: 25px">本周下载资源科目分析</div>
+        <div style="margin-top: -25px;margin-bottom: 50px; text-align: center;font-size: 25px">{{$t('downloadDataParse.chartTitle2')}}</div>
       </el-col>
     </el-row>
   </div>
@@ -33,18 +33,18 @@
       option = {
         xAxis: {
           type: 'category',
-          data: ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日']
+          data: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
         },
         yAxis: {
           type: 'value'
         },
         series: [
           {
-            data: [12, 24, 5, 22, 1, 7, 4],
+            data: [12, 24, 5, 22, 1, 7, 40],
             type: 'line'
           },
           {
-            data: [12, 24, 5, 22, 1, 7, 4],
+            data: [12, 24, 5, 22, 1, 7, 40],
             type: 'bar'
           }
         ]
@@ -59,8 +59,8 @@
 
       pieOption = {
         title: {
-          text: '下载资源科目',
-          subtext: '本周',
+          text: this.$t('downloadDataParse.chartTitle3'),
+          subtext: this.$t('downloadDataParse.chartTitle4'),
           left: 'center'
         },
         tooltip: {
@@ -76,20 +76,20 @@
             type: 'pie',
             radius: '70%',
             data: [
-              {value: 11, name: '法学'},
-              {value: 23, name: '工学'},
-              {value: 2, name: '管理学'},
-              {value: 34, name: '计算机科学'},
-              {value: 12, name: '教育学'},
-              {value: 6, name: '经济学'},
-              {value: 9, name: '军事学'},
-              {value: 10, name: '理学'},
-              {value: 2, name: '历史学'},
-              {value: 7, name: '农学'},
-              {value: 3, name: '文学'},
-              {value: 9, name: '医学'},
-              {value: 7, name: '艺术学'},
-              {value: 4, name: '哲学'},
+              {value: 11, name: this.$t('disciplines.law')},
+              {value: 23, name: this.$t('disciplines.engineering')},
+              {value: 2, name: this.$t('disciplines.management')},
+              {value: 34, name: this.$t('disciplines.computerScience')},
+              {value: 12, name: this.$t('disciplines.education')},
+              {value: 6, name: this.$t('disciplines.economics')},
+              {value: 9, name: this.$t('disciplines.militaryScience')},
+              {value: 10, name: this.$t('disciplines.science')},
+              {value: 2, name: this.$t('disciplines.history')},
+              {value: 7, name: this.$t('disciplines.agronomy')},
+              {value: 3, name: this.$t('disciplines.literature')},
+              {value: 9, name: this.$t('disciplines.medicine')},
+              {value: 7, name: this.$t('disciplines.artStudies')},
+              {value: 4, name: this.$t('disciplines.philosophy')},
             ],
             emphasis: {
               itemStyle: {
