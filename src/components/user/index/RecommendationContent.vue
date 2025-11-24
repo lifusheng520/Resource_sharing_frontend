@@ -130,7 +130,7 @@
                     <div id="div_resource_download_button">
                       <div>
                         <a
-                          :href="`http://localhost:8080/resource/download/${item.disk_name}/${item.id}/${item.discipline}`">
+                          :href="`${backendURL}/resource/download/${item.disk_name}/${item.id}/${item.discipline}`">
                           <el-button size="small" round><i class="fas fa-cloud-download-alt"></i> 下载</el-button>
                         </a>
                       </div>
@@ -176,6 +176,7 @@
         resourceList: [],
         disciplineList: [],
         hostURL: '',
+        backendURL: this.$axios.defaults.baseURL
       }
     },
     created() {

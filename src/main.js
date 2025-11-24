@@ -22,6 +22,9 @@ Vue.prototype.$cookies = VueCookies;
 
 Vue.config.productionTip = false;
 
+// backend api base url
+Vue.prototype.$apiUrl = process.env.VUE_APP_API_BASE_URL;
+
 import '../static/js/main'
 
 

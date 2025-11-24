@@ -92,10 +92,11 @@
                     <a href="#"><span><i class="fas fa-star"></i></span>{{item.resource.favorite_number}}</a>
                     <a href="#"><span><i class="fas fa-cloud-download-alt"></i></span>{{item.resource.downloads}}次</a>
                     <a
-                      :href="`http://localhost:8080/resource/download/${item.resource.disk_name}/${item.resource.id}/${item.resource.discipline}`"><span><i
+                      :href="`${backendBaseURL }/resource/download/${item.resource.disk_name}/${item.resource.id}/${item.resource.discipline}`"><span><i
                       class="fas fa-download"></i></span>下载</a>
                     <a v-on:click="goResourceDetail(item.resource.id)"> More</a>
                   </div>
+                  
                 </div>
               </div>
 
@@ -141,7 +142,7 @@
           pageSize: 10,
           total: -1,
         },
-
+        backendBaseURL: this.$axios.defaults.baseURL,
       }
     },
     created() {
@@ -157,7 +158,6 @@
         let out_this = this;
         this.$axios.post('/focus/getInfo', this.myPageData).then(response => {
           let resData = response.data;
-          console.log(resData);
 
           // 请求成功
           if (resData.code == 6006) {
@@ -221,14 +221,13 @@
       },
       // 加载关注用户的资源
       loadFocusUserResource(focusUid) {
-        console.log(focusUid);
+
         this.currentSelectId = focusUid;
         this.resourcePageData.user_id = focusUid;
 
         let out_this = this;
         this.$axios.post('/resource/server/getList', this.resourcePageData).then(response => {
           let resData = response.data;
-          console.log(resData);
 
           if (resData.code == 6007) {
 

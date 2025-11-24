@@ -88,9 +88,9 @@
       </div>
 
       <el-dialog :title="'正在审批：' + videoFileName" :visible.sync="videoDialogVisible"
-                 @close="closeDialogHandler" width="90%" center>
-        <div align="center" style="width: 100%">
-          <video id="video-check-resource" controls :src="videoHostURL"/>
+                 @close="closeDialogHandler" width="90%" center style="margin-top: -5%;">
+        <div align="center" style="width: 100%;">
+          <video id="video-check-resource" controls :src="videoHostURL" style="position: absolute; top: 60px; left: 0; width: 100%; height: auto;"/>
         </div>
       </el-dialog>
 

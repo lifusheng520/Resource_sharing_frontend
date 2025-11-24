@@ -124,7 +124,7 @@
                 <a v-on:click="goResourceDetail(item.resource.id)"><span><i class="fas fa-star"></i></span>{{item.resource.favorite_number}}</a>
                 <a><span><i class="fas fa-cloud-download-alt"></i></span>{{item.resource.downloads}}次</a>
                 <a
-                  :href="`http://localhost:8080/resource/download/${item.resource.disk_name}/${item.resource.id}/${item.resource.discipline}`"><span><i
+                  :href="`${backendBaseURL}/resource/download/${item.resource.disk_name}/${item.resource.id}/${item.resource.discipline}`"><span><i
                   class="fas fa-download"></i></span>下载</a>
                 <a v-on:click="goResourceDetail(item.resource.id)"> More</a>
               </div>
@@ -152,6 +152,7 @@
           downloadTimes: '',
         },
         recommendInfo: [],
+        backendBaseURL: this.$axios.defaults.baseURL,
 
       }
     },

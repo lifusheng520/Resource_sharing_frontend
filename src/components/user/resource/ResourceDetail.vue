@@ -48,10 +48,10 @@
                   </div>
 
                   <h3><a
-                    :href="`http://localhost:8080/resource/download/${UserAndResource.resource.disk_name}/${UserAndResource.resource.id}/${UserAndResource.resource.discipline}`">
+                    :href="`${backendURL}/resource/download/${UserAndResource.resource.disk_name}/${UserAndResource.resource.id}/${UserAndResource.resource.discipline}`">
                     {{UserAndResource.resource.origin_name}}</a></h3>
                   <h4>
-                    <span class="admin"><i class="el-icon-s-custom"></i>用户：{{UserAndResource.userInfo.username}}</span>
+                    <span class="admin"><i class="el-icon-s-custom"></i>用户：{{UserAndResource.userInfo.name}}</span>
                   </h4>
                   <h4>
                     <span class="date">上传于：{{UserAndResource.resource.upload_time}}</span>
@@ -113,7 +113,7 @@
                   </el-dialog>
 
                   <a
-                    :href="`http://localhost:8080/resource/download/${UserAndResource.resource.disk_name}/${UserAndResource.resource.id}/${UserAndResource.resource.discipline}`"><span><i
+                    :href="`${backendURL}/resource/download/${UserAndResource.resource.disk_name}/${UserAndResource.resource.id}/${UserAndResource.resource.discipline}`"><span><i
                     class="fas fa-cloud-download-alt"></i> 下载</span></a>
                   <a v-on:click="copyURLVisible = !copyURLVisible"><span><i class="fas fa-share"></i></span> 分享</a>
                   <a v-on:click="playVideo(UserAndResource.resource.id)"
@@ -126,10 +126,10 @@
                 <el-popover placement="right" title="下载URL：" width="100%"
                             v-model="copyURLVisible" trigger="click">
                   <p>
-                    {{`http://localhost:8080/resource/download/${UserAndResource.resource.disk_name}/${UserAndResource.resource.id}/${UserAndResource.resource.discipline}`}}</p>
+                    {{`${backendURL}/resource/download/${UserAndResource.resource.disk_name}/${UserAndResource.resource.id}/${UserAndResource.resource.discipline}`}}</p>
                   <div>
                     <el-button type="primary" size="mini"
-                               @click="copyURL(`http://localhost:8080/resource/download/${UserAndResource.resource.disk_name}/${UserAndResource.resource.id}/${UserAndResource.resource.discipline}`)">
+                               @click="copyURL(`${process.env.VUE_APP_API_BASE_URL}/resource/download/${UserAndResource.resource.disk_name}/${UserAndResource.resource.id}/${UserAndResource.resource.discipline}`)">
                       复制URL
                     </el-button>
                     <el-button size="mini" type="primary" @click="copyURLVisible = false">取消</el-button>
@@ -138,9 +138,9 @@
 
                 <el-dialog :title="'正在观看：' + UserAndResource.resource.origin_name"
                            :visible.sync="playVideoDialogVisible"
-                           @close="closePlayVideoDialogHandler" width="90%" center>
+                           @close="closePlayVideoDialogHandler" width="90%" center style="margin-top: -5%;" >
                   <div align="center" style="width: 100%">
-                    <video id="video-play-resource" controls :src="playVideoURL"/>
+                    <video id="video-play-resource" controls :src="playVideoURL" style="position: absolute; top: 60px; left: 0; width: 100%; height: auto;"/>
                   </div>
                 </el-dialog>
 
@@ -206,8 +206,8 @@
                                 <div class="div-comment-content-time">{{commentContentList[index].time}}</div>
                               </div>
                               <div class="div-comment-content-support">
-                                <p>
-                                  <i class="fas fa-thumbs-up"></i>{{commentContentList[index].support_number}}
+                                <p :id="`comment-support-${commentContentList[index].id}`">
+                                  <i style="margin-right: 5px;" class="fas fa-thumbs-up" v-on:click="commentSupportHandler(commentContentList[index].id, commentContentList[index].isSupport)"></i>{{commentContentList[index].support_number}}
                                 </p>
                               </div>
 
@@ -276,6 +276,7 @@
     name: "ResourceDetail",
     data() {
       return {
+        backendURL: this.$axios.defaults.baseURL,
         isEmpty: false,
         isEmptyDescription: '网络开小差了呢~~~',
         UserAndResource: {
@@ -355,6 +356,8 @@
       this.getCommentUserId();
       this.getCommentContentList();
 
+
+
       if (this.focusForm.user_id)
         this.getUserFocusInfoList(this.focusForm.user_id);
 
@@ -371,6 +374,47 @@
       }
     },
     methods: {
+            // 更新评论支持UI
+      updateCommentSupportUI(user_id) {
+        let commentIdList = [];
+        let i;
+        for (i = 0; i < this.commentContentList.length; ++i) {
+          commentIdList.push(this.commentContentList[i].id);
+        }
+
+        let out_this = this;
+        this.$axios.post('/comment/getSupportInfo', {
+          'user_id': user_id,
+          'comment_id_list': commentIdList
+        }).then(response => {
+          let resData = response.data;
+          console.log(resData);
+
+          if (resData.code === 5011) {
+            let supportIdList = resData.data;
+          
+            for (let i = 0; i < out_this.commentContentList.length; ++i)
+              out_this.commentContentList[i].isSupport = false;
+
+            for (i = 0; i < supportIdList.length; ++i) {
+              let commentSupportP = document.getElementById(`comment-support-${supportIdList[i]}`);
+              if (commentSupportP) {
+                commentSupportP.style.color = 'red';
+                
+                for (let j = 0; j < out_this.commentContentList.length; ++j) {
+                  if (out_this.commentContentList[j].id == supportIdList[i]) {
+                    out_this.commentContentList[j].isSupport = true;
+                    break;
+                  }
+                }
+              }
+            }
+          } else {
+            out_this.$message.error(resData.code + '~~~~' + resData.message);
+          }
+        });
+        
+      },
       // 判断是否为支持的视频格式
       isSupportVideoType(type) {
         if (type === 'mp4')
@@ -385,7 +429,7 @@
       playVideo(resourceId) {
         console.log(resourceId);
         this.playVideoDialogVisible = true;
-        this.playVideoURL = `http://localhost:8080/resource/server/getVideo/${resourceId}`;
+        this.playVideoURL = `${backendURL}/resource/server/getVideo/${resourceId}`;
       },
       // 关闭视频播放对话框处理函数
       closePlayVideoDialogHandler() {
@@ -578,6 +622,8 @@
 
           if (resData.code === 5004) {
             out_this.commentContentList = resData.data;
+
+            out_this.updateCommentSupportUI(out_this.commentInfo.user_id);
           } else {
             this.$message.error(resData.code + '~~~~' + resData.message);
           }
@@ -649,6 +695,74 @@
 
         this.replyHideEvent();
       },
+      // 评论点赞
+      commentSupportHandler(comment_id, isSupport) {
+        // 获取登录信息
+        let user_id = this.$cookies.get('user_id');
+
+        let out_this = this;
+
+        if (isSupport)
+          // 取消评论点赞
+          this.$axios.post('/comment/cancelSupport/',
+            {
+              'comment_id': comment_id,
+              'user_id': user_id
+            }
+          ).then(response => {
+            let resData = response.data;
+
+            if (resData.code == 5012) {
+              // 取消成功
+              out_this.setCommentSupportNumber(comment_id, -1);
+            }
+          });
+        else
+          this.$axios.post('/comment/support/',
+              {
+                'comment_id': comment_id,
+                'user_id': user_id
+              }
+            ).then(response => {
+              let resData = response.data;
+
+              if (resData.code != 5008) {
+                out_this.$message({
+                  message: resData.code + '~~~~' + resData.message,
+                  type: 'success',
+                  duration: 2000
+                });
+              } else {
+                // 点赞成功，评论的点赞数+1
+                out_this.setCommentSupportNumber(comment_id, 1);
+              }
+            });
+      },
+      // 给评论的点赞数量加上一个增量
+      setCommentSupportNumber(comment_id, dx) {
+        for (let i = 0; i < this.commentContentList.length; ++i) {
+          if (this.commentContentList[i].id == comment_id) {
+            this.commentContentList[i].support_number += dx;
+
+            if (dx > 0) {
+              this.commentContentList[i].isSupport = true;
+              let commentSupportP = document.getElementById(`comment-support-${comment_id}`);
+              if (commentSupportP) {
+                commentSupportP.style.color = 'red';
+              }
+            } else {
+              this.commentContentList[i].isSupport = false;
+              let commentSupportP = document.getElementById(`comment-support-${comment_id}`);
+              if (commentSupportP) {
+                commentSupportP.style.color = 'gray';
+              }
+            }
+
+            return;
+          }
+        }
+      },
+      // 去登录页面
       goLogin() {
         this.$router.push('/login');
       },
@@ -804,12 +918,12 @@
         return false;
       }
 
-
     }
   }
 </script>
 
 <style scoped>
+
 
   #div-focus-button {
     position: absolute;
@@ -949,6 +1063,10 @@
     margin-top: 20px;
     text-align: right;
     color: #5a6268;
+  }
+
+  .div-comment-content-support:hover {
+    cursor: pointer;
 
   }
 

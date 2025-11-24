@@ -89,7 +89,7 @@
       let out_this = this;
       this.$axios.get('/rank/upload').then(res => {
         let resData = res.data;
-        console.log(resData);
+
         if (resData.code == 4025)
           out_this.rankList = resData.data;
       });
@@ -188,7 +188,6 @@
         let out_this = this;
         this.$axios.get(`/focus/getList/${user_id}`).then(response => {
           let resData = response.data;
-          console.log(resData);
 
           if (resData.code === 6003) {
             out_this.setFocusIdList(resData.data);
@@ -200,7 +199,6 @@
       },
       // 设置用户的关注列表
       setFocusIdList(valueList) {
-        console.log(valueList);
         for (let i = 0; i < valueList.length; ++i) {
           this.focusIdList.push(valueList[i].focus_uid);
         }

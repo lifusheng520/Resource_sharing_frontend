@@ -67,7 +67,7 @@
                 <el-menu-item index="7-3" v-on:click="goPlatformResourceManager"><i class="fa fa-cogs"></i>&nbsp;&nbsp;平台资源管理
                 </el-menu-item>
                 <el-menu-item index="7-4">
-                  <a href="http://localhost:8080/druid" target="_blank">
+                  <a :href="`${backendURL}/druid`" target="_blank">
                     <i class="fas fa-shield-alt"></i>&nbsp;&nbsp;平台监控
                   </a>
                 </el-menu-item>
@@ -101,7 +101,9 @@
   export default {
     name: "PersonalContent",
     data() {
-      return {}
+      return {
+        backendURL: this.$axios.defaults.baseURL
+      }
     },
     created() {
 

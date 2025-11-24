@@ -1,6 +1,6 @@
 <template>
 
-  <div v-else id="div_personal_info">
+  <div id="div_personal_info">
 
     <el-empty v-if="this.isEmpty" style="margin: 20%" :description="emptyDescriptionContent"></el-empty>
     <div v-else>
@@ -25,7 +25,7 @@
               :on-success="handleAvatarSuccess"
               :on-error="handleAvatarFail"
               :before-upload="beforeAvatarUpload"
-              :action="'http://localhost:8080/user/uploadIcon/' + userInfo.id">
+              :action="`${backendURL}/user/uploadIcon/` + userInfo.id">
               <i class="el-icon-upload"></i>
               <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
               <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过10MB</div>
@@ -204,6 +204,7 @@
     name: "PersonalInfo",
     data() {
       return {
+        backendURL: this.$axios.defaults.baseURL,
         size: '',
         isEmpty: true,
         emptyDescriptionContent: '',
@@ -357,7 +358,10 @@
         console.log(file.response)
         this.userInfo.headIcon = file.response.data;
         // this.userInfo.headIcon = URL.createObjectURL(file.raw);
-        this.$cookies.set('headIcon', file.response.data);
+        this.$cookies.set('user_icon', file.response.data);
+
+        this.$root.$emit('updateHeadIconEvent', file.response.data);
+
       },
       handleAvatarFail(res, file) {
         this.$message.error(res.code + '~~~~' + res.message);
@@ -439,7 +443,7 @@
         }
       },
       validEmail(email) {
-        let reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+        let reg = /^[A-Za-z0-9._-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
         return reg.test(email);
       }
     }

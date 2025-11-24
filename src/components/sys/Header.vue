@@ -61,8 +61,12 @@
           <div>
 
             <div style="display: inline-block;">
+              <!--
               <el-avatar v-if="this.user.headIcon" shape="circle" :size="60" :src="this.user.headIcon"></el-avatar>
               <el-avatar v-else shape="circle" :size="60" src="static/ico/headIcon.png"></el-avatar>
+              <el-image shape="circle" :size="60" id="user-avatar"
+                         :src="this.user.headIcon ? this.user.headIcon : 'static/ico/headIcon.png'"></el-avatar>-->
+              <img :src="this.user.headIcon" width="60px" height="60px" id="user-avatar" style="border-radius: 50%;">
             </div>
             <div id="div_username">
 
@@ -110,6 +114,15 @@
     created: function () {
       this.setUserInfo();
     },
+    mounted() {
+      // 监听更新头像事件
+      this.$root.$on('updateHeadIconEvent', (newHeadIcon) => {
+        this.user.headIcon = newHeadIcon;
+        
+        let avatarElement = document.getElementById("user-avatar");
+        avatarElement.src = newHeadIcon;   
+      });
+    },
     methods: {
       setUserInfo() {
         let name = this.$cookies.get('username');
@@ -119,8 +132,11 @@
         }
 
         let headIcon = this.$cookies.get('user_icon');
+
         if (headIcon) {
           this.user.headIcon = headIcon;
+        } else {
+          this.user.headIcon = '/static/ico/headIcon.png';
         }
       },
       goIndex() {

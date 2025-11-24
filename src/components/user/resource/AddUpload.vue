@@ -9,7 +9,7 @@
 
         <!--                   :action="`http://localhost:8080/resource/upload/${fileForm.user_id}/${fileForm.discipline}/${fileForm.textarea}`"-->
         <el-upload class="upload-demo" ref="upload" with-credentials
-                   :action="`http://localhost:8080/resource/upload/${fileForm.user_id}/${fileForm.discipline}/${fileForm.textarea}`"
+                   :action="`${backendURL}/resource/upload/${fileForm.user_id}/${fileForm.discipline}/${fileForm.textarea}`"
                    :on-preview="handlePreview" :on-remove="handleRemove" :file-list="this.fileForm.fileList"
                    :on-success="successHandle" :on-error="failHandle"
                    :auto-upload="false" multiple>
@@ -64,6 +64,7 @@
     name: "AddUpload",
     data() {
       return {
+        backendURL: this.$axios.defaults.baseURL,
         isEmpty: '',
         fileForm: {
           user_id: '',

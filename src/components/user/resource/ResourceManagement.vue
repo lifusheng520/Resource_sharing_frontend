@@ -68,7 +68,7 @@
             <el-button @click="deleteRow(scope.row)" type="text">删除</el-button>
             <el-button @click="showUpdateForm(scope.row)" type="text">编辑</el-button>
             <a
-              :href="`http://localhost:8080/resource/download/${scope.row.disk_name}/${scope.row.id}/${scope.row.discipline}`">
+              :href="`${backendURL}/resource/download/${scope.row.disk_name}/${scope.row.id}/${scope.row.discipline}`">
               <el-button type="text">下载</el-button>
             </a>
           </template>
@@ -139,6 +139,7 @@
     name: "ResourceManagement",
     data() {
       return {
+        backendURL: this.$axios.defaults.baseURL,
         isEmpty: false,
         tableData: [],
         multipleSelection: [],

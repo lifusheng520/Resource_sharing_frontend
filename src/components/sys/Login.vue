@@ -79,7 +79,8 @@
 
 <script>
 
-  import PageTitle from "./PageTitle";
+import PageTitle from "./PageTitle";
+
 
   export default {
     name: "Login",
@@ -198,7 +199,15 @@
 
               _this.$cookies.set('username', userInfo.username, 60 * 30);
               _this.$cookies.set('user_id', userInfo.id, 60 * 30);
-              _this.$cookies.set('user_icon', userInfo.headIcon, 60 * 30);
+
+  
+              let headIcon = userInfo.headIcon;
+              let len = userInfo.headIcon.length;
+              if (headIcon[len - 4] === 'n' && headIcon[len - 3] === 'u' && headIcon[len - 2] === 'l' && headIcon[len - 1] === 'l') {
+                headIcon = '/static/ico/headIcon.png';
+              }
+
+              _this.$cookies.set('user_icon', headIcon, 60 * 30);
               _this.$cookies.set('userInfo_id', userInfo.userInfo_id, 60 * 30);
 
               _this.$router.go(-1);
