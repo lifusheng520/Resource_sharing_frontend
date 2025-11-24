@@ -8,9 +8,12 @@
         <div class="row justify-content-center">
           <div class="col-xl-8 col-lg-8">
             <div class="banner-content">
-              <h1>白给网 —— 校园资料分享平台</h1>
-              <p>关于莫雷洛的内卷。<br/>
-                在传说中的第一次符文战争中，莫雷洛用他的魔法摧毁整个大陆。莫雷洛可能是世上最接近神的人。强大的魔法甚至摧毁了瑞兹的故乡...</p>
+              <h1>{{ $t('myIndex.title') }}</h1>
+              <p>
+                {{ $t('myIndex.description1') }}
+                <br/>
+                {{ $t('myIndex.description11') }}
+              </p>
             </div>
           </div>
         </div>
@@ -30,9 +33,9 @@
               </div>
               <div class="part-text">
                 <h2>{{systemInfo.userNumber.toLocaleString()}}</h2>
-                <h3>用户量</h3>
-                <p>唱、跳、rap、打篮球和制造BUG仅仅只是我们的娱乐业务，
-                  我们更专注于挖掘有需要的人群，在人海中寻找符合我们业务需求的用户。
+                <h3>{{ $t('myIndex.userAmount') }}</h3>
+                <p>
+                  {{ $t('myIndex.description2') }}
                 </p>
               </div>
             </div>
@@ -45,9 +48,10 @@
               </div>
               <div class="part-text">
                 <h2>{{systemInfo.resourceNumber.toLocaleString()}}</h2>
-                <h3>资源数</h3>
-                <p>我们的资料超乎你的想象，不需要讲大话、口嗨，
-                  庞大的后台资料库就是我们最好的证明，我们有能力提供优质丰富的资源服务。</p>
+                <h3>{{ $t('myIndex.resourceAmount') }}</h3>
+                <p>
+                  {{ $t('myIndex.description3') }}
+                </p>
               </div>
             </div>
           </div>
@@ -59,11 +63,9 @@
               </div>
               <div class="part-text">
                 <h2>{{systemInfo.downloadTimes.toLocaleString()}}</h2>
-                <h3>次下载</h3>
-                <p>加入我们，与其他用户一样，享受优质的资源服务，与大家一起共享你的资源，
-                  让资源发挥它的最大价值。选择
-                  <del style="text-decoration-color: red;text-decoration-style: double;">我们</del>
-                  亚索是你最正确的选择。
+                <h3>{{ $t('myIndex.downloadTimes') }}</h3>
+                <p>
+                  {{ $t('myIndex.description4') }}
                 </p>
               </div>
             </div>
@@ -83,9 +85,10 @@
         <div class="row justify-content-center">
           <div class="col-xl-12 col-lg-12">
             <div class="section-title text-center">
-              <h2 class="extra-margin">最热门的<span> 资源</span></h2>
+              <h2 class="extra-margin">{{ $t('myIndex.hotest') }}<span> {{ $t('myIndex.resource') }}</span></h2>
               <p>
-                卡达·烬——心思缜密的癫狂艺术家，烬坚信谋杀是一门艺术。他曾在艾欧尼亚的监狱中服刑，但却因为执政议会里涌动着的暗流而得到释放，成为了权术斗争所利用的刺客。烬将手中的枪当成画笔，尽情地挥洒他所追求的残忍艺术。</p>
+                {{ $t('myIndex.description5') }}
+              </p>
             </div>
           </div>
         </div>
@@ -105,15 +108,13 @@
                   <span><i class="el-icon-s-custom"></i>&nbsp;&nbsp;&nbsp;{{item.userInfo.name}} </span>
                 </h4>
                 <h4>
-                  <span>上传于：{{item.resource.upload_time}}</span>
+                  <span>{{ $t('myIndex.uploadTime') }}{{item.resource.upload_time}}</span>
                 </h4>
                 <h4>
-                  <span>隶属：{{item.resource.discipline}}</span>
+                  <span>{{ $t('myIndex.belongTo') }}{{item.resource.discipline}}</span>
                 </h4>
-                <h4><span>介绍：</span></h4>
+                <h4><span>{{ $t('myIndex.introduction') }}</span></h4>
                 <div class="div_resource_description">
-                  <!--                  {{item.resource.description.length > 35 ? item.resource.description.slice(0, 35) + '...' :-->
-                  <!--                  item.resource.description}}sdfasfd sdf asdf s-->
                   {{item.resource.description}}
                 </div>
               </div>
@@ -125,7 +126,7 @@
                 <a><span><i class="fas fa-cloud-download-alt"></i></span>{{item.resource.downloads}}次</a>
                 <a
                   :href="`${backendBaseURL}/resource/download/${item.resource.disk_name}/${item.resource.id}/${item.resource.discipline}`"><span><i
-                  class="fas fa-download"></i></span>下载</a>
+                  class="fas fa-download"></i></span>{{ $t('download') }}</a>
                 <a v-on:click="goResourceDetail(item.resource.id)"> More</a>
               </div>
             </div>
@@ -165,7 +166,7 @@
           out_this.systemInfo.resourceNumber = resData.data.resourceNumber;
           out_this.systemInfo.downloadTimes = resData.data.downloadTimes;
         } else {
-          out_this.$message.info(resData.code + '~~~~' + resData.message + '~~~~请刷新重新进入首页');
+          out_this.$message.info(resData.code + '  ~~~~  ' + out_this.$t('notFound404'));
         }
       });
 
@@ -194,22 +195,17 @@
           console.log(resData);
           if (resData.code == 6051) {
             out_this.$message({
-              message: resData.code + '~~~~' + resData.message,
+              message: resData.code + ' ~~~~ ' + out_this.$t('supportSuccess'),
               type: 'success',
               duration: 2000
             });
             // 点赞成功，将资源的点赞数+1
             out_this.setResourceSupportNumber(resourceId, 1);
           } else if (resData.code == 6052) {
-            out_this.$message({
-              message: resData.code + '~~~~' + resData.message,
-              type: 'success',
-              duration: 2000
-            });
             // 取消成功，将资源的点赞数-1
             out_this.setResourceSupportNumber(resourceId, -1);
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + '~~~~' + out_this.$t('serverError'));
           }
 
         });
@@ -220,7 +216,7 @@
         if (userId) {
           return userId;
         } else {
-          this.$message.info('请先登录~~');
+          this.$message.info(this.$t('sessionExpired'));
           return false;
         }
       },

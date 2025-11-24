@@ -13,16 +13,17 @@
                     <div class="col-xl-16 col-lg-16">
 
                       <form class="newsletter-form">
-                        <input type="text" v-model="page.searchContent" placeholder="资料名">
-                        <button type="button" @click="getResourceBySelectDiscipline"><i class="el-icon-search"></i>&nbsp;&nbsp;&nbsp;&nbsp;搜索
+                        <input type="text" v-model="page.searchContent" :placeholder="`${$t('recommendationContent.placeholderPrompt')}`">
+                        <button type="button" @click="getResourceBySelectDiscipline">
+                          <i class="el-icon-search"></i>&nbsp;&nbsp;&nbsp;&nbsp;{{$t('recommendationContent.search')}}
                         </button>
 
                         <div id="div_title_radio">
-                          分类：
+                          {{$t('recommendationContent.categories')}}
                           <el-radio-group id="discipline_radio" v-model="page.disciplineContent"
                                           @change="getResourceBySelectDiscipline"
                                           v-for="(item, index) in disciplineList" :key="index">
-                            <el-radio-button style="margin: 0px 5px;" :label="item"></el-radio-button>
+                            <el-radio-button style="margin: 0px 5px;" :label="translateDisciplineToSelectedLanguage(item)"></el-radio-button>
                           </el-radio-group>
                         </div>
 
@@ -40,17 +41,9 @@
     </div>
     <!-- page-title 页面标题结束 -->
 
-    <el-empty v-if="this.isEmpty" style="margin: 0;background: white;height: 700px" description="网络开小差了呢~~~"></el-empty>
+    <el-empty v-if="this.isEmpty" style="margin: 0;background: white;height: 700px" :description="`${$t('notFound404')}`"></el-empty>
 
     <div v-else>
-      <!-- <el-menu :default-active="'1'" class="el-menu-demo" mode="horizontal"
-               @select="handleSelect" background-color="#545c64" text-color="#fff"
-               active-text-color="#ffd04b" style="width: 75%;margin: -30px auto;">
-        <el-menu-item index="1">下载量</el-menu-item>
-        <el-menu-item index="2">最新</el-menu-item>
-        <el-menu-item index="3">最热门</el-menu-item>
-        <el-menu-item index="4">收藏最多</el-menu-item>
-      </el-menu> -->
 
       <el-backtop>TOP</el-backtop>
 
@@ -61,11 +54,11 @@
           <div class="col-xl-12 col-lg-12">
             <div class="section-title text-left">
               <h2>
-                资源来源：
-                <span>{{page.disciplineContent}}</span>
+                {{$t('recommendationContent.source')}}
+                <span>{{this.sourceFrom}}</span>
               </h2>
               <h2>
-                搜索：
+                {{$t('recommendationContent.search')}}：
                 <span>{{page.searchContent}}</span>
               </h2>
 
@@ -90,10 +83,11 @@
                         {{item.origin_name}}</a>
                     </div>
                     <div class="part-info" id="div_resource_time">
-                      上传于： {{item.upload_time}}
+                      {{$t('recommendationContent.uploadTime')}}
+                      {{item.upload_time}}
                     </div>
                     <div class="part-info" id="div_resource_downloads">
-                      <i class="el-icon-download"></i> {{item.downloads}} 次
+                      <i class="el-icon-download"></i> {{item.downloads}}  {{$t('recommendationContent.times')}}
                     </div>
                     <div class="part-info" id="div_resource_favorite">
                       <a v-on:click="goResourceDetailPage(item.id)">
@@ -120,7 +114,7 @@
 
                     <div class="part-text">
                       <div id="div_resource_description_title">
-                        简介：
+                         {{$t('recommendationContent.introduction')}}
                       </div>
                       <div class="part-text" id="div_resource_description">
                         {{item.description}}
@@ -131,7 +125,7 @@
                       <div>
                         <a
                           :href="`${backendURL}/resource/download/${item.disk_name}/${item.id}/${item.discipline}`">
-                          <el-button size="small" round><i class="fas fa-cloud-download-alt"></i> 下载</el-button>
+                          <el-button size="small" round><i class="fas fa-cloud-download-alt"></i> {{$t('download')}}</el-button>
                         </a>
                       </div>
                     </div>
@@ -167,12 +161,13 @@
         isEmpty: false,
         firstTime: true,
         page: {
-          disciplineContent: '全部',
+          disciplineContent: this.$t('disciplines.all'),
           searchContent: '',
           currentPage: -1,
           totalPages: -1,
           pageSize: 10
         },
+        sourceFrom: '',
         resourceList: [],
         disciplineList: [],
         hostURL: '',
@@ -187,9 +182,13 @@
       });
       this.setHostURL();
       this.getResourceOfPage();
+
+      this.sourceFrom = this.page.disciplineContent;
     },
     methods: {
       getResourceBySelectDiscipline() {
+        this.sourceFrom = this.page.disciplineContent;
+
         // 第一次查询，初始化分页数据
         this.page.currentPage = -1;
         this.page.totalPages = -1;
@@ -200,11 +199,11 @@
         this.page.searchContent = this.page.searchContent.replace(/\s*/g, '');
 
         // 选择全部，获取默认资源
-        if (this.page.disciplineContent == '全部' && !this.page.searchContent) {
+        if (this.page.disciplineContent == this.$t('recommendationContent.all') && !this.page.searchContent) {
           // 单独获取全部默认资源
           this.hostURL = '/resource/recommend/default';
 
-        } else if (this.page.disciplineContent == '全部' && this.page.searchContent) {
+        } else if (this.page.disciplineContent == this.$t('recommendationContent.all') && this.page.searchContent) {
           // 单独搜索全部资源
           this.hostURL = '/resource/recommend/search';
 
@@ -235,11 +234,15 @@
         this.getResourceOfPage();
       },
       getResourceOfPage() {
+        console.log("page 内容：")
+        console.log(this.page);
+
+        this.page.disciplineContent = this.translateDisciplineToChinese(this.page.disciplineContent);
 
         let out_this = this;
         this.$axios.post(this.hostURL, this.page).then(res => {
           let resData = res.data;
-          console.log(resData);
+          //console.log(resData);
           out_this.page.currentPage = resData.data.currentPage;
           out_this.page.totalPages = resData.data.total;
           out_this.page.pageSize = resData.data.pageSize;
@@ -257,10 +260,80 @@
       goResourceDetailPage(id) {
         this.$cookies.set('resource_id', id);
         this.$router.push('/detail');
+      },
+      // 翻译内容到用户选择的语言
+      translateDisciplineToSelectedLanguage(content) {  
+        switch (content) {
+          case '全部':
+            return this.$t('recommendationContent.all');
+          case '法学':
+            return this.$t('disciplines.law');
+          case '工学':
+            return this.$t('disciplines.engineering');
+          case '管理学':
+            return this.$t('disciplines.management');
+          case '计算机科学':
+            return this.$t('disciplines.computerScience');
+          case '教育学':
+            return this.$t('disciplines.education');
+          case '经济学':
+            return this.$t('disciplines.economics');
+          case '军事学':
+            return this.$t('disciplines.militaryScience');
+          case '理学':
+            return this.$t('disciplines.science');
+          case '历史学':
+            return this.$t('disciplines.history');
+          case '农学':
+            return this.$t('disciplines.agronomy');
+          case '文学':
+            return this.$t('disciplines.literature');
+          case '医学':
+            return this.$t('disciplines.medicine');
+          case '艺术学':
+            return this.$t('disciplines.artStudies');
+          case '哲学':
+            return this.$t('disciplines.philosophy');
+        }
+      },
+      translateDisciplineToChinese(content) {
+        switch (content) {
+          case this.$t('recommendationContent.all'):
+            return '全部';
+          case this.$t('disciplines.law'):
+            return '法学';
+          case this.$t('disciplines.engineering'):
+            return '工学';
+          case this.$t('disciplines.management'):
+            return '管理学';
+          case this.$t('disciplines.computerScience'):
+            return '计算机科学';
+          case this.$t('disciplines.education'):
+            return '教育学';
+          case this.$t('disciplines.economics'):
+            return '经济学';
+          case this.$t('disciplines.militaryScience'):
+            return '军事学';
+          case this.$t('disciplines.science'):
+            return '理学';
+          case this.$t('disciplines.history'):
+            return '历史学';
+          case this.$t('disciplines.agronomy'):
+            return '农学';
+          case this.$t('disciplines.literature'):
+            return '文学';
+          case this.$t('disciplines.medicine'):
+            return '医学';
+          case this.$t('disciplines.artStudies'):
+            return '艺术学';
+          case this.$t('disciplines.philosophy'):
+            return '哲学';
+        }
+
       }
     }
 
-  }
+}
 </script>
 
 <style scoped>

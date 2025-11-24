@@ -20,10 +20,11 @@ export default {
     supportSuccess: '感谢你的支持',
     alias: '昵称',
     disciplines: {
+        all: '全部',
         law: '法学',
         engineering: '工学',
         management: '管理学',
-        computerScience: '计算机科学',
+        computerScience: '计算机科学cs',
         education: '教育学',
         economics: '经济学',
         militaryScience: '军事学',
@@ -287,6 +288,38 @@ export default {
         chartTitle4: '上 周'
     },
     myIndex: {
+        title: '白给网 —— 校园资料分享平台',
+        description1: '关于莫雷洛的法典',
+        description11: '在传说中的第一次符文战争中，莫雷洛用他的魔法摧毁整个大陆。莫雷洛可能是世上最接近神的人。强大的魔法甚至摧毁了瑞兹的故乡...',
+
+        userAmount: '用户量',
+        description2: '我们更专注于挖掘有需要的人群，在人海中寻找符合我们业务需求的用户。',
+
+        resourceAmount: '资源数',
+        description3: '我们的资料涵盖各个学科， 我们的目标是利用信息技术让学生与老师手中的资源活跃起来。我们有能力提供优质丰富的资源服务。',
+
+        downloadTimes: '次下载',
+        description4: '加入我们，与其他用户一样，享受优质的资源服务，与大家一起共享你的资源，让资源发挥它的最大价值。选择我们是你最正确的选择。',
+
+        hotest: '最热门的',
+        resource: '资源',
+        description5: '卡达·烬——心思缜密的癫狂艺术家，烬坚信谋杀是一门艺术。他曾在艾欧尼亚的监狱中服刑，但却因为执政议会里涌动着的暗流而得到释放，成为了权术斗争所利用的刺客。烬将手中的枪当成画笔，尽情地挥洒他所追求的残忍艺术。',
+
+        uploadTime: '上传于：',
+        belongTo: '隶属：',
+        introduction: '简介：',
+    },
+    recommendationContent: {
+        placeholderPrompt: '请输入资料名',
+        search: '搜索',
+        categories: '选择类别：',
+        source: '资源来源：',
+        uploadTime: '上传于：',
+        times: '次',
+        introduction: '简介：',
+        all: '全部'
+    },
+    uploadDataParse: {
         welcome: '欢迎来到校园资源享平台'
     },
     home: {
