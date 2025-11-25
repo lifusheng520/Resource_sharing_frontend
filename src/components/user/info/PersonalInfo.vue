@@ -12,10 +12,11 @@
           <img v-else src="static/img/none.png"/>
         </el-avatar>
         <br><br>
-        <el-button type="primary" size="small" @click="iconDialogFormVisible = true">上传头像<i
-          class="el-icon-upload el-icon--right"></i></el-button>
+        <el-button type="primary" size="small" @click="iconDialogFormVisible = true">
+          {{$t('personalInfo.avatarUpload')}}<i class="el-icon-upload el-icon--right"></i>
+        </el-button>
         <!-- Form -->
-        <el-dialog title="上传头像" :visible.sync="iconDialogFormVisible">
+        <el-dialog :title="`${$t('personalInfo.avatarUpload')}`" :visible.sync="iconDialogFormVisible">
 
           <el-form :model="iconForm">
 
@@ -27,121 +28,124 @@
               :before-upload="beforeAvatarUpload"
               :action="`${backendURL}/user/uploadIcon/` + userInfo.id">
               <i class="el-icon-upload"></i>
-              <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-              <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过10MB</div>
+              <div class="el-upload__text">
+                {{$t('personalInfo.uploadPrompt')}}<em>{{$t('personalInfo.clickUpload')}}</em>
+              </div>
+              <div class="el-upload__tip" slot="tip">{{$t('personalInfo.avatarUploadNotice')}}</div>
             </el-upload>
 
           </el-form>
 
           <div slot="footer" class="dialog-footer">
-            <el-button @click="iconDialogFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="iconDialogFormVisible = false">确 定</el-button>
+            <el-button @click="iconDialogFormVisible = false">{{$t('cancelButton')}}</el-button>
+            <el-button type="primary" @click="iconDialogFormVisible = false">{{$t('confirmButton')}}</el-button>
           </div>
         </el-dialog>
       </p>
       <!--    头像-->
 
-      <!--    content description begin-->
+      <!--    content description begin-->    
       <div>
         <form action="" disabled>
-          <el-descriptions class="margin-top" title="账号信息" :column="1" :size="size" border>
+          <el-descriptions class="margin-top" :title="`${$t('personalInfo.accountInfo')}`" :column="1" :size="size" border>
 
             <el-descriptions-item>
               <template slot="label">
                 <i class="el-icon-s-check"></i>
-                账号
+                {{$t('personalInfo.account')}}
               </template>
               <span v-if="this.userInfo.username">
               {{this.userInfo.username}}
             </span>
-              <span v-else>未填写</span>
+              <span v-else>{{$t('personalInfo.uninputed')}}</span>
             </el-descriptions-item>
 
             <el-descriptions-item>
               <template slot="label">
                 <i class="el-icon-user"></i>
-                姓名
+                {{$t('personalInfo.alias')}}
               </template>
               <span v-if="this.userInfo.name">{{this.userInfo.name}}</span>
-              <span v-else>未填写</span>
+              <span v-else>{{$t('personalInfo.uninputed')}}</span>
             </el-descriptions-item>
 
             <el-descriptions-item>
               <template slot="label">
                 <i class="el-icon-question"></i>
-                性别
+                {{$t('personalInfo.gender')}}
               </template>
               <span v-if="this.userInfo.sex">{{this.userInfo.sex}}</span>
-              <span v-else>未填写</span>
+              <span v-else>{{$t('personalInfo.uninputed')}}</span>
             </el-descriptions-item>
 
             <el-descriptions-item>
               <template slot="label">
                 <i class="el-icon-lock"></i>
-                账号状态
+                {{$t('personalInfo.accountState')}}
               </template>
               <span v-if="this.userInfo.enabled === 1">
-              <el-button type="success" round size="mini" disabled>正常使用</el-button>
+              <el-button type="success" round size="mini" disabled>{{$t('personalInfo.using')}}</el-button>
             </span>
               <span v-else>
-              <el-button type="danger" round size="mini" disabled>封禁状态</el-button>
+              <el-button type="danger" round size="mini" disabled>{{$t('personalInfo.locked')}}</el-button>
             </span>
             </el-descriptions-item>
 
             <el-descriptions-item :key="index" v-for="(role, index) in this.userInfo.roles">
               <template slot="label">
                 <i class="el-icon-postcard"></i>
-                系统权限-{{index + 1}}
+                {{$t('personalInfo.system') + $t('personalInfo.privilege')}} - {{index + 1}}
               </template>
-              <span v-if="role">{{role}}&nbsp;&nbsp;权限</span>
-              <span v-else>未填写</span>
+              <span v-if="role">{{role}}&nbsp;&nbsp;{{$t('personalInfo.privilege')}}</span>
+              <span v-else>{{$t('personalInfo.uninputed')}}</span>
             </el-descriptions-item>
 
             <el-descriptions-item>
               <template slot="label">
                 <i class="el-icon-date"></i>
-                创建时间
+                {{$t('personalInfo.createDate')}}
               </template>
               <span v-if="this.userInfo.create_time">{{this.userInfo.create_time}}</span>
-              <span v-else>未填写</span>
+              <span v-else>{{$t('personalInfo.uninputed')}}</span>
             </el-descriptions-item>
 
             <el-descriptions-item>
               <template slot="label">
                 <i class="el-icon-connection"></i>
-                安全邮箱
+                {{$t('personalInfo.bindedEmail')}}
               </template>
               <span v-if="this.userInfo.email">
-              {{this.userInfo.email}}
+              {{userInfo.email}}
               <el-button style="margin-left: 60%;" type="success" size="mini" icon="el-icon-plus"
-                         @click="centerDialogVisible = true">修改绑定</el-button>
+                         @click="centerDialogVisible = true">{{$t('personalInfo.modifyBinding')}}</el-button>
             </span>
               <span v-else>
-              未绑定
+              {{$t('personalInfo.unbinded')}}
               <el-button style="margin-left: 60%;" type="success" size="mini" icon="el-icon-plus"
-                         @click="centerDialogVisible = true">绑定</el-button>
+                         @click="centerDialogVisible = true">{{$t('personalInfo.bind')}}</el-button>
             </span>
-              <el-dialog title="绑定您的安全邮箱" :visible.sync="centerDialogVisible" width="40%" center>
+              <el-dialog :title="`${$t('personalInfo.bind')}`" :visible.sync="centerDialogVisible" width="40%" center>
                 <p style="font-size: 15px;color: black">
-                  绑定安全邮箱作用于您的身份验证，不会拿您的邮箱做其他用途，请放心绑定~~~<br>例如：更改您的密码
+                  {{$t('personalInfo.bindingEmailNotice1')}}<br>
+                  {{$t('personalInfo.bindingEmailNotice2')}}
                 </p>
                 <!--  form  -->
                 <el-form :model="emailForm" label-width="100px" class="demo-dynamic">
-                  <el-form-item prop="email" label="邮箱" :rules="this.rules.email">
+                  <el-form-item prop="email" :label="`${$t('personalInfo.email')}`" :rules="this.rules.email">
                     <el-input v-model="emailForm.email"></el-input>
                   </el-form-item>
-                  <el-form-item class="demo-form-inline" prop="verifyCode" label="验证码" :rules="this.rules.verifyCode">
+                  <el-form-item class="demo-form-inline" prop="verifyCode" :label="`${$t('personalInfo.verifyCode')}`" :rules="this.rules.verifyCode">
                     <el-input v-model="emailForm.verifyCode"></el-input>
                   </el-form-item>
                 </el-form>
                 <p>
                   <el-button type="primary" :loading="this.needWaitting" v-on:click="sendEmail">
-                    {{this.sendEmailButtionMessage}}
+                    {{sendEmailButtionMessage}}
                   </el-button>
                 </p>
                 <span slot="footer" class="dialog-footer">
-                  <el-button type="primary" @click="bindEmail">确 定</el-button>
-                  <el-button @click="centerDialogVisible = false">取 消</el-button>
+                  <el-button type="primary" @click="bindEmail">{{$t('confirmButton')}}</el-button>
+                  <el-button @click="centerDialogVisible = false">{{$t('cancelButton')}}</el-button>
                 </span>
               </el-dialog>
             </el-descriptions-item>
@@ -149,42 +153,48 @@
             <el-descriptions-item>
               <template slot="label">
                 <i class=""></i>
-                联系地址
+                {{$t('personalInfo.contact')}}
               </template>
-              <span v-if="this.userInfo.address">{{this.userInfo.address}}</span>
-              <span v-else>未填写</span>
+              <span v-if="this.userInfo.address">{{userInfo.address}}</span>
+              <span v-else>{{$t('personalInfo.uninputed')}}</span>
             </el-descriptions-item>
 
           </el-descriptions>
           <p>
             <br>
-            <el-button type="primary" size="small" @click="dialogFormVisible = true">修改个人信息<i
-              class="el-icon-edit el-icon--right"></i></el-button>
+            <el-button type="primary" size="small" @click="dialogFormVisible = true">
+              {{$t('personalInfo.modifyInfo')}}
+              <i class="el-icon-edit el-icon--right"></i>
+            </el-button>
             <!-- Form -->
-            <el-dialog title="修改个人信息" :visible.sync="dialogFormVisible">
+            <el-dialog :title="`${$t('personalInfo.modifyInfo')}`" :visible.sync="dialogFormVisible">
 
               <el-form :model="updateForm">
 
-                <el-form-item label="昵称" :label-width="formLabelWidth">
+                <el-form-item :label="`${$t('personalInfo.alias')}`" :label-width="formLabelWidth">
                   <el-input v-model="updateForm.name" autocomplete="off"></el-input>
                 </el-form-item>
 
-                <el-form-item label="性别" :label-width="formLabelWidth">
+                <el-form-item :label="`${$t('personalInfo.gender')}`" :label-width="formLabelWidth">
                   <el-radio-group v-model="updateForm.sex">
-                    <el-radio label="男"></el-radio>
-                    <el-radio label="女"></el-radio>
+                    <el-radio :label="`${$t('personalInfo.boy')}`"></el-radio>
+                    <el-radio :label="`${$t('personalInfo.girl')}`"></el-radio>
                   </el-radio-group>
                 </el-form-item>
 
-                <el-form-item label="联系地址" :label-width="formLabelWidth">
+                <el-form-item :label="`${$t('personalInfo.contact')}`" :label-width="formLabelWidth">
                   <el-input v-model="updateForm.address" autocomplete="off">{{userInfo.address}}</el-input>
                 </el-form-item>
 
               </el-form>
 
               <div slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="updateUserInfo(updateForm)">确 定</el-button>
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="updateUserInfo(updateForm)">
+                  {{$t('confirmButton')}}
+                </el-button>
+                <el-button @click="dialogFormVisible = false">
+                  {{$t('cancelButton')}}
+                </el-button>
               </div>
 
             </el-dialog>
@@ -240,15 +250,15 @@
         },
         rules: {
           email: [
-            {required: true, message: '请输入邮箱地址', trigger: 'blur'},
-            {type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change']}
+            {required: true, message: this.$t('personalInfo.rule1'), trigger: 'blur'},
+            {type: 'email', message: this.$t('personalInfo.rule11'), trigger: ['blur', 'change']}
           ],
           verifyCode: [
-            {required: true, message: '请输入验证码', trigger: 'blur'}
+            {required: true, message: this.$t('personalInfo.rule2'), trigger: 'blur'}
           ]
         },
         needWaitting: false,
-        sendEmailButtionMessage: '发送验证码'
+        sendEmailButtionMessage: this.$t('personalInfo.sendEmailButton')
       };
     },
     created() {
@@ -256,7 +266,7 @@
       let username = this.$cookies.get('username');
       if (!username) {
         this.$message({
-          message: '请先登录再查看喔~',
+          message: this.$t('sessionExpired'),
           type: 'warning'
         });
         this.isEmpty = true;
@@ -268,12 +278,12 @@
         let resData = res.data;
         console.log(resData);
         if (!resData.data) {  // 未查询到用户数据
-          this.$message({
-            message: resData.code + '~~~~' + resData.message,
+          _this.$message({
+            message: resData.code + '~~~~' + _this.$t('serverError'),
             type: 'warning',
             duration: 2000
           });
-          _this.emptyDescriptionContent = resData.code + '~~~~' + resData.message;
+          _this.emptyDescriptionContent = resData.code + ' ~~~~ ' + _this.$t('serverError');
           return;
         }
         let userInfo = resData.data;
@@ -288,11 +298,6 @@
         _this.userInfo.sex = userInfo.sex;
         _this.userInfo.username = userInfo.username;
 
-        _this.$message({
-          message: resData.code + '~~~~' + resData.message,
-          type: 'success',
-          duration: 1500
-        });
         _this.isEmpty = false;
       });
     },
@@ -308,19 +313,14 @@
           form.id = this.userInfo.id;
           const _this = this;
           this.$axios.post('/user/updateInfo', form).then(res => {
-            console.log(res);
+            //console.log(res);
             let resData = res.data;
             if (resData.code === 4001) {
-              _this.$message({
-                message: resData.code + '~~~~' + resData.message,
-                type: 'success',
-                duration: 1500
-              });
-
+              
               _this.$router.go(0);
             } else {
               _this.$message({
-                message: resData.code + '~~~~' + resData.message,
+                message: resData.code + '~~~~' + _this.$t('serverError'),
                 type: 'error',
                 duration: 1500
               });
@@ -333,48 +333,39 @@
         let sex = form.sex;
         let address = form.address.replace(/\s*/g, '');
         if (!name) {
-          this.$message.error('姓名不能为空~~');
+          this.$message.error(this.$t('personalInfo.rule3'));
           return false;
         }
         if (!sex) {
-          this.$message.error('性别不能为空~~');
+          this.$message.error(this.$t('personalInfo.rule4'));
           return false;
         }
         if (!address) {
-          this.$message.error('地址不能为空~~');
+          this.$message.error(this.$t('personalInfo.rule5'));
           return false;
         }
         return true;
       },
       handleAvatarSuccess(res, file) {
-        if (res.code === 4003) {
-          this.$message({
-            message: res.code + '~~~~' + res.message,
-            type: 'success',
-            duration: 1500
-          });
-        }
-
-        console.log(file.response)
+        //console.log(file.response)
         this.userInfo.headIcon = file.response.data;
-        // this.userInfo.headIcon = URL.createObjectURL(file.raw);
+
         this.$cookies.set('user_icon', file.response.data);
 
         this.$root.$emit('updateHeadIconEvent', file.response.data);
-
       },
       handleAvatarFail(res, file) {
-        this.$message.error(res.code + '~~~~' + res.message);
+        this.$message.error(res.code + '~~~~' + this.$t('serverError'));
       },
       beforeAvatarUpload(file) {
         console.log(file.type);
         const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
         const isLt2M = file.size / 1024 / 1024 < 2;
         if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 或 png 格式!');
+          this.$message.error(this.$t('personalInfo.errorMessage1'));
         }
         if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
+          this.$message.error(this.$t('personalInfo.errorMessage1'));
         }
         return isJPG && isLt2M;
       },
@@ -386,10 +377,10 @@
           this.needWaitting = true;
           let seconds = 60;
           const timerHandle = window.setInterval(function () {
-            out_this.sendEmailButtionMessage = seconds + '秒后重新发送';
+            out_this.sendEmailButtionMessage = seconds + out_this.$t('personalInfo.suspendSending');
             if (seconds <= 0) {
               out_this.needWaitting = false;
-              out_this.sendEmailButtionMessage = '发送验证码';
+              out_this.sendEmailButtionMessage = out_this.$t('personalInfo.sendEmailButton');
               window.clearInterval(timerHandle);
             }
             seconds--;
@@ -398,43 +389,39 @@
           this.$axios.post('/user/sendVerifyCode', this.emailForm).then(res => {
             let resData = res.data;
             if (resData.code === 4006) {
-              this.$message({
-                message: resData.code + '~~~~' + resData.message + '~~注意查收',
+              out_this.$message({
+                message: resData.code + ' ~~~~ ' + out_this.$t('personalInfo.sendingSuccess'),
                 type: 'success',
                 duration: 1500
               });
             } else {
-              this.$message.error(resData.code + '~~~' + resData.message);
-              this.needWaitting = false;
+              out_this.$message.error(resData.code + ' ~~~ ' + out_this.$t('serverError'));
+              out_this.needWaitting = false;
             }
           });
         } else {
-          this.$message.error('请填写正确的邮箱~~~');
+          this.$message.error(this.$t('personalInfo.rule11'));
         }
       },
       bindEmail() {
         if (!this.emailForm.verifyCode) {
-          this.$message.error('请输入验证码~~~');
+          this.$message.error(this.$t('personalInfo.rule2'));
           return;
         }
         if (!this.validEmail(this.emailForm.email)) {
-          this.$message.error('请输入邮箱号~~~');
+          this.$message.error(this.$t('personalInfo.rule1'));
         } else {
           this.emailForm.id = this.userInfo.id;
           let out_this = this;
           this.$axios.post('/user/bindEmail', this.emailForm).then(res => {
-            console.log(res.data);
+            //console.log(res.data);
             let resData = res.data;
             if (resData.code === 4009) {
-              this.$message({
-                message: resData.code + '~~~~' + resData.message,
-                type: 'success',
-                duration: 1500
-              });
+              
               out_this.$router.go(0);
             } else {
               this.$message({
-                message: resData.code + '~~~~' + resData.message,
+                message: resData.code + ' ~~~~ ' + out_this.$t('personalInfo.bindingFailed'),
                 type: 'error',
                 duration: 1500
               });

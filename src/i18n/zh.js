@@ -19,6 +19,7 @@ export default {
     download: '下载',
     supportSuccess: '感谢你的支持',
     alias: '昵称',
+    updateSuccess: '信息更新成功',
     disciplines: {
         all: '全部',
         law: '法学',
@@ -340,11 +341,12 @@ export default {
         cancel: '取消'
     },
     personalInfo: {
-        avatarUpload: '上传头像',
+        avatarUpload: '上 传 头 像',
         uploadPrompt: '将文件拖到此处，或',
         clickUpload: '点击上传',
         avatarUploadNotice: '只能上传jpg/png文件，且不超过10MB',
-        account: '账号',
+        accountInfo: '账号信息',
+        account: '账 号',
         uninputed: '未填写',
         alias: '昵称',
         gender: '性别',
@@ -357,24 +359,51 @@ export default {
         bindedEmail: '已绑定邮箱',
         modifyBinding: '修改绑定',
         unbinded: '未绑定',
-        bind: '绑定',
+        bind: '邮箱绑定',
 
         bindingEmailNotice1: '绑定安全邮箱作用于您的身份验证，不会拿您的邮箱做其他用途，请放心绑定',
         bindingEmailNotice2: '例如：更改您的密码',
 
-        email: '邮箱',
+        email: '邮 箱',
         verifyCode: '验证码',
-        contact: '联系地址',
-        modifyInfo: '修改个人信息',
+        contact: '联 系 地 址',
+        modifyInfo: '修 改 个 人 信 息',
         boy: '男',
-        girl: '女'
+        girl: '女',
 
+        rule1: '请输入邮箱地址',
+        rule11: '邮箱地址不正确',
 
+        rule2: '请输入验证码',
 
+        sendEmailButton: '发送验证码',
+        suspendSending: '秒后重新发送',
+        sendingSuccess: '发送成功，请检查你的邮箱',
 
+        rule3: '昵称不能为空',
+        rule4: '性别不能为空',
+        rule5: '地址不能为空',
 
+        errorMessage1: '上传头像图片只能是 JPG 或 png 格式!',
+        errorMessage2: '上传头像图片大小不能超过 2MB!',
+        bindingFailed: '邮箱绑定失败'
     },
-    home: {
+    updatePassword: {
+        welcome: '欢迎来到校园资源享平台'
+    },
+    addUpload: {
+        welcome: '欢迎来到校园资源享平台'
+    },
+    deleteResourceManager: {
+        welcome: '欢迎来到校园资源享平台'
+    },
+    resourceDetail: {
+        welcome: '欢迎来到校园资源享平台'
+    },
+    resourceManagement: {
+        welcome: '欢迎来到校园资源享平台'
+    },
+    personalContent: {
         welcome: '欢迎来到校园资源享平台'
     }
 }
