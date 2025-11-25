@@ -27,7 +27,7 @@ export default {
     disciplines: {
         all: '全部',
         law: '法学',
-        engineering: '工学',
+        engineering: '工学123',
         management: '管理学',
         computerScience: '计算机科学',
         education: '教育学',
@@ -486,9 +486,74 @@ export default {
         resourceIsDeleted: '资源已经从服务器端删除'
     },
     resourceManagement: {
-        welcome: '欢迎来到校园资源享平台'
+        title: '资 源 管 理',
+        placeholderPrompt: '请输入文件名',
+        placeholderPrompt2: '填写资料简介、概况，有助提升资料曝光率',
+
+
+        confirmDelete: '确定删除选中的内容吗？',
+        uploadDate: '上传日期',
+        fileName: '文件名',
+        state: '状态',
+        checking: '审核中',
+        passed: '已通过审核',
+        downloadTimes: '下载量',
+        favouriteTimes: '收藏人数',
+        size: '大小',
+        enable: '禁用/启用',
+        discipline: '学科',
+        introduction: '资源简介',
+        browse: '查看',
+        operation: '操作',
+        edit: '编 辑',
+        modifyResource: '修改资源',
+        setNewFileName: '设置新文件名',
+        disableResource: '禁用资源：',
+        enableResource: '启用资源：',
+        categories: '学科类别：',
+        notice1: '请选择资源科目',
+        notice2: '请正确填写内容',
+
+        rule1: '文件名不能为空',
+        rule2: '类别不能为空',
+        rule3: '介绍不能为空'
     },
     personalContent: {
-        welcome: '欢迎来到校园资源享平台'
+        menuBar1: {
+            personalSpace: '个人中心',
+            accountInfo: '账号信息',
+            modifyPassword: '修改密码'
+        },
+        menuBar2: {
+            resourceCenter: '资源中心',
+            uploadResource: '添加资源',
+            resourceManagement: '资源管理',
+            recycleBin: '垃圾箱'
+        },
+        menuBar3: {
+            pastRecord: '浏览记录'
+
+        },
+        menuBar4: {
+            mySubscription: '我的关注'
+        },
+        menuBar5: {
+            myCollection: '我的收藏',
+            favouriteManagement: '收藏管理',
+            folderManagement: '收藏夹管理'
+        },
+        menuBar6: {
+            myComment: '我的评论'
+        },
+        menuBar7: {
+            administratorCenter: '管理员中心',
+            resourceReview: '资源审批',
+            userManagement: '用户管理',
+            platformResourceManagement: '平台资源管理',
+            serverMonitor: '平台监控'
+        },
+        menuBar8: {
+            dataCenter: '数据中心'
+        }
     }
 }

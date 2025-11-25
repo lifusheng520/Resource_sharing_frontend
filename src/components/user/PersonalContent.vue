@@ -14,68 +14,90 @@
           <el-menu style="margin-top: 100px" default-active="1-1">
 
             <el-submenu index="1">
-              <template slot="title"><i class="el-icon-s-custom"></i>个人中心</template>
+              <template slot="title"><i class="el-icon-s-custom"></i>{{$t('personalContent.menuBar1.personalSpace')}}</template>
               <el-menu-item-group>
-                <el-menu-item index="1-1" v-on:click="goPersonalInfo"><i class="el-icon-info"></i>账号信息</el-menu-item>
-                <el-menu-item index="1-2" v-on:click="goUpdatePassword"><i class="el-icon-edit"></i>修改密码</el-menu-item>
+                <el-menu-item index="1-1" v-on:click="goPersonalInfo">
+                  <i class="el-icon-info"></i>
+                  {{$t('personalContent.menuBar1.accountInfo')}}
+                </el-menu-item>
+                <el-menu-item index="1-2" v-on:click="goUpdatePassword">
+                  <i class="el-icon-edit"></i>
+                  {{$t('personalContent.menuBar1.modifyPassword')}}
+                </el-menu-item>
               </el-menu-item-group>
             </el-submenu>
 
             <el-submenu index="2">
-              <template slot="title"><i class="el-icon-folder"></i>资源中心</template>
+              <template slot="title"><i class="el-icon-folder"></i>{{$t('personalContent.menuBar2.resourceCenter')}}</template>
               <el-menu-item-group>
-                <el-menu-item index="2-1" v-on:click="goUpload"><i class="el-icon-upload"></i>添加资源</el-menu-item>
-                <el-menu-item index="2-2" v-on:click="goResourceManagement"><i class="el-icon-setting"></i>资源管理
+                <el-menu-item index="2-1" v-on:click="goUpload">
+                  <i class="el-icon-upload"></i>
+                  {{$t('personalContent.menuBar2.uploadResource')}}
                 </el-menu-item>
-                <el-menu-item index="2-3" v-on:click="goDeletedResourceManager"><i class="el-icon-delete-solid"></i>垃圾箱
+                <el-menu-item index="2-2" v-on:click="goResourceManagement">
+                  <i class="el-icon-setting"></i>
+                  {{$t('personalContent.menuBar2.resourceManagement')}}
+                </el-menu-item>
+                <el-menu-item index="2-3" v-on:click="goDeletedResourceManager">
+                  <i class="el-icon-delete-solid"></i>
+                  {{$t('personalContent.menuBar2.recycleBin')}}
                 </el-menu-item>
               </el-menu-item-group>
             </el-submenu>
 
 
             <el-menu-item index="3" v-on:click="goBrowseRecordManager">
-              <i class="el-icon-edit-outline" v-on:click=""></i>浏览记录
+              <i class="el-icon-edit-outline" v-on:click=""></i>{{$t('personalContent.menuBar3.pastRecord')}}
             </el-menu-item>
 
             <el-menu-item index="4" v-on:click="goFocusManager">
-              <i class="el-icon-view"></i>我的关注
+              <i class="el-icon-view"></i>{{$t('personalContent.menuBar4.mySubscription')}}
             </el-menu-item>
 
             <el-submenu index="5">
-              <template slot="title"><i class="el-icon-star-on"></i>我的收藏</template>
+              <template slot="title"><i class="el-icon-star-on"></i>{{$t('personalContent.menuBar5.myCollection')}}</template>
               <el-menu-item-group>
                 <el-menu-item index="5" v-on:click="goFavouriteManager">
-                  <i class="el-icon-star-on"></i>收藏管理
+                  <i class="el-icon-star-on"></i>
+                  {{$t('personalContent.menuBar5.favouriteManagement')}}
                 </el-menu-item>
                 <el-menu-item index="3-2" v-on:click="goFavouriteFolderManager">
-                  <i class="el-icon-wallet"></i>收藏夹管理
+                  <i class="el-icon-wallet"></i>
+                  {{$t('personalContent.menuBar5.folderManagement')}}
                 </el-menu-item>
               </el-menu-item-group>
             </el-submenu>
 
             <el-menu-item index="6" v-on:click="goCommentManager">
-              <i class="el-icon-s-comment"></i>我的评论
+              <i class="el-icon-s-comment"></i>
+              {{$t('personalContent.menuBar6.myComment')}}
             </el-menu-item>
 
             <el-submenu index="7">
-              <template slot="title"><i class="el-icon-s-tools"></i>管理员中心</template>
+              <template slot="title"><i class="el-icon-s-tools"></i>{{$t('personalContent.menuBar7.administratorCenter')}}</template>
               <el-menu-item-group>
-                <el-menu-item index="7-1" v-on:click="goCheckResource"><i class="el-icon-document-checked"></i>资源审批
+                <el-menu-item index="7-1" v-on:click="goCheckResource">
+                  <i class="el-icon-document-checked"></i>
+                  {{$t('personalContent.menuBar7.resourceReview')}}
                 </el-menu-item>
-                <el-menu-item index="7-2" v-on:click="goUserManager"><i class="el-icon-user"></i>用户管理
+                <el-menu-item index="7-2" v-on:click="goUserManager">
+                  <i class="el-icon-user"></i>
+                  {{$t('personalContent.menuBar7.userManagement')}}
                 </el-menu-item>
-                <el-menu-item index="7-3" v-on:click="goPlatformResourceManager"><i class="fa fa-cogs"></i>&nbsp;&nbsp;平台资源管理
+                <el-menu-item index="7-3" v-on:click="goPlatformResourceManager">
+                  <i class="fa fa-cogs"></i>&nbsp;&nbsp;
+                  {{$t('personalContent.menuBar7.platformResourceManagement')}}
                 </el-menu-item>
                 <el-menu-item index="7-4">
                   <a :href="`${backendURL}/druid`" target="_blank">
-                    <i class="fas fa-shield-alt"></i>&nbsp;&nbsp;平台监控
+                    <i class="fas fa-shield-alt"></i>&nbsp;&nbsp;{{$t('personalContent.menuBar7.serverMonitor')}}
                   </a>
                 </el-menu-item>
               </el-menu-item-group>
             </el-submenu>
 
             <el-menu-item index="8" v-on:click="goDataCenter">
-              <i class="fa fa-chart-bar"></i>&nbsp;&nbsp;&nbsp;数据中心
+              <i class="fa fa-chart-bar"></i>&nbsp;&nbsp;&nbsp;{{$t('personalContent.menuBar8.dataCenter')}}
             </el-menu-item>
 
           </el-menu>
