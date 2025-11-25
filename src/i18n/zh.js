@@ -1,5 +1,5 @@
 export default {
-    serverError: '输入信息错误，或服务器错误，请稍后重试',
+    serverError: '操作失败！输入信息错误，或服务器错误，请稍后重试',
     deleteSuccess: '删除成功',
     sessionExpired: '服务器连接已经断开，请重新登录',
     operationSuccess: '操作成功',
@@ -20,6 +20,8 @@ export default {
     supportSuccess: '感谢你的支持',
     alias: '昵称',
     updateSuccess: '信息更新成功',
+    submitButton: '提 交',
+    resetButton: '重 置',
     disciplines: {
         all: '全部',
         law: '法学',
@@ -389,7 +391,26 @@ export default {
         bindingFailed: '邮箱绑定失败'
     },
     updatePassword: {
-        welcome: '欢迎来到校园资源享平台'
+        title: '忘 记 密 码',
+        notice: '如果还没有绑定邮箱请先绑定你的安全邮箱，修改密码需要邮箱验证本人身份',
+        newPassword: '新 密 码',
+        confirmPassword: '确认密码',
+        verifyCode: '验证码',
+
+        rule1: '请再次输入密码',
+        rule11: '两次输入密码不一致',
+
+        sendEmailButtion: '发 送',
+        suspendSending: '秒后重新发送',
+        sendingSuccess: '发送成功，请检查你的邮箱',
+        emailNotExist: '账号还未绑定邮箱',
+
+
+        rule2: '请输入验证码',
+        rule21: '验证码长度在 6 个字符',
+        rule3: '请输入密码',
+        rule31: '长度在 6 到 20 个字符'
+
     },
     addUpload: {
         welcome: '欢迎来到校园资源享平台'

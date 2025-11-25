@@ -1,24 +1,24 @@
 <template>
   <div id="content_div">
-    <el-empty v-if="this.isEmpty" style="margin: 20%" description="网络开小差了，请重新登录~~~"></el-empty>
+    <el-empty v-if="this.isEmpty" style="margin: 20%" :description="`${$t('notFound404')}`"></el-empty>
     <div v-else>
 
-      <h3><strong>忘记密码</strong></h3><br>
+      <h3><strong>{{$t('updatePassword.title')}}</strong></h3><br>
 
-      <p>如果还没有绑定邮箱请先绑定你的安全邮箱，修改密码需要邮箱验证本人身份</p><br><br>
+      <p>{{$t('updatePassword.notice')}}</p><br><br>
 
       <div style="width: 380px;margin: 0px auto">
         <el-form :model="user" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
 
-          <el-form-item label="新密码" prop="password">
+          <el-form-item :label="`${$t('updatePassword.newPassword')}`" prop="password">
             <el-input v-model="user.password"></el-input>
           </el-form-item>
 
-          <el-form-item label="确认密码" prop="checkPass">
+          <el-form-item :label="`${$t('updatePassword.confirmPassword')}`" prop="checkPass">
             <el-input v-model="user.checkPass"></el-input>
           </el-form-item>
 
-          <el-form-item label="验证码" prop="verifyCode">
+          <el-form-item :label="`${$t('updatePassword.verifyCode')}`" prop="verifyCode">
             <el-input v-model="user.verifyCode" style="width: 30%"></el-input>
             <el-button style="margin-left: 10%" type="primary" :loading="this.needWaitting" v-on:click="sendEmail"
                        round>
@@ -27,8 +27,8 @@
           </el-form-item>
 
           <el-form-item>
-            <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
-            <el-button @click="resetForm('ruleForm')">重置</el-button>
+            <el-button type="primary" @click="submitForm('ruleForm')">{{$t('submitButton')}}</el-button>
+            <el-button @click="resetForm('ruleForm')">{{$t('resetButton')}}</el-button>
           </el-form-item>
 
         </el-form>
@@ -44,16 +44,16 @@
     data() {
       var validatePass2 = (rule, value, callback) => {
         if (value === '') {
-          callback(new Error('请再次输入密码'));
+          callback(new Error(this.$t('updatePassword.rule1')));
         } else if (value !== this.user.password) {
-          callback(new Error('两次输入密码不一致!'));
+          callback(new Error(this.$t('updatePassword.rule11')));
         } else {
           callback();
         }
       };
       return {
         isEmpty: true,
-        sendEmailButtionMessage: '发送',
+        sendEmailButtionMessage: this.$t('updatePassword.sendEmailButtion'),
         needWaitting: false,
         user: {
           username: '',
@@ -63,16 +63,16 @@
         },
         rules: {
           verifyCode: [
-            {required: true, message: '请输入验证码', trigger: 'blur'},
-            {min: 6, max: 6, message: '验证码长度在 6 个字符', trigger: 'blur'}
+            {required: true, message: this.$t('updatePassword.rule2'), trigger: 'blur'},
+            {min: 6, max: 6, message: this.$t('updatePassword.rule21'), trigger: 'blur'}
           ],
           password: [
-            {required: true, message: '请输入密码', trigger: 'blur'},
-            {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
+            {required: true, message: this.$t('updatePassword.rule3'), trigger: 'blur'},
+            {min: 6, max: 20, message: this.$t('updatePassword.rule31'), trigger: 'blur'}
           ],
           checkPass: [
             {validator: validatePass2, trigger: 'blur'},
-            {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
+            {min: 6, max: 20, message: this.$t('updatePassword.rule31'), trigger: 'blur'}
           ]
         }
       }
@@ -83,7 +83,7 @@
         this.user.username = uname;
         this.isEmpty = false;
       } else {
-        this.$message.warning('登录信息已失效，请重新登录~~~~');
+        this.$message.warning(this.$t('sessionExpired'));
         this.isEmpty = true;
       }
     },
@@ -91,19 +91,21 @@
       submitForm(formName) {
         this.user.password = this.user.password.replace(/\s*/g, '');
         this.user.checkPass = this.user.checkPass.replace(/\s*/g, '');
+
+        let out_this = this;
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.$axios.post('/user/updatePass', this.user).then(res => {
               let resData = res.data;
               if (resData.code === 1010) {
-                this.$message({
-                  message: resData.code + '~~~~' + resData.message,
+                out_this.$message({
+                  message: resData.code + ' ~~~~ ' + out_this.$t('updateSuccess'),
                   type: 'success',
                   duration: 3000
                 });
               } else {
                 this.$message({
-                  message: resData.code + '~~~~' + resData.message,
+                  message: resData.code + ' ~~~~ ' + out_this.$t('serverError'),
                   type: 'error',
                   duration: 3000
                 });
@@ -120,10 +122,10 @@
           this.needWaitting = true;
           let seconds = 60;
           const timerHandle = window.setInterval(function () {
-            out_this.sendEmailButtionMessage = seconds + '秒后重新发送';
+            out_this.sendEmailButtionMessage = seconds + out_this.$t('updatePassword.suspendSending');
             if (seconds <= 0) {
               out_this.needWaitting = false;
-              out_this.sendEmailButtionMessage = '发送';
+              out_this.sendEmailButtionMessage = out_this.$t('updatePassword.sendEmailButtion');
               window.clearInterval(timerHandle);
             }
             --seconds;
@@ -131,21 +133,30 @@
 
           this.$axios.get(`/user/authEmail/${this.user.username}`).then(res => {
             let resData = res.data;
-            console.log(res.data);
+            // console.log(res.data);
             if (resData.code === 4006) {
-              this.$message({
-                message: resData.code + '~~~~' + resData.message + '~~注意查收',
+              out_this.$message({
+                message: resData.code + ' ~~~~ ' + out_this.$t('updatePassword.sendingSuccess'),
                 type: 'success',
                 duration: 3000
               });
-
+            
+            } else if (resData.code == 4011) {
+              out_this.$message({
+                message: resData.code + ' ~~~~ ' + out_this.$t('updatePassword.emailNotExist'),
+                type: 'warning',
+                duration: 3000
+              });
+              window.clearInterval(timerHandle);
+              out_this.needWaitting = false;
             } else {
-              this.$message.error(resData.code + '~~~' + resData.message);
-              this.needWaitting = false;
+              out_this.$message.error(resData.code + ' ~~~ ' + out_this.$t('serverError'));
+              out_this.needWaitting = false;
+              window.clearInterval(timerHandle);
             }
           });
         } else {
-          this.$message.error('获取用户信息失败~~~');
+          this.$message.error(this.$t('sessionExpired'));
         }
       },
       resetForm(formName) {

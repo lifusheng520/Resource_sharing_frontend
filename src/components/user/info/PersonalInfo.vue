@@ -397,6 +397,7 @@
             } else {
               out_this.$message.error(resData.code + ' ~~~ ' + out_this.$t('serverError'));
               out_this.needWaitting = false;
+              window.clearInterval(timerHandle);
             }
           });
         } else {
