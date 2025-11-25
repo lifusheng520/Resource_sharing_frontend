@@ -73,12 +73,12 @@
                         <h4>
                           <span>{{$t('favouriteManager.favouriteAt')}}{{item.favourite.time}}</span>
                         </h4>
-                        <h4><span>{{$t('favouriteManager.introduction')}}</span></h4>
-                        <div class="div_resource_description">
-                          <!--                  {{item.resource.description.length > 35 ? item.resource.description.slice(0, 35) + '...' :-->
-                          <!--                  item.resource.description}}sdfasfd sdf asdf s-->
-                          {{item.resource.description}}
-                        </div>
+                        <h4>
+                          <span>
+                            {{$t('favouriteManager.introduction')}}
+                            {{item.resource.description}}
+                          </span>
+                        </h4>
                       </div>
                       <div class="part-social">
                         <a v-on:click="cancelFavouriteHandler(item.favourite.id)">
@@ -207,6 +207,7 @@
       // 获取默认收藏夹内容'
       this.getFavouriteList();
 
+
     },
     methods: {
       //  菜单处理函数
@@ -251,6 +252,7 @@
             out_this.favouritePageData.total = resData.data.total;
             out_this.favouritePageData.pageSize = resData.data.pageSize;
             out_this.favouriteTableData = resData.data.pageList;
+
           } else {
             out_this.$message.error(resData.code + '~~~~' + out_this.$t('serverError'));
           }

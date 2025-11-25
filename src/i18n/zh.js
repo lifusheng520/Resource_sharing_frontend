@@ -141,12 +141,9 @@ export default {
         rule1: '请输入密码',
         rule2: '请再次输入密码',
         rule3: '两次输入的密码不一致',
-        
         rule4: '请输入用户名',
         rule5: '长度在 5 到10 个字符',
-
         rule6: '密码长度在 6 到 20 个字符',
-
         registerSuccess: '注册成功',
         registerFailed: '注册失败，请重试',
         accountExists: '账号已被注册',
@@ -204,22 +201,18 @@ export default {
         locked: '已禁用',
         email: '邮箱',
         privilege: '权限',
-
         rule1: '请输入用户名',
         rule2: '长度在 5 到 10 个字符',
         rule3: '请输入密码',
         rule4: '长度在 6 到 20 个字符',
-
         insufficientPrivilege: '没有权限对管理员进行操作...',
         registerSuccess: '注册成功',
         registerFailed: '注册失败',
-
         rule5: '请输入正确的用户名',
         rule6: '用户名不能包含空格',
         rule7: '请输入正确的密码',
         rule8: '密码不能包含空格',
         invalidSelection: '选择的内容不符合条件'
-
     },
     browseRecordManager: {
         title: '我 的 足 迹',
@@ -255,7 +248,6 @@ export default {
         duration: '创建于',
         favouriteAmount: '收藏量',
         denialOperation: '默认收藏夹不能操作喔',
-        
         rule1: '收藏夹名称不能为空'
     },
     favouriteManager: {
@@ -272,7 +264,6 @@ export default {
         dialogTitle2: '你正在复制1个项到',
         selectionPrompt1: '请先选择需要移动的内容',
         selectionPrompt2: '请先选择需要复制内容'
-
     },
     focusDetail: {
         notFocusYet: '您还没有关注过其他用户',
@@ -296,23 +287,18 @@ export default {
         title: '白给网 —— 校园资料分享平台',
         description1: '关于莫雷洛的法典',
         description11: '在传说中的第一次符文战争中，莫雷洛用他的魔法摧毁整个大陆。莫雷洛可能是世上最接近神的人。强大的魔法甚至摧毁了瑞兹的故乡...',
-
         userAmount: '用户量',
         description2: '我们更专注于挖掘有需要的人群，在人海中寻找符合我们业务需求的用户。',
-
         resourceAmount: '资源数',
         description3: '我们的资料涵盖各个学科， 我们的目标是利用信息技术让学生与老师手中的资源活跃起来。我们有能力提供优质丰富的资源服务。',
-
         downloadTimes: '次下载',
         description4: '加入我们，与其他用户一样，享受优质的资源服务，与大家一起共享你的资源，让资源发挥它的最大价值。选择我们是你最正确的选择。',
-
         hotest: '最热门的',
         resource: '资源',
         description5: '卡达·烬——心思缜密的癫狂艺术家，烬坚信谋杀是一门艺术。他曾在艾欧尼亚的监狱中服刑，但却因为执政议会里涌动着的暗流而得到释放，成为了权术斗争所利用的刺客。烬将手中的枪当成画笔，尽情地挥洒他所追求的残忍艺术。',
-
         uploadTime: '上传于：',
         belongTo: '隶属：',
-        introduction: '简介：',
+        introduction: '简介：'
     },
     recommendationContent: {
         placeholderPrompt: '请输入资料名',
@@ -334,13 +320,10 @@ export default {
         title1: '全场资源贡献最佳 ',
         title2: 'FMVP',
         title3: '排行',
-
         description1: '暗裔剑魔·亚托克斯，一位堕落的天神战士，曾经险些毁灭符文之地，却最终和他的同类与远古时代的武器融为一体，被囚禁了无数世纪。',
-
         ranking: '名次',
         user: '用户',
         contributionAmount: '贡献资源数',
-
         focus: '关注',
         cancel: '取消'
     },

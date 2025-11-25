@@ -262,6 +262,7 @@
         this.$i18n.locale = lang;
         localStorage.setItem('locale', lang);  // 保存选择，下次打开还是这个语言
         this.showLangMenu = false;
+
       }
     },
     computed: {}

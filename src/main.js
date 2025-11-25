@@ -16,6 +16,7 @@ import qs from 'qs'
 
 // 配置全局ElementUI
 Vue.use(Element);
+
 // 配置全局axios
 Vue.prototype.$axios = axios;
 Vue.prototype.$qs = qs;
@@ -23,8 +24,6 @@ Vue.prototype.$cookies = VueCookies;
 
 Vue.config.productionTip = false;
 
-// backend api base url
-Vue.prototype.$apiUrl = process.env.VUE_APP_API_BASE_URL;
 
 import '../static/js/main'
 

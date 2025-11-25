@@ -150,18 +150,20 @@
         this.$refs.multipleTable.clearSelection();
         this.selectCheckList = [];
       },
-
       //加载需要审批的资源
       loadCheckResourceList() {
         let out_this = this;
         this.$axios.post('/platform/getCheckResourceList', this.checkResourcePageData).then(response => {
           let resData = response.data;
-          console.log(resData);
+          
           if (resData.code === 8008) {
             out_this.checkResourcePageData.currentPage = resData.data.currentPage;
             out_this.checkResourcePageData.pageSize = resData.data.pageSize;
             out_this.checkResourcePageData.total = resData.data.total;
             out_this.checkResourceTableList = resData.data.pageList;
+
+            for (let i = 0; i < out_this.checkResourceTableList.length; ++i)
+              out_this.checkResourceTableList[i].discipline = out_this.translateDisciplineToSelectedLanguage(out_this.checkResourceTableList[i].discipline);
           } else {
             out_this.$message.error(resData.code + '~~~~' + out_this.$t('checkResource.loadingError'));
           }
@@ -247,6 +249,41 @@
         if (type === 'ogg')
           return true;
         return false;
+      },
+      // 翻译内容到用户选择的语言
+      translateDisciplineToSelectedLanguage(content) {  
+        switch (content) {
+          case '全部':
+            return this.$t('recommendationContent.all');
+          case '法学':
+            return this.$t('disciplines.law');
+          case '工学':
+            return this.$t('disciplines.engineering');
+          case '管理学':
+            return this.$t('disciplines.management');
+          case '计算机科学':
+            return this.$t('disciplines.computerScience');
+          case '教育学':
+            return this.$t('disciplines.education');
+          case '经济学':
+            return this.$t('disciplines.economics');
+          case '军事学':
+            return this.$t('disciplines.militaryScience');
+          case '理学':
+            return this.$t('disciplines.science');
+          case '历史学':
+            return this.$t('disciplines.history');
+          case '农学':
+            return this.$t('disciplines.agronomy');
+          case '文学':
+            return this.$t('disciplines.literature');
+          case '医学':
+            return this.$t('disciplines.medicine');
+          case '艺术学':
+            return this.$t('disciplines.artStudies');
+          case '哲学':
+            return this.$t('disciplines.philosophy');
+        }
       }
 
     },

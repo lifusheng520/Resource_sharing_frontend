@@ -2,7 +2,7 @@
   <div style="width: 100%">
     <div style="margin: 3%;width: 94%">
 
-      <h3>{{$t('browseRecordManager.title')}}我的足迹</h3>
+      <h3>{{$t('browseRecordManager.title')}}</h3>
 
       <div style="width: 100%;">
 
@@ -26,39 +26,40 @@
 
         </div>
 
+
         <el-row :gutter="10" style="margin: 20px 0px;text-align: center">
 
-          <el-col id="el-col-box" :span="6" v-for="(item, index) in browseRecordTableList" :key="index">
+          <el-col id="el-col-box" :span="12" v-for="(item, index) in browseRecordTableList" :key="index">
 
-            <el-card>
+            <el-card class="el-card-container">
 
-              <div id="div-browse-checkbox">
-                <el-checkbox v-model="browseRecordSelection" :label="item.id">&nbsp;</el-checkbox>
+              <div class="div-browse-checkbox">
+                <div>
+                  <el-checkbox v-model="browseRecordSelection" :label="item.id" sty>&nbsp;</el-checkbox>
+                </div>
+                <div>
+                  <p style="font-size: small; text-align: right;">{{item.time}}</p>
+                </div>
               </div>
 
-              <div v-on:click="goResourceDetailPage(item.resource_id)" id="browse-card-div">
-
-                <el-row>
+              <div v-on:click="goResourceDetailPage(item.resource_id)" class="browse-card-div">
+                <el-row style="margin-top: 10px;">
                   <el-col :span="8">
-                    <el-row>
+                    <el-col>
                       <div class="div-head-icon">
                         <img v-if="item.headIcon" :src="item.headIcon" alt="">
                         <img v-else src="static/ico/none.png" alt="">
                       </div>
-                    </el-row>
-
-                    <el-row>{{item.name}}</el-row>
+                      <p style="font-size: medium; text-align: center;">{{item.name}}</p>
+                    </el-col>
                   </el-col>
 
-                  <el-col :span="16">
-                    <div style="text-align: center; width: 100%;">
+                  <el-col :span="16" style="margin-top: 10px;margin-bottom: -10px;">
+                     <div style="text-align: center; width: 100%;">
                       {{item.origin_name}}
                     </div>
                   </el-col>
                 </el-row>
-
-                <el-row style="margin-top: 10px;margin-bottom: -10px;">{{item.time}}</el-row>
-
               </div>
 
               <div>
@@ -68,6 +69,9 @@
           </el-col>
 
         </el-row>
+
+
+
       </div>
 
       <div class="block" align="center">
@@ -138,7 +142,6 @@
       cancelSelection() {
         this.browseRecordSelection = [];
       },
-
       // 加载浏览记录
       loadBrowseRecord() {
         let out_this = this;
@@ -205,10 +208,19 @@
     margin: 15px 0px;
   }
 
-  #div-browse-checkbox {
+  .div-browse-checkbox {
     position: absolute;
-    margin-top: -5px;
+    margin-top: -15px;
     margin-left: -5px;
+    width: 100%;
+  }
+  .div-browse-checkbox > div:first-child {
+    float: left;
+  }
+  .div-browse-checkbox > div:last-child {
+    float: right;
+    margin-right: 25px;
+
   }
 
   .div-head-icon {
@@ -219,8 +231,12 @@
     margin: 0px auto;
   }
 
-  #browse-card-div {
+  .browse-card-div {
     cursor: pointer;
   }
 
+  .el-card-container {
+    width: 100%;
+    position: relative;
+  }
 </style>

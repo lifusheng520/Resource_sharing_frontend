@@ -219,6 +219,11 @@
             out_this.pageData.total = resData.data.total;
             out_this.pageData.pageSize = resData.data.pageSize;
 
+            // 翻译学科到目标语言
+            for (let i = 0; i < out_this.tableData.length; ++i) {
+              out_this.tableData[i].discipline = out_this.translateDisciplineToSelectedLanguage(out_this.tableData[i].discipline);
+            }
+
           } else {
             this.$message.error(resData.code + ' ~~~~ ' + out_this.$t('serverError'));
           }
@@ -329,6 +334,41 @@
 
         return val;
       },
+      // 翻译内容到用户选择的语言
+      translateDisciplineToSelectedLanguage(content) {  
+        switch (content) {
+          case '全部':
+            return this.$t('recommendationContent.all');
+          case '法学':
+            return this.$t('disciplines.law');
+          case '工学':
+            return this.$t('disciplines.engineering');
+          case '管理学':
+            return this.$t('disciplines.management');
+          case '计算机科学':
+            return this.$t('disciplines.computerScience');
+          case '教育学':
+            return this.$t('disciplines.education');
+          case '经济学':
+            return this.$t('disciplines.economics');
+          case '军事学':
+            return this.$t('disciplines.militaryScience');
+          case '理学':
+            return this.$t('disciplines.science');
+          case '历史学':
+            return this.$t('disciplines.history');
+          case '农学':
+            return this.$t('disciplines.agronomy');
+          case '文学':
+            return this.$t('disciplines.literature');
+          case '医学':
+            return this.$t('disciplines.medicine');
+          case '艺术学':
+            return this.$t('disciplines.artStudies');
+          case '哲学':
+            return this.$t('disciplines.philosophy');
+        }
+      }
     }
   }
 </script>

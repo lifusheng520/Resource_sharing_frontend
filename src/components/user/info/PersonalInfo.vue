@@ -74,7 +74,7 @@
                 <i class="el-icon-question"></i>
                 {{$t('personalInfo.gender')}}
               </template>
-              <span v-if="this.userInfo.sex">{{this.userInfo.sex}}</span>
+              <span v-if="this.userInfo.sex">{{this.userInfo.sex == '男' ? this.$t('personalInfo.boy') : this.$t('personalInfo.girl')}}</span>
               <span v-else>{{$t('personalInfo.uninputed')}}</span>
             </el-descriptions-item>
 

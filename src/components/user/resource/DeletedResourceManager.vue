@@ -1,6 +1,6 @@
 <template>
   <div style="width: 100%">
-    <!-- 排行 begin-->
+    <!-- 资 源 回 收 箱 begin-->
     <div class="transaction" style="padding-top: 20px;">
       <div style="width: 90%;margin: 0px auto">
         <div class="row justify-content-center">
@@ -63,7 +63,7 @@
                           {{item.size}}
                         </td>
                         <td>
-                          {{item.discipline}}
+                          {{translateDisciplineToSelectedLanguage(item.discipline)}}
                         </td>
                       </tr>
 
@@ -93,7 +93,7 @@
 
       </div>
     </div>
-    <!-- 排行 end -->
+    <!-- 资 源 回 收 箱 end -->
   </div>
 </template>
 
@@ -277,6 +277,41 @@
         // 重置选择内容
         this.deletedSelect = [];
       },
+      // 翻译内容到用户选择的语言
+      translateDisciplineToSelectedLanguage(content) {  
+        switch (content) {
+          case '全部':
+            return this.$t('recommendationContent.all');
+          case '法学':
+            return this.$t('disciplines.law');
+          case '工学':
+            return this.$t('disciplines.engineering');
+          case '管理学':
+            return this.$t('disciplines.management');
+          case '计算机科学':
+            return this.$t('disciplines.computerScience');
+          case '教育学':
+            return this.$t('disciplines.education');
+          case '经济学':
+            return this.$t('disciplines.economics');
+          case '军事学':
+            return this.$t('disciplines.militaryScience');
+          case '理学':
+            return this.$t('disciplines.science');
+          case '历史学':
+            return this.$t('disciplines.history');
+          case '农学':
+            return this.$t('disciplines.agronomy');
+          case '文学':
+            return this.$t('disciplines.literature');
+          case '医学':
+            return this.$t('disciplines.medicine');
+          case '艺术学':
+            return this.$t('disciplines.artStudies');
+          case '哲学':
+            return this.$t('disciplines.philosophy');
+        }
+      }
 
     }
   }

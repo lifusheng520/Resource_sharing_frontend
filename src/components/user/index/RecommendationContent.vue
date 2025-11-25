@@ -76,7 +76,10 @@
                   <div class="single-testimonial">
 
                     <div class="part-info" id="div_resource_item_title">
-                      <span id="span_resource_subject"><i class="el-icon-office-building"></i>{{item.discipline}}</span>
+                      <span id="span_resource_subject">
+                        <i class="el-icon-office-building"></i>
+                        {{translateDisciplineToSelectedLanguage(item.discipline)}}
+                      </span>
                     </div>
                     <div class="part-info" id="div_resource_name">
                       <a v-on:click="goResourceDetail(item.id)"><i class="el-icon-document"></i>
@@ -113,10 +116,9 @@
                     </div>
 
                     <div class="part-text">
-                      <div id="div_resource_description_title">
-                         {{$t('recommendationContent.introduction')}}
-                      </div>
                       <div class="part-text" id="div_resource_description">
+                        <b style="font-size: large;">{{$t('recommendationContent.introduction')}}</b>
+                        <br>
                         {{item.description}}
                       </div>
                     </div>
@@ -138,10 +140,10 @@
           </div>
 
           <div align="center">
-            <el-pagination background
-                           @size-change="handleSizeChange" @current-change="handleCurrentChange"
+            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
                            :current-page="page.currentPage" :page-size="page.pageSize"
-                           layout="total, sizes, prev, pager, next, jumper" :total="page.totalPages">
+                           layout="total, sizes, prev, pager, next, jumper"
+                           :total="page.totalPages">
             </el-pagination>
           </div>
 
@@ -167,7 +169,7 @@
           totalPages: -1,
           pageSize: 10
         },
-        sourceFrom: '',
+        sourceFrom: this.$t('disciplines.all'),
         resourceList: [],
         disciplineList: [],
         hostURL: '',
@@ -182,8 +184,6 @@
       });
       this.setHostURL();
       this.getResourceOfPage();
-
-      this.sourceFrom = this.page.disciplineContent;
     },
     methods: {
       getResourceBySelectDiscipline() {
@@ -234,9 +234,6 @@
         this.getResourceOfPage();
       },
       getResourceOfPage() {
-        console.log("page 内容：")
-        console.log(this.page);
-
         this.page.disciplineContent = this.translateDisciplineToChinese(this.page.disciplineContent);
 
         let out_this = this;
@@ -376,6 +373,8 @@
     font-size: 25px;
     text-align: center;
     margin-top: -25px;
+    width: 85%;
+    float: right;
   }
 
   #div_resource_time {
@@ -389,15 +388,6 @@
   #span_resource_subject {
     font-size: 25px;
     font-weight: bold;
-  }
-
-  #div_resource_description_title {
-    /*border: 1px solid #ddd;*/
-    position: absolute;
-    top: 90px;
-    left: 160px;
-    font-weight: bold;
-    font-size: 18px;
   }
 
   #div_resource_description {
