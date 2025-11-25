@@ -2,6 +2,7 @@
 
   <!-- header 导航栏开始-->
   <div class="header">
+
     <div class="container">
       <div class="row justify-content-between d-flex">
 
@@ -26,8 +27,10 @@
             </nav>
           </div>
         </div>
+        
 
-        <div class="col-xl-2 col-lg-2 d-xl-flex d-lg-flex d-block align-items-center mobile-header">
+
+        <div id="website-icon" class="col-xl-2 col-lg-2 d-xl-flex d-lg-flex d-block align-items-center mobile-header">
           <div class="row d-flex">
             <div class="col-xl-12 col-lg-12 col-6 d-flex align-items-center">
               <div class="logo">
@@ -49,7 +52,7 @@
           <div class="main-menu">
             <nav class="navbar navbar-expand-lg">
               <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <ul class="navbar-nav nav justify-content-center">
+                <ul id="menu-item" class="navbar-nav nav justify-content-center">
                   <li class="nav-item">
                     <a class="nav-link active" v-on:click="goIndex">{{ $t('header.home') }} <span
                       class="sr-only">(current)</span></a>
@@ -294,6 +297,10 @@
   #language-switch {
   color: white;
   margin-top: 15px;
+}
+
+#website-icon {
+  padding: 0;
 }
 
 </style>

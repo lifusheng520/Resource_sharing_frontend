@@ -27,7 +27,7 @@ export default {
     disciplines: {
         all: '全部',
         law: '法学',
-        engineering: '工学123',
+        engineering: '工学',
         management: '管理学',
         computerScience: '计算机科学',
         education: '教育学',
@@ -64,7 +64,7 @@ export default {
         introduction: '我们是提供资源共享的网上分享平台，您需要的学习资源都可以在本站查找。有了本站提供的服务，您就不需要为查找资源发愁了！',
         friendlyLinks: '友情链接',
         link1: '首页',
-        link2: '皮皮虾',
+        link2: 'YouTube',
         link3: '哔哩哔哩',
         link4: '中国大学MOOC',
         link5: 'Google',
