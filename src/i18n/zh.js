@@ -3,8 +3,9 @@ export default {
     deleteSuccess: '删除成功',
     sessionExpired: '与服务器的会话已经失效，请重新登录',
     operationSuccess: '操作成功',
-    delete: '删除',
-    date: '日期',
+    delete: '删 除',
+    selectAll: '全 选',
+    date: '日 期',
     confirmButton: '确 认',
     cancelButton: '取 消',
     withinOneMinute: '不到1分钟前',
@@ -22,6 +23,7 @@ export default {
     updateSuccess: '信息更新成功',
     submitButton: '提 交',
     resetButton: '重 置',
+    addSuccess: '添加成功',
     disciplines: {
         all: '全部',
         law: '法学',
@@ -428,16 +430,60 @@ export default {
         rule3: '简介内容过长 (< 500)',
 
         uploadSuccess: '文件上传成功'
-
-
-
-
     },
     deleteResourceManager: {
-        welcome: '欢迎来到校园资源享平台'
+        title1: '资 源 ',
+        title2: ' 回 收 箱',
+        validTime: '有效时间30天',
+        recover: '恢 复',
+        fileName: '文件名',
+        fileSize: '文件大小',
+        discipline: '学科'
     },
     resourceDetail: {
-        welcome: '欢迎来到校园资源享平台'
+        focus: '关 注',
+        cancel: '取 消',
+        user: '用户：',
+        uploadDate: '上传于：',
+        belongTo: '隶属：',
+        resourceIntroduction: '资料介绍: ',
+
+        selectFolder: '选择收藏夹',
+        createFolder: ' 新 建 收 藏 夹',
+        create: '新 建',
+
+        rule1: '最多输入20个字符',
+
+        download: '下载',
+        sharing: '分享',
+        browseOnline: '在线观看',
+        copy: '复制',
+        copySuccess: '内容已经复制到剪贴板',
+        viewing: '正在观看：',
+
+        placeholderPrompt1: '蹭蹭热度也要注意你的言辞喔',
+        placeholderPrompt2: '请输入内容',
+
+        notice1: '请先',
+        notice2: '登录',
+        notice3: '再发表评论',
+        notice4: '请先输入你的评论再发布哟',
+        notice5: '请先登录再发布你的评论哟',
+        notice6: '评论内容包含违规词汇',
+        notice7: '收藏夹名称不能为空喔',
+        notice8: '已经添加到收藏夹',
+
+        submitComment: '发布评论',
+        commentList: '评 论 区',
+        reply: '回 复',
+        send: '发送',
+        loading: '加载中...',
+        noMore: '没有更多了',
+
+        description: '还没人发现这个地方，快来占个楼吧~~~',
+
+        focusDenial: '不能自己关注自己喔',
+        resourceIsDeleted: '资源已经从服务器端删除'
     },
     resourceManagement: {
         welcome: '欢迎来到校园资源享平台'

@@ -6,15 +6,19 @@
         <div class="row justify-content-center">
           <div class="col-xl-12 col-lg-12">
             <div class="section-title text-center" style="margin-bottom: 20px">
-              <h2>资源 <span> 回收箱</span></h2>
-              <p align="right">有效时间30天</p>
+              <h2>{{$t('deleteResourceManager.title1')}} <span> {{$t('deleteResourceManager.title2')}}</span></h2>
+              <p align="right">{{$t('deleteResourceManager.validTime')}}</p>
             </div>
           </div>
         </div>
 
         <div v-show="deletedSelect.length !== 0" class="div-operation-box">
-          <el-button v-on:click="deleteResourceBinRecord" type="primary" plain round>删除</el-button>
-          <el-button v-on:click="reinstateResource" type="success" plain round>恢复</el-button>
+          <el-button v-on:click="deleteResourceBinRecord" type="primary" plain round>
+            {{$t('delete')}}
+          </el-button>
+          <el-button v-on:click="reinstateResource" type="success" plain round>
+            {{$t('deleteResourceManager.recover')}}
+          </el-button>
         </div>
 
         <div class="row">
@@ -32,13 +36,14 @@
 
                       <tr>
                         <th scope="col">
-                          <el-checkbox v-model="checkAll" @change="handleCheckAllChange()">{{checkAll ? '取消' : '全选'}}
+                          <el-checkbox v-model="checkAll" @change="handleCheckAllChange()">
+                            {{checkAll ? $t('cancelButton') : $t('selectAll')}}
                           </el-checkbox>
                         </th>
-                        <th scope="col">删除时间</th>
-                        <th scope="col">文件名</th>
-                        <th scope="col">文件大小</th>
-                        <th scope="col">学科</th>
+                        <th scope="col"></th>
+                        <th scope="col">{{$t('deleteResourceManager.fileName')}}</th>
+                        <th scope="col">{{$t('deleteResourceManager.fileSize')}}</th>
+                        <th scope="col">{{$t('deleteResourceManager.discipline')}}</th>
                       </tr>
 
                       </thead>
@@ -125,7 +130,7 @@
         if (userId) {
           this.deletedPageData.user_id = userId;
         } else {
-          this.$message.info('没找到身份信息，请登录重试~~');
+          this.$message.info(this.$t('sessionExpired'));
           this.$router.push('/login');
         }
       },
@@ -140,7 +145,7 @@
             out_this.deletedPageData.pageSize = resData.data.pageSize;
             out_this.deletedTableData = resData.data.pageList;
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + ' ~~~~ ' + out_this.$t('sessionExpired'));
           }
         });
       },
@@ -162,21 +167,21 @@
         // 计算间隔了多少秒
         let gapTime = parseInt(gap / 1000);
         if (gapTime < 60)
-          result = '不到1分钟前';
+          result = this.$t('withinOneMinute');
         // 计算间隔了多少分钟
         gapTime = parseInt(gapTime / 60);
         if (!result && gapTime < 60)
-          result = gapTime + '分钟前';
+          result = gapTime + this.$t('minutesAgo');
         // 计算间隔了多少小时
         let hours = parseInt(gapTime / 60);
         let min = gapTime % 60;
         if (!result && hours < 24)
-          result = hours + '小时' + min + '分钟前';
+          result = hours +  this.$t('hour') + min + this.$t('minutesAgo');
         // 计算间隔了多少天
         let days = parseInt(hours / 24);
         hours = hours % 24;
         if (!result)
-          result = days + '天' + hours + '小时前';
+          result = days + this.$t('day') + hours + this.$t('hoursAgo');
         return result;
       },
       // 全选处理事件
@@ -208,7 +213,7 @@
 
           if (resData.code == 4029) {
             out_this.$message({
-              message: resData.code + '~~~~  ' + resData.message,
+              message: resData.code + '~~~~  ' + out_this.$t('operationSuccess'),
               type: 'success',
               center: true,
               duration: 2000
@@ -217,7 +222,7 @@
             out_this.getDeletedRecordList();
           } else {
             out_this.$message({
-              message: resData.code + '~~~~  ' + resData.message,
+              message: resData.code + '~~~~  ' + out_this.$t('serverError'),
               type: 'error',
               center: true,
               duration: 2000
@@ -255,20 +260,13 @@
         let out_this = this;
         this.$axios.post('/resource/reinstate', this.deletedSelect).then(response => {
           let resData = response.data;
-          console.log(resData);
+          //console.log(resData);
 
           if (resData.code == 4031) {
-            out_this.$message({
-              message: resData.code + '~~~~  ' + resData.message,
-              type: 'success',
-              center: true,
-              duration: 2000
-            });
-
             out_this.getDeletedRecordList();
           } else {
             out_this.$message({
-              message: resData.code + '~~~~  ' + resData.message,
+              message: resData.code + '~~~~  ' + out_this.$t('serverError'),
               type: 'error',
               center: true,
               duration: 2000
@@ -292,5 +290,7 @@
     display: flex;
     top: 70px;
   }
+
+  
 
 </style>

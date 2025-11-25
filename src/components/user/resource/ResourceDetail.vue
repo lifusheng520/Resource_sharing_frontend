@@ -43,23 +43,32 @@
                   <div id="div-focus-button">
                     <el-button v-on:click="focusHandler(UserAndResource.resource.user_id)" icon="el-icon-plus"
                                :type="isFocus(UserAndResource.resource.user_id) ? 'danger' : 'info'" round>
-                      {{isFocus(UserAndResource.resource.user_id) ? '取消' : '关 注'}}
+                      {{isFocus(UserAndResource.resource.user_id) ? $t('resourceDetail.cancel') : $t('resourceDetail.focus')}}
                     </el-button>
                   </div>
 
-                  <h3><a
-                    :href="`${backendURL}/resource/download/${UserAndResource.resource.disk_name}/${UserAndResource.resource.id}/${UserAndResource.resource.discipline}`">
-                    {{UserAndResource.resource.origin_name}}</a></h3>
+                  <h3>
+                    <a :href="`${backendURL}/resource/download/${UserAndResource.resource.disk_name}/${UserAndResource.resource.id}/${UserAndResource.resource.discipline}`">
+                    {{UserAndResource.resource.origin_name}}
+                    </a>
+                  </h3>
                   <h4>
-                    <span class="admin"><i class="el-icon-s-custom"></i>用户：{{UserAndResource.userInfo.name}}</span>
+                    <span class="admin"><i class="el-icon-s-custom"></i>
+                      {{$t('resourceDetail.user')}} {{UserAndResource.userInfo.name}}
+                    </span>
                   </h4>
                   <h4>
-                    <span class="date">上传于：{{UserAndResource.resource.upload_time}}</span>
+                    <span class="date">
+                      {{$t('resourceDetail.uploadDate')}} {{UserAndResource.resource.upload_time}}
+                    </span>
                   </h4>
                   <h4>
-                    <span class="category">隶属：{{UserAndResource.resource.discipline}}</span>
+                    <span class="category">
+                      {{$t('resourceDetail.belongTo')}} {{UserAndResource.resource.discipline}}
+                    </span>
                   </h4>
-                  <p>资料介绍: <br>&nbsp;&nbsp;&nbsp;&nbsp;
+                  <p>
+                    {{$t('resourceDetail.resourceIntroduction')}}<br>&nbsp;&nbsp;&nbsp;&nbsp;
                     {{UserAndResource.resource.description}}
                   </p>
                 </div>
@@ -74,7 +83,7 @@
                     <span><i class="fas fa-heart"></i> {{UserAndResource.resource.favorite_number}}</span>
                   </a>
 
-                  <el-dialog title="选择收藏夹" center :visible.sync="favouriteShow" width="400px">
+                  <el-dialog :title="`${$t('resourceDetail.selectFolder')}`" center :visible.sync="favouriteShow" width="400px">
                     <div class="infinite-list-wrapper" style="overflow:auto;height: 250px">
                       <table>
                         <el-checkbox-group v-model="selectList">
@@ -94,49 +103,62 @@
 
                     <div>
                       <el-button v-on:click="showAddFolder=!showAddFolder" icon="el-icon-plus"
-                                 style="width: 100%;font-size: 18px;" plain>新建收藏夹
+                                 style="width: 100%;font-size: 18px;" plain>
+                                 {{$t('resourceDetail.createFolder')}}
                       </el-button>
                     </div>
                     <div v-show="showAddFolder" style="margin-top: 15px;">
                       <el-input v-model="addFolderForm.folder_name" type="text"
-                                placeholder="最多输入20个字符" maxlength="20">
+                                :placeholder="`${$t('resourceDetail.rule1')}`" maxlength="20">
                         <template slot="append">
-                          <el-button v-on:click="addFolderHandler" type="primary" plain>新 建</el-button>
+                          <el-button v-on:click="addFolderHandler" type="primary" plain>
+                            {{$t('resourceDetail.create')}}
+                          </el-button>
                         </template>
                       </el-input>
                     </div>
 
                     <div slot="footer" class="dialog-footer">
-                      <el-button @click="cancelAddEvent">取 消</el-button>
-                      <el-button type="primary" @click="addFavourite">确 定</el-button>
+                      <el-button @click="cancelAddEvent">
+                        {{$t('cancelButton')}}
+                      </el-button>
+                      <el-button type="primary" @click="addFavourite">
+                        {{$t('confirmButton')}}
+                      </el-button>
                     </div>
                   </el-dialog>
 
-                  <a
-                    :href="`${backendURL}/resource/download/${UserAndResource.resource.disk_name}/${UserAndResource.resource.id}/${UserAndResource.resource.discipline}`"><span><i
-                    class="fas fa-cloud-download-alt"></i> 下载</span></a>
-                  <a v-on:click="copyURLVisible = !copyURLVisible"><span><i class="fas fa-share"></i></span> 分享</a>
+                  <a :href="`${backendURL}/resource/download/${UserAndResource.resource.disk_name}/${UserAndResource.resource.id}/${UserAndResource.resource.discipline}`">
+                    <span>
+                      <i class="fas fa-cloud-download-alt"></i>
+                      {{$t('resourceDetail.download')}}
+                    </span>
+                  </a>
+                  <a v-on:click="copyURLVisible = !copyURLVisible">
+                    <span><i class="fas fa-share"></i></span> {{$t('resourceDetail.sharing')}}
+                  </a>
                   <a v-on:click="playVideo(UserAndResource.resource.id)"
                      v-show="isSupportVideoType(UserAndResource.resource.type)">
-                    <span><i class="fa fa-play-circle"></i></span> 在线观看
+                    <span><i class="fa fa-play-circle"></i></span> {{$t('resourceDetail.browseOnline')}}
                   </a>
                   <a hidden></a>
                 </div>
 
-                <el-popover placement="right" title="下载URL：" width="100%"
+                <el-popover placement="right" :title="`${$t('resourceDetail.download')}URL：`" width="100%"
                             v-model="copyURLVisible" trigger="click">
                   <p>
-                    {{`${backendURL}/resource/download/${UserAndResource.resource.disk_name}/${UserAndResource.resource.id}/${UserAndResource.resource.discipline}`}}</p>
+                    {{`${backendURL}/resource/download/${UserAndResource.resource.disk_name}/${UserAndResource.resource.id}/${UserAndResource.resource.discipline}`}}
+                  </p>
                   <div>
                     <el-button type="primary" size="mini"
                                @click="copyURL(`${process.env.VUE_APP_API_BASE_URL}/resource/download/${UserAndResource.resource.disk_name}/${UserAndResource.resource.id}/${UserAndResource.resource.discipline}`)">
-                      复制URL
+                      {{$t('resourceDetail.copy')}}URL
                     </el-button>
-                    <el-button size="mini" type="primary" @click="copyURLVisible = false">取消</el-button>
+                    <el-button size="mini" type="primary" @click="copyURLVisible = false">{{$t('cancelButton')}}</el-button>
                   </div>
                 </el-popover>
 
-                <el-dialog :title="'正在观看：' + UserAndResource.resource.origin_name"
+                <el-dialog :title="$t('resourceDetail.viewing') + UserAndResource.resource.origin_name"
                            :visible.sync="playVideoDialogVisible"
                            @close="closePlayVideoDialogHandler" width="90%" center style="margin-top: -5%;" >
                   <div align="center" style="width: 100%">
@@ -158,20 +180,25 @@
                 <div class="div-comment-input-content" v-if="commentInfo.user_id">
                   <el-input type="textarea"
                             :autosize="{ minRows: 5, maxRows: 5}"
-                            placeholder="蹭蹭热度也要注意你的言辞喔"
+                            :placeholder="`${$t('resourceDetail.placeholderPrompt1')}`"
                             v-model="commentInfo.content">
                   </el-input>
                 </div>
 
                 <div v-else class="div-comment-input-login">
-                  <p>请先
-                    <el-button v-on:click="goLogin" size="mini" type="primary" plain>登录</el-button>
-                    再发表评论
+                  <p>
+                    {{ $t('resourceDetail.notice1') }}
+                    <el-button v-on:click="goLogin" size="mini" type="primary" plain>
+                      {{ $t('resourceDetail.notice2') }}
+                    </el-button>
+                    {{ $t('resourceDetail.notice3') }}
                   </p>
                 </div>
 
                 <div class="div-comment-input-button">
-                  <el-button v-on:click="addComment" type="info" plain>发布评论</el-button>
+                  <el-button v-on:click="addComment" type="info" plain>
+                    {{ $t('resourceDetail.submitComment') }}
+                  </el-button>
                 </div>
 
               </div>
@@ -180,7 +207,7 @@
               <div class="div-comment-outer">
 
                 <div class="div-comment-header">
-                  <div>评论列表</div>
+                  <div>{{ $t('resourceDetail.commentList') }}</div>
                 </div>
 
                 <div class="div-comment-item">
@@ -214,7 +241,7 @@
                             </div>
 
                             <div class="div-comment-content">
-                              <span v-if="commentContentList[index].to_name">回复</span>
+                              <span v-if="commentContentList[index].to_name">{{ $t('resourceDetail.reply') }}</span>
                               <span id="comment-to-name-span" v-if="commentContentList[index].to_name">{{'@' + commentContentList[index].to_name}}</span>
                               <span v-if="commentContentList[index].to_name">:</span>
                               {{commentContentList[index].content}}
@@ -222,9 +249,9 @@
 
                             <div align="right">
                               <el-popover @hide="replyHideEvent" placement="left"
-                                          :title="'回复：' + commentContentList[index].name" width="400"
+                                          :title="$t('resourceDetail.reply') + ': ' + commentContentList[index].name" width="400"
                                           trigger="click">
-                                <el-input type="textarea" placeholder="请输入内容" autosize
+                                <el-input type="textarea" :placeholder="`${$t('resourceDetail.placeholderPrompt2')}`" autosize
                                           v-model="replyContent" maxlength="200"
                                           show-word-limit>
                                 </el-input>
@@ -232,12 +259,14 @@
                                   <el-button v-on:click="replyComment(commentContentList[index].user_id)"
                                              icon="el-icon-s-promotion"
                                              size="medium"
-                                             type="primary" plain>发送
+                                             type="primary" plain>
+                                             {{ $t('resourceDetail.send') }}
                                   </el-button>
                                 </p>
 
                                 <el-button size="mini" type="primary" slot="reference"
-                                           plain>回复
+                                           plain>
+                                           {{ $t('resourceDetail.reply') }}
                                 </el-button>
                               </el-popover>
                             </div>
@@ -251,9 +280,9 @@
                       </li>
                     </ul>
                     <br>
-                    <p v-if="loading">加载中...</p>
-                    <p v-if="noMore">没有更多了</p>
-                    <el-empty v-if="commentContentList.length == 0" description="还没人发现这个地方，快来占个楼吧~~~"></el-empty>
+                    <p v-if="loading">{{ $t('resourceDetail.loading') }}</p>
+                    <p v-if="noMore">{{ $t('resourceDetail.noMore') }}</p>
+                    <el-empty v-if="commentContentList.length == 0" :description="`${$t('resourceDetail.description')}`"></el-empty>
                   </div>
 
                 </div>
@@ -278,7 +307,7 @@
       return {
         backendURL: this.$axios.defaults.baseURL,
         isEmpty: false,
-        isEmptyDescription: '网络开小差了呢~~~',
+        isEmptyDescription: this.$t('notFound404'),
         UserAndResource: {
           resource: '',
           userInfo: ''
@@ -345,7 +374,7 @@
 
       let userId = this.$cookies.get('user_id');
       if (!userId) {
-        this.$message.info('请先登录再查看~~');
+        this.$message.info(this.$t('sessionExpired'));
         this.$router.push('/login');
       }
       this.resourceId = resourceId;
@@ -388,7 +417,7 @@
           'comment_id_list': commentIdList
         }).then(response => {
           let resData = response.data;
-          console.log(resData);
+          //console.log(resData);
 
           if (resData.code === 5011) {
             let supportIdList = resData.data;
@@ -410,7 +439,7 @@
               }
             }
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + ' ~~~~ ' + out_this.$t('serverError'));
           }
         });
         
@@ -451,7 +480,7 @@
 
         // 判断是否是自己
         if (this.focusForm.userId == focusUid) {
-          this.$message.warning('不能自己关注自己喔~~~');
+          this.$message.warning(this.$t('resourceDetail.focusDenial'));
           return;
         }
 
@@ -508,14 +537,14 @@
 
           if (resData.code == 6001) {
             out_this.$message({
-              message: resData.code + '~~~~' + resData.message,
+              message: resData.code + ' ~~~~ ' + out_this.$t('supportSuccess'),
               type: 'success',
               duration: 2000
             });
             //  将关注成功的id加入用户关注的列表
             out_this.focusList.push(resData.data.focus_uid);
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + '~~~~' + out_this.$t('serverError'));
           }
         });
 
@@ -538,7 +567,7 @@
           if (resData.code === 6003) {
             out_this.setFocusIdList(resData.data);
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + ' ~~~~ ' + out_this.$t('serverError'));
           }
         });
 
@@ -556,7 +585,7 @@
           this.focusForm.userId = userId;
           return userId;
         } else {
-          this.$message.info('您还没有登录~~~');
+          this.$message.info(this.$t('sessionExpired'));
           this.$router.push('/login');
           return false;
         }
@@ -578,7 +607,7 @@
         document.execCommand("copy");
         document.body.removeChild(aux);
         this.$message({
-          message: '复制成功',
+          message: this.$t('resourceDetail.copySuccess'),
           type: 'success',
           duration: 1500
         });
@@ -594,14 +623,14 @@
         let out_this = this;
         this.$axios.get(`/resource/server/detail/${this.commentInfo.resource_id}`).then(res => {
           let resData = res.data;
-          console.log(resData);
+          //console.log(resData);
 
           if (resData.code === 4028) {
             out_this.UserAndResource.resource = resData.data.resource;
             out_this.UserAndResource.userInfo = resData.data.userInfo;
           } else if (resData.code === 4029) {
-            this.$message({
-              message: resData.code + '~~~~' + resData.message,
+            out_this.$message({
+              message: resData.code + ' ~~~~ ' + out_this.$t('resourceDetail.resourceIsDeleted'),
               type: 'info',
               duration: 3000
             });
@@ -609,7 +638,7 @@
             out_this.isEmpty = true;
             out_this.isEmptyDescription = resData.message;
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + ' ~~~~ ' + out_this.$t('serverError'));
           }
         });
 
@@ -625,7 +654,7 @@
 
             out_this.updateCommentSupportUI(out_this.commentInfo.user_id);
           } else {
-            this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + ' ~~~~ ' + out_this.$t('serverError'));
           }
 
         });
@@ -635,7 +664,7 @@
       addComment() {
         let temp = this.commentInfo.content.replace(/\s*/g, '');
         if (!temp) {
-          this.$message.info('请先输入你的评论再发布哟~~~');
+          this.$message.info(this.$t('resourceDetail.notice4'));
           return;
         }
         this.commentInfo.content = temp;
@@ -648,7 +677,7 @@
         if (to) {
           let tempReply = this.replyContent.replace(/\s*/g, '');
           if (!tempReply) {
-            this.$message.info('请先输入回复内容再发布哟~~~');
+            this.$message.info(this.$t('resourceDetail.notice4'));
             return;
           }
           this.replyContent = tempReply;
@@ -660,7 +689,7 @@
       sendComment(to) {
         this.getCommentUserId();
         if (!this.commentInfo.user_id) {
-          this.$message.info('请先登录再发布你的评论哟~~~');
+          this.$message.info(this.$t('resourceDetail.notice5'));
           return;
         }
         this.commentInfo.to_id = to;
@@ -673,20 +702,15 @@
           let success = false;
           if (resData.code === 5003) {
             out_this.$message({
-              message: resData.code + '~~~~' + resData.message,
+              message: resData.code + ' ~~~~ ' + out_this.$t('resourceDetail.notice6'),
               type: 'warning',
               duration: 2000
             });
             success = true;
           } else if (resData.code === 5001) {
-            out_this.$message({
-              message: resData.code + '~~~~' + resData.message,
-              type: 'success',
-              duration: 2000
-            });
             success = true;
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + ' ~~~~ ' + out_this.$t('serverError'));
           }
 
           if (success)
@@ -726,13 +750,7 @@
             ).then(response => {
               let resData = response.data;
 
-              if (resData.code != 5008) {
-                out_this.$message({
-                  message: resData.code + '~~~~' + resData.message,
-                  type: 'success',
-                  duration: 2000
-                });
-              } else {
+              if (resData.code == 5008) {
                 // 点赞成功，评论的点赞数+1
                 out_this.setCommentSupportNumber(comment_id, 1);
               }
@@ -786,22 +804,18 @@
 
           if (resData.code == 6051) {
             out_this.$message({
-              message: resData.code + '~~~~' + resData.message,
+              message: resData.code + ' ~~~~ ' + out_this.$t('supportSuccess'),
               type: 'success',
               duration: 2000
             });
             // 点赞成功，将资源的点赞数+1
             out_this.setResourceSupportNumber(resourceId, 1);
           } else if (resData.code == 6052) {
-            out_this.$message({
-              message: resData.code + '~~~~' + resData.message,
-              type: 'success',
-              duration: 2000
-            });
+
             // 取消成功，将资源的点赞数-1
             out_this.setResourceSupportNumber(resourceId, -1);
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + ' ~~~~ ' + out_this.$t('serverError'));
           }
 
         });
@@ -837,7 +851,7 @@
           if (resData.code == 7005) {
             out_this.folderList = resData.data;
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + ' ~~~~ ' + out_this.$t('serverError'));
           }
         });
       },
@@ -848,7 +862,7 @@
         if (!this.addFolderForm.user_id)
           return 0;
         if (!this.addFolderForm.folder_name) {
-          this.$message.info('收藏夹名称不能为空喔');
+          this.$message.info(this.$t('resourceDetail.notice7'));
           return 0;
         }
         // 添加收藏夹请求
@@ -857,38 +871,38 @@
           let resData = response.data;
           if (resData.code == 7006) { // 添加成功
             out_this.$message({
-              message: resData.code + '~~~~' + resData.message,
+              message: resData.code + ' ~~~~ ' + out_this.$t('addSuccess'),
               type: 'success',
               duration: 2000
             });
+
             // 将刚刚添加的收藏夹加入到list
             out_this.folderList.push(resData.data);
             out_this.showAddFolder = false;
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + ' ~~~~ ' + out_this.$t('serverError'));
           }
         });
       },
       // 添加收藏
       addFavourite() {
-        console.log(this.selectList);
         let out_this = this;
         this.$axios.post('/favourite/add', {
           'selectFoldersList': this.selectList,
           'favourite': this.favouriteForm
         }).then(response => {
           let resData = response.data;
-          console.log(resData);
+          //console.log(resData);
           if (resData.code == 7006) { // 添加成功
             out_this.$message({
-              message: resData.code + '~~~~' + resData.message,
+              message: resData.code + ' ~~~~ ' + out_this.$t('resourceDetail.notice8'),
               type: 'success',
               duration: 2000
             });
 
             out_this.getResourceDetailInfo();
           } else {
-            out_this.$message.error(resData.code + '~~~~' + resData.message);
+            out_this.$message.error(resData.code + ' ~~~~ ' + out_this.$t('serverError'));
           }
         });
 
@@ -903,7 +917,7 @@
         let out_this = this;
         this.$axios.get(`/favourite/getRecord/${user_id}/${resource_id}`).then(response => {
           let resData = response.data;
-          console.log(resData);
+          //console.log(resData);
 
           if (resData.code == 7009) {
             out_this.favouriteRecord = resData.data;
