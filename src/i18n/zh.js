@@ -1,7 +1,7 @@
 export default {
     serverError: '操作失败！输入信息错误，或服务器错误，请稍后重试',
     deleteSuccess: '删除成功',
-    sessionExpired: '服务器连接已经断开，请重新登录',
+    sessionExpired: '与服务器的会话已经失效，请重新登录',
     operationSuccess: '操作成功',
     delete: '删除',
     date: '日期',
@@ -410,10 +410,28 @@ export default {
         rule21: '验证码长度在 6 个字符',
         rule3: '请输入密码',
         rule31: '长度在 6 到 20 个字符'
-
     },
     addUpload: {
-        welcome: '欢迎来到校园资源享平台'
+        title: '分 享 你 的 资 源',
+        selectFiles: '选 取 本 地 磁 盘 文 件',
+        filesUploadPrompt: '一 次 可 以 选 择 多 个 文 件，且 不 超 过 1 GB',
+        selectedFiles: '已 选 择 文 件：',
+
+        belongTo: '所 属 学 科',
+        placeholderPrompt: '请 选 择 学 科 信 息',
+
+        resourceIntroduction: '资 源 介 绍',
+        introductionPlaceholder: '填写资料简介、概况，有助提升资料曝光率',
+        
+        rule1: '请选择资源所属类别',
+        rule2: '请输入资源介绍',
+        rule3: '简介内容过长 (< 500)',
+
+        uploadSuccess: '文件上传成功'
+
+
+
+
     },
     deleteResourceManager: {
         welcome: '欢迎来到校园资源享平台'

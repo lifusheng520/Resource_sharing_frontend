@@ -1,58 +1,67 @@
 <template>
   <div id="div_content">
-    <el-empty v-if="this.isEmpty" style="margin: 20%" description="网络开小差了，请重新登录~~~"></el-empty>
+    <el-empty v-if="this.isEmpty" style="margin: 20%" :description="`${$t('notFound404')}`"></el-empty>
     <div v-else>
 
-      <h2>分享你的资源</h2><br><br>
+      <h2>{{$t('addUpload.title')}}</h2><br><br>
 
       <el-form :model="fileForm" :rules="rules" ref="fileForm" label-width="200px" class="demo-ruleForm">
 
-        <!--                   :action="`http://localhost:8080/resource/upload/${fileForm.user_id}/${fileForm.discipline}/${fileForm.textarea}`"-->
         <el-upload class="upload-demo" ref="upload" with-credentials
                    :action="`${backendURL}/resource/upload/${fileForm.user_id}/${fileForm.discipline}/${fileForm.textarea}`"
                    :on-preview="handlePreview" :on-remove="handleRemove" :file-list="this.fileForm.fileList"
                    :on-success="successHandle" :on-error="failHandle"
                    :auto-upload="false" multiple>
-          <el-button slot="trigger" type="primary">选取本地磁盘文件</el-button>
+          <el-button slot="trigger" type="primary">
+            {{$t('addUpload.selectFiles')}}
+          </el-button>
           <br><br>
-          <div slot="tip" class="el-upload__tip" style="font-size: 20px">一次可以选择多个文件，且不超过1GB <p></p>
-            <p style="text-align: left">已选择文件：</p>
+          <div slot="tip" class="el-upload__tip" style="font-size: 20px">
+            {{$t('addUpload.filesUploadPrompt')}}
+            <p></p>
+            <p style="text-align: left">
+              {{$t('addUpload.selectedFiles')}}
+            </p>
           </div>
 
         </el-upload>
         <br>
 
-        <el-form-item label="资源所属学科" prop="discipline">
-          <el-select v-model="fileForm.discipline" placeholder="请选择学科信息">
-            <el-option label="计算机科学" value="计算机科学"></el-option>
-            <el-option label="哲学" value="哲学"></el-option>
-            <el-option label="文学" value="文学"></el-option>
-            <el-option label="经济学" value="经济学"></el-option>
-            <el-option label="艺术学" value="艺术学"></el-option>
-            <el-option label="理学" value="理学"></el-option>
-            <el-option label="工学" value="工学"></el-option>
-            <el-option label="教育学" value="教育学"></el-option>
-            <el-option label="历史学" value="历史学"></el-option>
-            <el-option label="医学" value="医学"></el-option>
-            <el-option label="军事学" value="军事学"></el-option>
-            <el-option label="管理学" value="管理学"></el-option>
-            <el-option label="法学" value="法学"></el-option>
-            <el-option label="农学" value="农学"></el-option>
+        <el-form-item :label="`${$t('addUpload.belongTo')}`" prop="discipline">
+          <el-select style="min-width: 300px;" v-model="fileForm.discipline" :placeholder="`${$t('addUpload.placeholderPrompt')}`">
+            <el-option :label="`${$t('disciplines.computerScience')}`" value="计算机科学"></el-option>
+            <el-option :label="`${$t('disciplines.philosophy')}`" value="哲学"></el-option>
+            <el-option :label="`${$t('disciplines.literature')}`" value="文学"></el-option>
+            <el-option :label="`${$t('disciplines.economics')}`" value="经济学"></el-option>
+            <el-option :label="`${$t('disciplines.artStudies')}`" value="艺术学"></el-option>
+            <el-option :label="`${$t('disciplines.science')}`" value="理学"></el-option>
+            <el-option :label="`${$t('disciplines.engineering')}`" value="工学"></el-option>
+            <el-option :label="`${$t('disciplines.education')}`" value="教育学"></el-option>
+            <el-option :label="`${$t('disciplines.history')}`" value="历史学"></el-option>
+            <el-option :label="`${$t('disciplines.medicine')}`" value="医学"></el-option>
+            <el-option :label="`${$t('disciplines.militaryScience')}`" value="军事学"></el-option>
+            <el-option :label="`${$t('disciplines.management')}`" value="管理学"></el-option>
+            <el-option :label="`${$t('disciplines.law')}`" value="法学"></el-option>
+            <el-option :label="`${$t('disciplines.agronomy')}`" value="农学"></el-option>
           </el-select>
         </el-form-item>
 
-        <el-form-item label="资源介绍" prop="textarea">
+        <el-form-item :label="`${$t('addUpload.resourceIntroduction')}`" prop="textarea">
           <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 10}"
                     maxlength="500" show-word-limit
-                    placeholder="填写资料简介、概况，有助提升资料曝光率"
+                    :placeholder="`${$t('addUpload.introductionPlaceholder')}`"
                     v-model="fileForm.textarea">
           </el-input>
         </el-form-item>
 
       </el-form>
 
-      <el-button style="margin-top: 5%;" type="success" @click="submitUpload('fileForm')">上传到平台服务器</el-button>
-      <el-button style="margin-top: 5%;" type="primary" @click="clearUploadFiles">清除已经上传文件</el-button>
+      <el-button style="margin-top: 5%;" type="success" @click="submitUpload('fileForm')">
+        {{$t('submitButton')}}
+      </el-button>
+      <el-button style="margin-top: 5%;" type="primary" @click="clearUploadFiles">
+        {{$t('resetButton')}}
+      </el-button>
     </div>
 
   </div>
@@ -75,10 +84,10 @@
         uploadSuccessList: [],
         rules: {
           discipline: [
-            {required: true, message: '请选择资源所属类别', trigger: 'blur'}
+            {required: true, message: this.$t('addUpload.rule1'), trigger: 'blur'}
           ],
           textarea: [
-            {required: true, message: '请输入资源介绍', trigger: 'blur'}
+            {required: true, message: this.$t('addUpload.rule2'), trigger: 'blur'}
           ]
         },
         dialogImageUrl: '',
@@ -93,7 +102,7 @@
         this.isEmpty = false;
       } else {
         this.$message({
-          message: '请先登录再查看喔~',
+          message: this.$t('sessionExpired'),
           type: 'warning'
         });
         this.isEmpty = true;
@@ -102,15 +111,15 @@
     methods: {
       submitUpload(formName) {
         if (!this.fileForm.discipline) {
-          this.$message.warning('请选择资源所属类别');
+          this.$message.warning(this.$t('addUpload.rule1'));
           return false;
         }
         if (!this.fileForm.textarea) {
-          this.$message.warning('请输入资源介绍~~');
+          this.$message.warning(this.$t('addUpload.rule2'));
           return;
         }
         if (this.fileForm.textarea.length >= 500) {
-          this.$message.warning('简介内容过长~~');
+          this.$message.warning(this.$t('addUpload.rule3'));
           return;
         }
         this.$refs.upload.submit();
@@ -128,7 +137,7 @@
 
         if (response.code === 4013) {
           this.$message({
-            message: response.code + '~~~~  ' + response.message,
+            message: response.code + ' ~~~~  ' + this.$t('addUpload.uploadSuccess'),
             type: 'success',
             center: true,
             duration: 2000
@@ -136,12 +145,12 @@
 
           this.uploadSuccessList.push(file);
         } else {
-          this.$message.error(response.code + '~~~~  ' + response.message);
+          this.$message.error(response.code + ' ~~~~  ' + this.$t('serverError'));
         }
       },
       failHandle(response, file, fileList) {
         this.$message({
-          message: response.code + '~~~~  ' + response.message,
+          message: response.code + ' ~~~~  ' + this.$t('serverError'),
           type: 'error',
           center: true,
           duration: 2500
