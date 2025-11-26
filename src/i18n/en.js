@@ -335,7 +335,7 @@ export default {
         avatarUploadNotice: 'Only jpg/png files are allowed, and size must not exceed 10MB',
         accountInfo: 'Account Information',
         account: 'Account',
-        uninputed: 'Not filled in',
+        uninputed: 'Not Filled In',
         alias: 'Nickname',
         gender: 'Gender',
         accountState: 'Account Status',
