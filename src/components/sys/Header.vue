@@ -5,31 +5,7 @@
 
     <div class="container">
       <div class="row justify-content-between d-flex">
-
         
-        <div class="col-xl-16 col-lg-16 min-height-none">
-          <div class="main-menu">
-            <nav class="navbar navbar-expand-lg">
-              <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <ul class="navbar-nav nav justify-content-center">
-                  <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
-                       role="button" v-on:mouseover="showLangMenu = true"
-                       aria-haspopup="true" aria-expanded="false">En&nbsp;/&nbsp中</a>
-                    <div class="dropdown-menu" v-show="showLangMenu">
-                      <a class="dropdown-item" v-on:click="changeLang('zh')">中文</a>
-                      <a class="dropdown-item" v-on:click="changeLang('en')">English</a>
-                    </div>
-                  </li>
-
-                </ul>
-              </div>
-            </nav>
-          </div>
-        </div>
-        
-
-
         <div id="website-icon" class="col-xl-2 col-lg-2 d-xl-flex d-lg-flex d-block align-items-center mobile-header">
           <div class="row d-flex">
             <div class="col-xl-12 col-lg-12 col-6 d-flex align-items-center">
@@ -48,56 +24,70 @@
           </div>
         </div>
 
-        <div class="col-xl-16 col-lg-16 min-height-none">
-          <div class="main-menu">
-            <nav class="navbar navbar-expand-lg">
-              <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <ul id="menu-item" class="navbar-nav nav justify-content-center">
-                  <li class="nav-item">
-                    <a class="nav-link active" v-on:click="goIndex">{{ $t('header.home') }} <span
-                      class="sr-only">(current)</span></a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" v-on:click="goRecommendation">{{ $t('header.recommendation') }}</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" v-on:click="goRank">{{ $t('header.contribution') }}</a>
-                  </li>
-                  <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
-                       role="button"
-                       aria-haspopup="true" aria-expanded="false">{{ $t('header.statistics') }}</a>
-                    <div class="dropdown-menu">
-                      <a class="dropdown-item" v-on:click="goUploadData">{{ $t('header.uploadDetails') }}</a>
-                      <a class="dropdown-item" v-on:click="goDownloadData">{{ $t('header.downloadDetails') }}</a>
-                    </div>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" v-on:click="goFocusDetail">{{ $t('header.focus') }}</a>
-                  </li>
+        <div id="menu-bar-container">
+          <div class="col-xl-16 col-lg-16 min-height-none">
+            <div class="main-menu">
+              <nav class="navbar navbar-expand-lg">
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                  <ul id="menu-item" class="navbar-nav nav justify-content-center">
 
-                  <li class="nav-item dropdown">
-                    <div>
+                    <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
-                        role="button" aria-haspopup="true" aria-expanded="false"
-                        :style="`position: relative; ${this.language == 'zh' ? 'text-align: right; padding-left: 50%;' : 'text-align: right; padding-right: 45%;'}`">
-
-                        <img :src="this.user.headIcon" width="52px" height="52px" id="user-avatar" 
-                            style="border-radius: 50%; position: absolute; top: 50%; left: 0; transform: translate(40%, -50%);" />
-                      </a>
-                      <div class="dropdown-menu">
-                        <a class="dropdown-item" v-on:click="goPersonalCenter">{{ $t('header.dashboard') }}</a>
-                        <a class="dropdown-item"  v-if="!this.user.isLogin" v-on:click="goLogin">{{ $t('header.login') }}</a>
-                        <a class="dropdown-item" v-else v-on:click="goLogout">{{ $t('header.logout') }}</a>
+                        role="button" v-on:mouseover="showLangMenu = true"
+                        aria-haspopup="true" aria-expanded="false">En&nbsp;/&nbsp中</a>
+                      <div class="dropdown-menu" v-show="showLangMenu">
+                        <a class="dropdown-item" v-on:click="changeLang('zh')">中文</a>
+                        <a class="dropdown-item" v-on:click="changeLang('en')">English</a>
                       </div>
-                    </div>
-                  </li>
+                    </li>
 
-                </ul>
-              </div>
-            </nav>
+                    <li class="nav-item">
+                      <a class="nav-link" v-on:click="goRecommendation">{{ $t('header.recommendation') }}</a>
+                    </li>
+
+                    <li class="nav-item">
+                      <a class="nav-link" v-on:click="goRank">{{ $t('header.contribution') }}</a>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                        role="button"
+                        aria-haspopup="true" aria-expanded="false">{{ $t('header.statistics') }}</a>
+                      <div class="dropdown-menu">
+                        <a class="dropdown-item" v-on:click="goUploadData">{{ $t('header.uploadDetails') }}</a>
+                        <a class="dropdown-item" v-on:click="goDownloadData">{{ $t('header.downloadDetails') }}</a>
+                      </div>
+                    </li>
+
+                    <li class="nav-item">
+                      <a class="nav-link" v-on:click="goFocusDetail">{{ $t('header.focus') }}</a>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                      <div>
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                          role="button" aria-haspopup="true" aria-expanded="false"
+                          :style="`position: relative; ${this.language == 'zh' ? 'text-align: right; padding-left: 50%;' : 'text-align: right; padding-right: 45%;'}`">
+
+                          <img :src="this.user.headIcon" width="52px" height="52px" id="user-avatar" 
+                              style="border-radius: 50%; position: absolute; top: 50%; left: 0; transform: translate(30%, -50%);" />
+                        </a>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" v-on:click="goPersonalCenter">{{ $t('header.dashboard') }}</a>
+                          <a class="dropdown-item"  v-if="!this.user.isLogin" v-on:click="goLogin">{{ $t('header.login') }}</a>
+                          <a class="dropdown-item" v-else v-on:click="goLogout">{{ $t('header.logout') }}</a>
+                        </div>
+                      </div>
+                    </li>
+
+                  </ul>
+                </div>
+              </nav>
+            </div>
           </div>
+
         </div>
+
 
       </div>
     </div>
@@ -277,6 +267,12 @@
 
   #website-icon {
     padding: 0;
+  }
+
+  #menu-bar-container {
+    position: relative;
+    display: inline-block;
+    margin-right: 10%;
   }
 
 </style>
