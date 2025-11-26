@@ -77,15 +77,19 @@
                   </li>
 
                   <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
-                       role="button"
-                       aria-haspopup="true" aria-expanded="false">
-                       <img :src="this.user.headIcon" width="50px" height="50px" id="user-avatar" style="border-radius: 50%;" />
-                    </a>
-                    <div class="dropdown-menu">
-                      <a class="dropdown-item" v-on:click="goPersonalCenter">{{ $t('header.dashboard') }}</a>
-                      <a class="dropdown-item"  v-if="!this.user.isLogin" v-on:click="goLogin">{{ $t('header.login') }}</a>
-                      <a class="dropdown-item" v-else v-on:click="goLogout">{{ $t('header.logout') }}</a>
+                    <div>
+                      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                        role="button" aria-haspopup="true" aria-expanded="false"
+                        :style="`position: relative; ${this.language == 'zh' ? 'text-align: right; padding-left: 50%;' : 'text-align: right; padding-right: 45%;'}`">
+
+                        <img :src="this.user.headIcon" width="52px" height="52px" id="user-avatar" 
+                            style="border-radius: 50%; position: absolute; top: 50%; left: 0; transform: translate(40%, -50%);" />
+                      </a>
+                      <div class="dropdown-menu">
+                        <a class="dropdown-item" v-on:click="goPersonalCenter">{{ $t('header.dashboard') }}</a>
+                        <a class="dropdown-item"  v-if="!this.user.isLogin" v-on:click="goLogin">{{ $t('header.login') }}</a>
+                        <a class="dropdown-item" v-else v-on:click="goLogout">{{ $t('header.logout') }}</a>
+                      </div>
                     </div>
                   </li>
 
@@ -116,7 +120,8 @@
         },
         activeIndex: '1',
         activeIndex2: '1',
-        showLangMenu: false
+        showLangMenu: false,
+        language: this.$i18n.locale
       }
     },
     created: function () {
@@ -244,6 +249,7 @@
         localStorage.setItem('locale', lang);  // 保存选择，下次打开还是这个语言
         this.showLangMenu = false;
 
+        this.language = lang;
       }
     },
     computed: {}
@@ -251,18 +257,6 @@
 </script>
 
 <style scoped>
-
-  #div_username {
-    color: white;
-    font-size: 25px;
-    display: inline-block;
-    position: absolute;
-    font-weight: bold;
-  }
-
-  #div_username > a {
-    margin-left: 10px;
-  }
 
   .el-menu-demo {
     background: none;
@@ -279,10 +273,10 @@
   #language-switch {
   color: white;
   margin-top: 15px;
-}
+  }
 
-#website-icon {
-  padding: 0;
-}
+  #website-icon {
+    padding: 0;
+  }
 
 </style>
