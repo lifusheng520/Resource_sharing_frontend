@@ -456,9 +456,9 @@
       },
       // 播放视频处理函数
       playVideo(resourceId) {
-        console.log(resourceId);
         this.playVideoDialogVisible = true;
-        this.playVideoURL = `${backendURL}/resource/server/getVideo/${resourceId}`;
+        this.playVideoURL = `${this.backendURL}/resource/server/getVideo/${resourceId}`;
+        console.log(this.playVideoURL);
       },
       // 关闭视频播放对话框处理函数
       closePlayVideoDialogHandler() {
@@ -620,10 +620,13 @@
       },
       // 获取资源详情
       getResourceDetailInfo() {
+        console.log("查找的资源id： " + this.commentInfo.resource_id)
+        console.log( this.commentInfo)
+
         let out_this = this;
         this.$axios.get(`/resource/server/detail/${this.commentInfo.resource_id}`).then(res => {
           let resData = res.data;
-          //console.log(resData);
+          console.log(resData);
 
           if (resData.code === 4028) {
             out_this.UserAndResource.resource = resData.data.resource;

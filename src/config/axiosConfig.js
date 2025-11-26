@@ -6,7 +6,8 @@ import cookies from 'vue-cookies'
 
 // 配置项目后端URL基地址（真实请求URL=baseURL + /XXX）
 //axios.defaults.baseURL = 'http://localhost:8080';
-axios.defaults.baseURL = 'http://4.237.56.63:8080'; 
+//axios.defaults.baseURL = 'http://4.237.56.63:8080'; 
+axios.defaults.baseURL = 'https://campus-resource.australiaeast.cloudapp.azure.com'; 
 // 对所有 axios 请求做处理，携带cookie
 axios.defaults.withCredentials = true;
 

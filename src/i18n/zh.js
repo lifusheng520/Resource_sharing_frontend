@@ -54,6 +54,7 @@ export default {
         loginSuccess: '欢迎回来',
         loginFirst: '请先登录',
         logout: '登出',
+        logoutSuccess: '期待与你下次相见',
         logoutFailed: '登出失败',
         uploadAnalysis: '上传分析',
         downloadAnalysis: '下载分析',

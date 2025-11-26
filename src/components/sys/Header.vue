@@ -221,7 +221,7 @@
             this.$message.error(this.$t('header.networkError'));
           } else {
             this.$message({
-              message: resData.code + '~~~~' + resData.message,
+              message: resData.code + '~~~~' + _this.$t('header.logoutSuccess'),
               type: 'success',
               center: true,
               duration: 2000
