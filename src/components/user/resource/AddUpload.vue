@@ -147,6 +147,9 @@
         } else {
           this.$message.error(response.code + ' ~~~~  ' + this.$t('serverError'));
         }
+
+        this.fileForm.discipline = '';
+        this.fileForm.textarea = '';
       },
       failHandle(response, file, fileList) {
         this.$message({

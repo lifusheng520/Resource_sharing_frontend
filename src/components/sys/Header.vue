@@ -76,42 +76,23 @@
                     <a class="nav-link" v-on:click="goFocusDetail">{{ $t('header.focus') }}</a>
                   </li>
 
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                       role="button"
+                       aria-haspopup="true" aria-expanded="false">
+                       <img :src="this.user.headIcon" width="50px" height="50px" id="user-avatar" style="border-radius: 50%;" />
+                    </a>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" v-on:click="goPersonalCenter">{{ $t('header.dashboard') }}</a>
+                      <a class="dropdown-item"  v-if="!this.user.isLogin" v-on:click="goLogin">{{ $t('header.login') }}</a>
+                      <a class="dropdown-item" v-else v-on:click="goLogout">{{ $t('header.logout') }}</a>
+                    </div>
+                  </li>
+
                 </ul>
               </div>
             </nav>
           </div>
-        </div>
-
-        <div class="col-xl-2 col-lg-2 d-xl-flex d-lg-flex d-none align-items-center">
-
-          <div>
-
-            <div style="display: inline-block;">
-              <!--
-              <el-avatar v-if="this.user.headIcon" shape="circle" :size="60" :src="this.user.headIcon"></el-avatar>
-              <el-avatar v-else shape="circle" :size="60" src="static/ico/headIcon.png"></el-avatar>
-              <el-image shape="circle" :size="60" id="user-avatar"
-                         :src="this.user.headIcon ? this.user.headIcon : 'static/ico/headIcon.png'"></el-avatar>-->
-              <img :src="this.user.headIcon" width="60px" height="60px" id="user-avatar" style="border-radius: 50%;">
-            </div>
-            <div id="div_username">
-
-              <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal">
-                <el-submenu index="1">
-                  <template slot="title">
-                    <span v-model="this.user.username">{{this.user.username}}</span>
-                  </template>
-                  <el-menu-item index="1-1" v-on:click="goPersonalCenter">{{ $t('header.dashboard') }}</el-menu-item>
-                  <el-menu-item index="1-3" v-on:click="goLogin" v-if="!this.user.isLogin">{{ $t('header.login') }}
-                  </el-menu-item>
-                  <el-menu-item index="2-3" v-on:click="goLogout" v-else>{{ $t('header.logout') }}</el-menu-item>
-                </el-submenu>
-              </el-menu>
-
-
-            </div>
-          </div>
-
         </div>
 
       </div>
