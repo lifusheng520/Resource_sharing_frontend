@@ -1,5 +1,6 @@
 export default {
     serverError: 'Operation denied! The input is incorrect or the server has an error. Please try again later.',
+    withoutPrivilegeError: 'Administrator privileges are required to access this.',
     deleteSuccess: 'Deleted successfully',
     sessionExpired: 'Session with server has expired, please log in again',
     operationSuccess: 'Operate Successfully',

@@ -1,5 +1,6 @@
 export default {
     serverError: '操作失败！输入信息错误，或服务器错误，请稍后重试',
+    withoutPrivilegeError: '具有管理员权限才能访问喔',
     deleteSuccess: '删除成功',
     sessionExpired: '与服务器的会话已经失效，请重新登录',
     operationSuccess: '操作成功',

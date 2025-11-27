@@ -164,6 +164,9 @@
 
             for (let i = 0; i < out_this.checkResourceTableList.length; ++i)
               out_this.checkResourceTableList[i].discipline = out_this.translateDisciplineToSelectedLanguage(out_this.checkResourceTableList[i].discipline);
+            
+          } else if (resData.code == 1007) {
+            out_this.$message.error(resData.code + '~~~~' + out_this.$t('withoutPrivilegeError'));
           } else {
             out_this.$message.error(resData.code + '~~~~' + out_this.$t('checkResource.loadingError'));
           }

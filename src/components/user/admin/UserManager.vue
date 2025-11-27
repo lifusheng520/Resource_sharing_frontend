@@ -163,6 +163,8 @@
             out_this.userPageData.pageSize = resData.data.pageSize;
             out_this.userPageData.total = resData.data.total;
             out_this.userTableList = resData.data.pageList;
+          } else if (resData.code == 1007) {
+            out_this.$message.error(resData.code + '~~~~' + out_this.$t('withoutPrivilegeError'));
           } else {
             out_this.$message.error(resData.code + '~~~~' + out_this.$t('serverError'));
           }

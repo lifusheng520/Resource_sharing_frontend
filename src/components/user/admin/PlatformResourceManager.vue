@@ -121,7 +121,7 @@
           let resData = response.data;
           console.log(resData);
 
-          if (resData.code === 8006) {
+          if (resData.code == 8006) {
 
             out_this.tablePageData.currentPage = resData.data.currentPage;
             out_this.tablePageData.pageSize = resData.data.pageSize;
@@ -130,6 +130,9 @@
 
             for (let i = 0; i < out_this.tableDataList.length; ++i)
               out_this.tableDataList[i].resource.discipline = out_this.translateDisciplineToSelectedLanguage(out_this.tableDataList[i].resource.discipline);
+
+          } else if (resData.code == 1007) {
+            out_this.$message.error(resData.code + '~~~~' + out_this.$t('withoutPrivilegeError'));
 
           } else {
             out_this.$message.error(resData.code + '~~~~' + out_this.$t('serverError'));
