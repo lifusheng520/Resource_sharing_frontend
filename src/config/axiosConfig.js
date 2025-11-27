@@ -8,6 +8,7 @@ import cookies from 'vue-cookies'
 //axios.defaults.baseURL = 'http://localhost:8080';
 //axios.defaults.baseURL = 'http://4.237.56.63:8080'; 
 axios.defaults.baseURL = '/api'; 
+
 // 对所有 axios 请求做处理，携带cookie
 axios.defaults.withCredentials = true;
 

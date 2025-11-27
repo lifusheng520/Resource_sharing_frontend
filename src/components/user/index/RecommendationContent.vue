@@ -18,13 +18,18 @@
                           <i class="el-icon-search"></i>&nbsp;&nbsp;&nbsp;&nbsp;{{$t('recommendationContent.search')}}
                         </button>
 
-                        <div id="div_title_radio">
-                          {{$t('recommendationContent.categories')}}
-                          <el-radio-group id="discipline_radio" v-model="page.disciplineContent"
-                                          @change="getResourceBySelectDiscipline"
-                                          v-for="(item, index) in disciplineList" :key="index">
-                            <el-radio-button style="margin: 0px 5px;" :label="translateDisciplineToSelectedLanguage(item)"></el-radio-button>
-                          </el-radio-group>
+                        <div id="div_title_selection">
+
+                          <el-select v-model="page.disciplineContent" :placeholder="`${$t('recommendationContent.categories')}`"
+                          @change="getResourceBySelectDiscipline">
+                            <el-option
+                              v-for="item in disciplineList"
+                              :key="item.value"
+                              :label="`${translateDisciplineToSelectedLanguage(item)}`"
+                              :value="item">
+                            </el-option>
+                          </el-select>
+
                         </div>
 
                       </form>
@@ -69,77 +74,90 @@
         <div style="width: 100%">
 
           <div class="row">
-            <div class="col-xl-12 col-lg-12">
+            <div class="col-xl-16 col-lg-16">
 
               <div v-for="(item, index) in resourceList" :key="index" id="div_resource_item">
-                <div style="margin: 15px auto;">
                   <div class="single-testimonial">
 
-                    <div class="part-info" id="div_resource_item_title">
-                      <span id="span_resource_subject">
-                        <i class="el-icon-office-building"></i>
-                        {{translateDisciplineToSelectedLanguage(item.discipline)}}
-                      </span>
-                    </div>
-                    <div class="part-info" id="div_resource_name">
-                      <a v-on:click="goResourceDetail(item.id)"><i class="el-icon-document"></i>
-                        {{item.origin_name}}</a>
-                    </div>
-                    <div class="part-info" id="div_resource_time">
-                      {{$t('recommendationContent.uploadTime')}}
-                      {{item.upload_time}}
-                    </div>
-                    <div class="part-info" id="div_resource_downloads">
-                      <i class="el-icon-download"></i> {{item.downloads}}  {{$t('recommendationContent.times')}}
-                    </div>
-                    <div class="part-info" id="div_resource_favorite">
-                      <a v-on:click="goResourceDetailPage(item.id)">
-                        <span v-on:click="goResourceDetailPage(item.id)"><i class="fas fa-star"></i> {{item.favorite_number}}</span>
-                      </a>
-                    </div>
-                    <div class="part-info" id="div_resource_size">
-                    <span v-if="item.size < 1024">
-                      <i class="fas el-icon-s-cooperation"></i> {{item.size}}kb
-                    </span>
-                      <span v-else-if="item.size < 1024 * 1024">
-                      <i class="fas el-icon-s-cooperation"></i> {{(item.size / 1024).toFixed(1)}}MB
-                    </span>
-                      <span v-else>
-                      <i class="fas el-icon-s-cooperation"></i> {{(item.size / 1024 / 1024).toFixed(1)}}Gb
-                    </span>
-                    </div>
+                    <el-row>
+                      <el-col :span="12">
+                        <div class="resource_info_items" id="div_resource_item_title">
+                          <span id="span_resource_subject">
+                            <i class="el-icon-office-building"></i>
+                            {{translateDisciplineToSelectedLanguage(item.discipline)}}
+                          </span>
+                        </div>
+                      </el-col>
 
-                    <div class="part-info" id="div_resource_support">
-                      <a v-on:click="goResourceDetailPage(item.id)">
-                        <span><i class="fas fa-thumbs-up"></i> {{item.supportNumber}}</span>
-                      </a>
-                    </div>
+                      <el-col :span="12">
+                        <div class="resource_info_items" id="div_resource_time">
+                          {{$t('recommendationContent.uploadTime')}}
+                          {{item.upload_time}}
+                        </div>
+                      </el-col>
 
-                    <div class="part-text">
-                      <div class="part-text" id="div_resource_description">
-                        <b style="font-size: large;">{{$t('recommendationContent.introduction')}}</b>
-                        <br>
-                        {{item.description}}
-                      </div>
-                    </div>
+                    </el-row>
 
-                    <div id="div_resource_download_button">
-                      <div>
-                        <a
-                          :href="`${backendURL}/resource/download/${item.disk_name}/${item.id}/${item.discipline}`">
-                          <el-button size="small" round><i class="fas fa-cloud-download-alt"></i> {{$t('download')}}</el-button>
-                        </a>
-                      </div>
-                    </div>
+
+                    <el-row>
+                      <el-col :span="6">
+                        <div class="part-info" id="div_resource_downloads">
+                          <i class="el-icon-download"></i> {{item.downloads}}  {{$t('recommendationContent.times')}}
+                        </div>
+
+                        <div class="part-info" id="div_resource_favorite">
+                          <a v-on:click="goResourceDetailPage(item.id)">
+                            <span v-on:click="goResourceDetailPage(item.id)"><i class="fas fa-star"></i> {{item.favorite_number}}</span>
+                          </a>
+                        </div>
+                        <div class="part-info" id="div_resource_size">
+                          <span v-if="item.size < 1024">
+                            <i class="fas el-icon-s-cooperation"></i> {{item.size}}kb
+                          </span>
+                            <span v-else-if="item.size < 1024 * 1024">
+                            <i class="fas el-icon-s-cooperation"></i> {{(item.size / 1024).toFixed(1)}}MB
+                          </span>
+                            <span v-else>
+                            <i class="fas el-icon-s-cooperation"></i> {{(item.size / 1024 / 1024).toFixed(1)}}Gb
+                          </span>
+                        </div>
+
+                        <div class="part-info" id="div_resource_support">
+                          <a v-on:click="goResourceDetailPage(item.id)">
+                            <span><i class="fas fa-thumbs-up"></i> {{item.supportNumber}}</span>
+                          </a>        
+                        </div>
+
+                        <div id="div_resource_download_button">
+                          <div>
+                            <a
+                              :href="`${backendURL}/resource/download/${item.disk_name}/${item.id}/${item.discipline}`">
+                              <el-button size="small" round><i class="fas fa-cloud-download-alt"></i> {{$t('download')}}</el-button>
+                            </a>
+                          </div>
+                        </div>
+                      </el-col>
+
+                      <el-col :span="18">
+                        <div class="part-info" id="div_resource_name">
+                          <a v-on:click="goResourceDetail(item.id)"><i class="el-icon-document"></i>
+                            {{item.origin_name}}</a>
+                        </div>
+                        <div class="resource_info_items" id="div_resource_description">
+                          <b style="font-size: large;">{{$t('recommendationContent.introduction')}}</b>
+                          &nbsp;&nbsp;
+                          <span style="font-size: medium;">{{item.description}}</span>
+                        </div>
+                      </el-col>
+                    </el-row>
 
                   </div>
                 </div>
-              </div>
 
             </div>
           </div>
 
-          <div align="center">
+          <div align="center" style="margin-top: 20px;">
             <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
                            :current-page="page.currentPage" :page-size="page.pageSize"
                            layout="total, sizes, prev, pager, next, jumper"
@@ -163,7 +181,7 @@
         isEmpty: false,
         firstTime: true,
         page: {
-          disciplineContent: this.$t('disciplines.all'),
+          disciplineContent: '',
           searchContent: '',
           currentPage: -1,
           totalPages: -1,
@@ -341,30 +359,20 @@
     margin: 0px auto;
   }
 
-  #div_resource_item {
-
-  }
-
 
   #div_title_content {
     width: 100%;
   }
 
-  #div_title_radio {
-    width: 90%;
+  #div_title_selection {
     margin-top: 50px;
     text-align: left;
     color: white;
     font-size: medium;
   }
 
-  #discipline_radio {
-    margin-top: 10px;
-  }
-
   #div_resource_item_title {
-    height: 50px;
-    padding: 0px;
+    height: 45px;
     margin-top: -30px;
     margin-left: -20px;
   }
@@ -372,64 +380,58 @@
   #div_resource_name {
     font-size: 25px;
     text-align: center;
-    margin-top: -25px;
-    width: 85%;
-    float: right;
+    margin-top: -10px;
   }
 
   #div_resource_time {
-    position: absolute;
-    top: 0px;
-    width: 95%;
     text-align: right;
-    padding-right: 10px;
+    margin-top: -25px;
+    font-size: 12px;
   }
 
   #span_resource_subject {
-    font-size: 25px;
+    font-size: 20px;
     font-weight: bold;
   }
 
   #div_resource_description {
+    height: 100%;
     font-size: 14px;
-    position: absolute;
-    top: 76px;
-    left: 210px;
-    /*border: 1px solid #ddd;*/
-    width: 70%;
-    word-break: break-all;
-    text-overflow: ellipsis;
-    display: -webkit-box; /** 将对象作为伸缩盒子模型显示 **/
-    -webkit-box-orient: vertical; /** 设置或检索伸缩盒对象的子元素的排列方式 **/
-    -webkit-line-clamp: 2; /** 显示的行数 **/
-    overflow: hidden;
   }
 
   #div_resource_downloads {
     text-align: left;
-    margin-top: -30px;
-    margin-left: -15px;
+    margin-left: -20px;
   }
 
   #div_resource_favorite {
     text-align: left;
-    margin-left: -15px;
+    margin-left: -20px;
 
   }
 
   #div_resource_size {
     text-align: left;
-    margin-left: -15px;
+    margin-left: -20px;
     margin-bottom: 20px;
   }
 
   #div_resource_download_button {
-    text-align: right;
+    margin-left: -30px;
+    text-align: left;
+  }
+
+  #div_resource_download_button button {
+    transform: scale(0.8);
   }
 
   #div_resource_support {
-    margin-left: -15px;
-    margin-top: -30px;
+    margin-left: -20px;
+    margin-top: -20px;
+  }
+
+  .resource_info_items {
+    color: white;
   }
 
 </style>

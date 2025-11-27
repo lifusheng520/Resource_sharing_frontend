@@ -305,8 +305,8 @@ export default {
     recommendationContent: {
         placeholderPrompt: 'Please enter resource name',
         search: 'Search',
-        categories: 'Select Category:',
-        source: 'Source:',
+        categories: 'Select Discipline:',
+        source: 'Discipline:',
         uploadTime: 'Uploaded on:',
         times: 'times',
         introduction: 'Introduction:',

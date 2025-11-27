@@ -457,7 +457,7 @@
       },
       // 播放视频处理函数
       playVideo(resourceId) {
-        if (!this.isSupportVideoType(UserAndResource.resource.type)) {
+        if (!this.isSupportVideoType(this.UserAndResource.resource.type)) {
           this.$message.warning(this.$t('unsupportedVedioType'));
           return;
         }
