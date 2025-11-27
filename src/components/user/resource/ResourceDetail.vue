@@ -77,7 +77,7 @@
                   <a v-on:click="resourceSupportHandler(UserAndResource.resource.id)">
                     <span><i class="fas fa-thumbs-up"></i></span> {{UserAndResource.resource.supportNumber}}
                   </a>
-                  <a><span><i class="fas fa-download"></i></span> {{UserAndResource.resource.downloads}}次</a>
+                  <a><span><i class="fas fa-download"></i></span> {{UserAndResource.resource.downloads}}</a>
 
                   <a v-on:click="resourceFavouriteHandler(UserAndResource.resource.id)">
                     <span><i class="fas fa-heart"></i> {{UserAndResource.resource.favorite_number}}</span>
@@ -137,8 +137,7 @@
                   <a v-on:click="copyURLVisible = !copyURLVisible">
                     <span><i class="fas fa-share"></i></span> {{$t('resourceDetail.sharing')}}
                   </a>
-                  <a v-on:click="playVideo(UserAndResource.resource.id)"
-                     v-show="isSupportVideoType(UserAndResource.resource.type)">
+                  <a v-on:click="playVideo(UserAndResource.resource.id)">
                     <span><i class="fa fa-play-circle"></i></span> {{$t('resourceDetail.browseOnline')}}
                   </a>
                   <a hidden></a>
@@ -151,7 +150,7 @@
                   </p>
                   <div>
                     <el-button type="primary" size="mini"
-                               @click="copyURL(`${process.env.VUE_APP_API_BASE_URL}/resource/download/${UserAndResource.resource.disk_name}/${UserAndResource.resource.id}/${UserAndResource.resource.discipline}`)">
+                               @click="copyURL(`${backendURL}/resource/download/${UserAndResource.resource.disk_name}/${UserAndResource.resource.id}/${UserAndResource.resource.discipline}`)">
                       {{$t('resourceDetail.copy')}}URL
                     </el-button>
                     <el-button size="mini" type="primary" @click="copyURLVisible = false">{{$t('cancelButton')}}</el-button>
@@ -446,19 +445,26 @@
       },
       // 判断是否为支持的视频格式
       isSupportVideoType(type) {
-        if (type === 'mp4')
+        if (type.toLowerCase() === 'mp4')
           return true;
-        if (type === 'webm')
+        if (type.toLowerCase() === 'mov')
           return true;
-        if (type === 'ogg')
+        if (type.toLowerCase() === 'webm')
+          return true;
+        if (type.toLowerCase() === 'ogg')
           return true;
         return false;
       },
       // 播放视频处理函数
       playVideo(resourceId) {
+        if (!this.isSupportVideoType(UserAndResource.resource.type)) {
+          this.$message.warning(this.$t('unsupportedVedioType'));
+          return;
+        }
+
         this.playVideoDialogVisible = true;
         this.playVideoURL = `${this.backendURL}/resource/server/getVideo/${resourceId}`;
-        console.log(this.playVideoURL);
+        console.log(this.playVideoURL);    
       },
       // 关闭视频播放对话框处理函数
       closePlayVideoDialogHandler() {

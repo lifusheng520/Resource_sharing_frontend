@@ -24,6 +24,7 @@ export default {
     submitButton: 'Submit',
     resetButton: 'Reset',
     addSuccess: 'Added successfully',
+    unsupportedVedioType: 'This type of file cannot be played directly in the browser.',
     disciplines: {
         all: 'All',
         law: 'Law',

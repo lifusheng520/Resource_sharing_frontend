@@ -24,6 +24,7 @@ export default {
     submitButton: '提 交',
     resetButton: '重 置',
     addSuccess: '添加成功',
+    unsupportedVedioType: '文件类型不支持',
     disciplines: {
         all: '全部',
         law: '法学',

@@ -351,11 +351,11 @@
   }
 
   #div_title_radio {
-    width: 800px;
+    width: 90%;
     margin-top: 50px;
     text-align: left;
     color: white;
-    font-size: large;
+    font-size: medium;
   }
 
   #discipline_radio {
