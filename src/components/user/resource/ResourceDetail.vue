@@ -146,11 +146,11 @@
                 <el-popover placement="right" :title="`${$t('resourceDetail.download')}URL：`" width="100%"
                             v-model="copyURLVisible" trigger="click">
                   <p>
-                    {{`${backendURL}/resource/download/${UserAndResource.resource.disk_name}/${UserAndResource.resource.id}/${UserAndResource.resource.discipline}`}}
+                    {{`https://learning-resource.australiaeast.cloudapp.azure.com/${backendURL}/resource/download/${UserAndResource.resource.disk_name}/${UserAndResource.resource.id}/${UserAndResource.resource.discipline}`}}
                   </p>
                   <div>
                     <el-button type="primary" size="mini"
-                               @click="copyURL(`${backendURL}/resource/download/${UserAndResource.resource.disk_name}/${UserAndResource.resource.id}/${UserAndResource.resource.discipline}`)">
+                               @click="copyURL(`https://learning-resource.australiaeast.cloudapp.azure.com/${backendURL}/resource/download/${UserAndResource.resource.disk_name}/${UserAndResource.resource.id}/${UserAndResource.resource.discipline}`)">
                       {{$t('resourceDetail.copy')}}URL
                     </el-button>
                     <el-button size="mini" type="primary" @click="copyURLVisible = false">{{$t('cancelButton')}}</el-button>
@@ -169,36 +169,39 @@
 
               <!--              发布评论-->
               <div class="div-comment-input">
+                  <el-col :span="18">
+                    <div class="div-comment-input-content" v-if="commentInfo.user_id">
+                      <el-input type="textarea" resize="none"
+                                maxlength="500" show-word-limit
+                                :autosize="{ minRows: 5, maxRows: 5}"
+                                :placeholder="`${$t('resourceDetail.placeholderPrompt1')}`"
+                                v-model="commentInfo.content">
+                      </el-input>
+                    </div>
 
-                <div class="div-comment-input-icon">
-                  <img v-if="UserAndResource.userInfo.headIcon"
-                       :src="UserAndResource.userInfo.headIcon" alt="">
-                  <img v-else src="static/ico/headIcon.png" alt="">
-                </div>
+                    <div v-else class="div-comment-input-login">
+                      <p>
+                        {{ $t('resourceDetail.notice1') }}
+                        <el-button v-on:click="goLogin" size="mini" type="primary" plain>
+                          {{ $t('resourceDetail.notice2') }}
+                        </el-button>
+                        {{ $t('resourceDetail.notice3') }}
+                      </p>
+                    </div>
 
-                <div class="div-comment-input-content" v-if="commentInfo.user_id">
-                  <el-input type="textarea"
-                            :autosize="{ minRows: 5, maxRows: 5}"
-                            :placeholder="`${$t('resourceDetail.placeholderPrompt1')}`"
-                            v-model="commentInfo.content">
-                  </el-input>
-                </div>
+                  </el-col>
+                  <el-col :span="6">
+                    <div class="div-comment-input-button">
+                        <el-button v-on:click="addComment()" type="info" plain>
+                          {{ $t('resourceDetail.submitComment') }}
+                        </el-button>
 
-                <div v-else class="div-comment-input-login">
-                  <p>
-                    {{ $t('resourceDetail.notice1') }}
-                    <el-button v-on:click="goLogin" size="mini" type="primary" plain>
-                      {{ $t('resourceDetail.notice2') }}
-                    </el-button>
-                    {{ $t('resourceDetail.notice3') }}
-                  </p>
-                </div>
-
-                <div class="div-comment-input-button">
-                  <el-button v-on:click="addComment" type="info" plain>
-                    {{ $t('resourceDetail.submitComment') }}
-                  </el-button>
-                </div>
+                        <el-button v-on:click="cancelComment()" type="info" plain>
+                          {{ $t('resetButton') }}
+                        </el-button>
+                      </div>
+                  </el-col>
+                </el-row>
 
               </div>
 
@@ -676,10 +679,15 @@
           this.$message.info(this.$t('resourceDetail.notice4'));
           return;
         }
-        this.commentInfo.content = temp;
+
+        this.commentInfo.content = this.commentInfo.content.trim();
 
         this.sendComment();
 
+      },
+      // 取消发布评论
+      cancelComment() {
+        this.commentInfo.content = '';
       },
       // 回复评论
       replyComment(to) {
@@ -704,7 +712,7 @@
         this.commentInfo.to_id = to;
 
         let out_this = this;
-        console.log(this.commentInfo);
+        console.log(this.commentInfo.content);
         this.$axios.post('/comment/add', this.commentInfo).then(response => {
           let resData = response.data;
 
@@ -994,25 +1002,12 @@
     margin: 15px auto;
     background: #e9e9ee;
     border-radius: 25px;
-    overflow: hidden;
-  }
 
-  .div-comment-input div {
-    display: inline-block;
-  }
-
-  .div-comment-input-icon {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    margin: 15px 40px;
-    overflow: hidden;
   }
 
   .div-comment-input-content {
-    width: 60%;
+    width: 95%;
     height: 150px;
-    vertical-align: top;
     padding: 15px 0px;
     margin: auto 2%;
   }
@@ -1029,10 +1024,14 @@
   }
 
   .div-comment-input-button {
-    width: 12%;
-    height: 150px;
     vertical-align: top;
-    padding: 50px 0px;
+    padding-top: 10px;
+  }
+
+  .div-comment-input-button > button {
+    display: inline-block;
+    margin-top: 10px;
+    margin-left: 5px;
   }
 
   .div-comment-content-box {

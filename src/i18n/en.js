@@ -438,7 +438,7 @@ export default {
         notice6: 'Comment contains banned words',
         notice7: 'Folder name cannot be empty',
         notice8: 'Added to favourites',
-        submitComment: 'Post Comment',
+        submitComment: 'Post',
         commentList: 'Comments',
         reply: 'Reply',
         send: 'Send',

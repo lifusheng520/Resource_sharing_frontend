@@ -459,7 +459,7 @@ export default {
         notice7: '收藏夹名称不能为空喔',
         notice8: '已经添加到收藏夹',
 
-        submitComment: '发布评论',
+        submitComment: '发布',
         commentList: '评 论 区',
         reply: '回 复',
         send: '发送',
