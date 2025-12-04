@@ -29,10 +29,12 @@ This is the **frontend** of the Campus Resource Sharing System.
 ---
 
 ## Project Structure
+
 config/
 ├── dev.env.js
 ├── index.js
 └── prod.env.js
+
 src/
 ├── components/
 ├── config/
@@ -42,6 +44,7 @@ src/
 ├── views/
 ├── app.vue
 └── main.js
+
 static/
 ├── css/
 ├── fonts/
@@ -49,6 +52,7 @@ static/
 ├── img/
 ├── js/
 └── .gitkeep
+
 index.html
 package.json
 
