@@ -31,7 +31,7 @@ This is the **frontend** of the Campus Resource Sharing System.
 ## Project Structure
 
 config/
--- dev.env.js
+  |--dev.env.js
 
 |-- index.js
 
