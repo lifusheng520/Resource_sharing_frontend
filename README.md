@@ -5,7 +5,7 @@ This is the **frontend** of the Campus Resource Sharing System.
 
 ---
 
-## 🌟 Features
+## Features
 - Vue.js (SPA)
 - Element Plus UI Components  
 - Vue Router  
@@ -18,7 +18,7 @@ This is the **frontend** of the Campus Resource Sharing System.
 
 ---
 
-## 🧩 Tech Stack
+## Tech Stack
 - Vue 2 
 - Vue Router  
 - Vue I18n  
@@ -28,7 +28,7 @@ This is the **frontend** of the Campus Resource Sharing System.
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 config/
 ├── dev.env.js
 ├── index.js
