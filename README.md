@@ -32,26 +32,28 @@ This is the **frontend** of the Campus Resource Sharing System.
 
 config/
 |-- dev.env.js
+
 |-- index.js
+
 L-- prod.env.js
 
 src/
-├── components/
-├── config/
-├── i18n/
-├── router/
-├── store/
-├── views/
-├── app.vue
-└── main.js
+|-- components/
+|-- config/
+|-- i18n/
+|-- router/
+|-- store/
+|-- views/
+|-- app.vue
+L-- main.js
 
 static/
-├── css/
-├── fonts/
-├── ico/
-├── img/
-├── js/
-└── .gitkeep
+|-- css/
+|-- fonts/
+|-- ico/
+|-- img/
+|-- js/
+L-- .gitkeep
 
 index.html
 package.json
